@@ -5,19 +5,19 @@ import { authenticate } from '../middlewares/authMiddleware.js'; // Import authe
 const router = express.Router();
 
 // Route for adding a new skill (protected route)
-router.post('/skills', authenticate, addSkill);
+router.post('/', authenticate, addSkill);
 
 // Route for fetching all skills (public route)
-router.get('/skills', getAllSkills);
+router.get('/', getAllSkills);
 
 // Route for fetching skill by ID (public route)
-router.get('/skills/:id', getSkillById);
+router.get('/:id', getSkillById);
 
 
-router.put('/skills/:id', authenticate, updateSkill);
+router.put('/:id', authenticate, updateSkill);
 
 
-router.delete('/skills/:id', authenticate, deleteSkill);
+router.delete('/:id', authenticate, deleteSkill);
 
 
 export default router;

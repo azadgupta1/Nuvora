@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import skillRoutes from './routes/skillRoutes.js';
+import bookingRoutes from './routes/bookingRoutes.js';
 import cors from 'cors';
 
 dotenv.config();
@@ -14,7 +15,8 @@ app.use(cors());
 
 
 app.use('/api/auth', authRoutes);
-app.use('/api', skillRoutes);
+app.use('/api/skills', skillRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 
 app.get('/', (req, res) =>{
