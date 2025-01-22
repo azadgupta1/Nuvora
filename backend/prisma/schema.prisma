@@ -14,6 +14,25 @@ datasource db {
 }
 
 // Users Table: Store user-related information
+// model User {
+//   id               Int             @id @default(autoincrement())
+//   name             String
+//   email            String          @unique
+//   password         String
+//   profilePicture   String? // Optional
+//   bio              String? // Optional
+//   location         String? // Optional
+//   skills           Skill[] // One-to-many relation with skills
+//   bookings         Booking[] // One-to-many relation with bookings
+//   messagesSent     Message[]       @relation("SentMessages")
+//   messagesReceived Message[]       @relation("ReceivedMessages")
+//   reviews          Review[] // One-to-many relation with reviews
+//   bookmarks        Bookmark[] // One-to-many relation with bookmarks
+//   skillExchanges   SkillExchange[] // One-to-many relation with skill exchanges (added here)
+//   chatRoomsAsUser1 ChatRoom[]      @relation("User1ChatRooms")
+//   chatRoomsAsUser2 ChatRoom[]      @relation("User2ChatRooms")
+// }
+
 model User {
   id               Int             @id @default(autoincrement())
   name             String
@@ -28,7 +47,9 @@ model User {
   messagesReceived Message[]       @relation("ReceivedMessages")
   reviews          Review[] // One-to-many relation with reviews
   bookmarks        Bookmark[] // One-to-many relation with bookmarks
-  skillExchanges   SkillExchange[] // One-to-many relation with skill exchanges (added here)
+  skillExchanges   SkillExchange[] // One-to-many relation with skill exchanges
+  chatRoomsAsUser1 ChatRoom[]      @relation("User1ChatRooms")
+  chatRoomsAsUser2 ChatRoom[]      @relation("User2ChatRooms")
 }
 
 // Skills Table: Information about skills users can offer
@@ -64,14 +85,44 @@ model Booking {
 }
 
 // Messages Table: Information about messages between users
+// model Message {
+//   id         Int      @id @default(autoincrement())
+//   senderId   Int // Foreign Key to User table (sender)
+//   receiverId Int // Foreign Key to User table (receiver)
+//   message    String
+//   timestamp  DateTime @default(now())
+//   sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+//   receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+// }
+
 model Message {
   id         Int      @id @default(autoincrement())
-  senderId   Int // Foreign Key to User table (sender)
-  receiverId Int // Foreign Key to User table (receiver)
+  roomId     Int
+  senderId   Int
+  receiverId Int
   message    String
   timestamp  DateTime @default(now())
+  room       ChatRoom @relation(fields: [roomId], references: [id])
   sender     User     @relation("SentMessages", fields: [senderId], references: [id])
   receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+}
+
+// model ChatRoom {
+//   id        Int       @id @default(autoincrement())
+//   user1Id   Int
+//   user2Id   Int
+//   user1     User      @relation("ChatUser1", fields: [user1Id], references: [id])
+//   user2     User      @relation("ChatUser2", fields: [user2Id], references: [id])
+//   messages  Message[] // One-to-many relation with messages
+// }
+
+model ChatRoom {
+  id       Int       @id @default(autoincrement())
+  user1    User      @relation("User1ChatRooms", fields: [user1Id], references: [id])
+  user1Id  Int
+  user2    User      @relation("User2ChatRooms", fields: [user2Id], references: [id])
+  user2Id  Int
+  messages Message[]
 }
 
 // Reviews Table: Reviews given by users after completing a skill exchange
