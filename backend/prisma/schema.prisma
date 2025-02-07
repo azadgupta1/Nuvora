@@ -107,14 +107,6 @@ model Message {
   receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
 }
 
-// model ChatRoom {
-//   id        Int       @id @default(autoincrement())
-//   user1Id   Int
-//   user2Id   Int
-//   user1     User      @relation("ChatUser1", fields: [user1Id], references: [id])
-//   user2     User      @relation("ChatUser2", fields: [user2Id], references: [id])
-//   messages  Message[] // One-to-many relation with messages
-// }
 
 model ChatRoom {
   id       Int       @id @default(autoincrement())

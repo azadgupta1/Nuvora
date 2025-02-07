@@ -33,6 +33,8 @@
 //     console.log("Server is running on port "+PORT);
 // });
 
+import prisma from './config/prismaClient.js';
+
 
 import { createServer } from 'http';
 import { Server } from 'socket.io';
@@ -46,6 +48,7 @@ import bookmarkRoutes from './routes/bookmarkRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 
 import messageRoutes from './routes/messageRoutes.js';
+import chatRoomRoutes from './routes/chatRoomRoutes.js';
 
 import cors from 'cors';
 
@@ -76,6 +79,7 @@ app.use('/api/bookmark', bookmarkRoutes);
 app.use('/api/review', reviewRoutes);
 
 app.use('/api/messages', messageRoutes);
+app.use('/api/chatrooms', chatRoomRoutes);
 
 // Socket.IO Logic
 io.on('connection', (socket) => {
@@ -86,9 +90,30 @@ io.on('connection', (socket) => {
     console.log(`User joined room: ${roomId}`);
   });
 
-  socket.on('sendMessage', ({ roomId, senderId, message }) => {
+//   socket.on('sendMessage', ({ roomId, senderId, message }) => {
+//     console.log(`Message in Room ${roomId}: ${message}`);
+//     io.to(roomId).emit('receiveMessage', { senderId, message, timestamp: new Date() });
+//   });
+
+socket.on('sendMessage', async ({ roomId, senderId, message }) => {
     console.log(`Message in Room ${roomId}: ${message}`);
-    io.to(roomId).emit('receiveMessage', { senderId, message, timestamp: new Date() });
+  
+    try {
+      // Save the message to the database
+      await prisma.message.create({
+        data: {
+          roomId: parseInt(roomId),
+          senderId: parseInt(senderId),
+          message: message,
+          receiverId: 0, // You can adjust this as per your requirements
+        },
+      });
+  
+      // Emit the message to all users in the room
+      io.to(roomId).emit('receiveMessage', { senderId, message, timestamp: new Date() });
+    } catch (error) {
+      console.error('Error saving message:', error);
+    }
   });
 
   socket.on('disconnect', () => {
