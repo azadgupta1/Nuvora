@@ -34,7 +34,7 @@ const Dashboard = () => {
         <Header />
         
         {/* Content Area */}
-        <div className="p-6 flex-grow bg-gray-100">
+        <div className="p-6 flex-grow bg-gray-200">
           {renderContent()}
         </div>
       </div>
