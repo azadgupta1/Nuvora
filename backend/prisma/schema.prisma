@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -13,25 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Users Table: Store user-related information
-// model User {
-//   id               Int             @id @default(autoincrement())
-//   name             String
-//   email            String          @unique
-//   password         String
-//   profilePicture   String? // Optional
-//   bio              String? // Optional
-//   location         String? // Optional
-//   skills           Skill[] // One-to-many relation with skills
-//   bookings         Booking[] // One-to-many relation with bookings
-//   messagesSent     Message[]       @relation("SentMessages")
-//   messagesReceived Message[]       @relation("ReceivedMessages")
-//   reviews          Review[] // One-to-many relation with reviews
-//   bookmarks        Bookmark[] // One-to-many relation with bookmarks
-//   skillExchanges   SkillExchange[] // One-to-many relation with skill exchanges (added here)
-//   chatRoomsAsUser1 ChatRoom[]      @relation("User1ChatRooms")
-//   chatRoomsAsUser2 ChatRoom[]      @relation("User2ChatRooms")
-// }
+
 
 model User {
   id               Int             @id @default(autoincrement())
@@ -84,16 +61,6 @@ model Booking {
   skill   Skill    @relation(fields: [skillId], references: [id])
 }
 
-// Messages Table: Information about messages between users
-// model Message {
-//   id         Int      @id @default(autoincrement())
-//   senderId   Int // Foreign Key to User table (sender)
-//   receiverId Int // Foreign Key to User table (receiver)
-//   message    String
-//   timestamp  DateTime @default(now())
-//   sender     User     @relation("SentMessages", fields: [senderId], references: [id])
-//   receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
-// }
 
 model Message {
   id         Int      @id @default(autoincrement())
@@ -148,3 +115,38 @@ model SkillExchange {
   skillOffered   Skill  @relation("OfferedSkills", fields: [skillOfferedId], references: [id])
   skillWanted    Skill  @relation("WantedSkills", fields: [skillWantedId], references: [id])
 }
+
+
+
+
+// Users Table: Store user-related information
+// model User {
+//   id               Int             @id @default(autoincrement())
+//   name             String
+//   email            String          @unique
+//   password         String
+//   profilePicture   String? // Optional
+//   bio              String? // Optional
+//   location         String? // Optional
+//   skills           Skill[] // One-to-many relation with skills
+//   bookings         Booking[] // One-to-many relation with bookings
+//   messagesSent     Message[]       @relation("SentMessages")
+//   messagesReceived Message[]       @relation("ReceivedMessages")
+//   reviews          Review[] // One-to-many relation with reviews
+//   bookmarks        Bookmark[] // One-to-many relation with bookmarks
+//   skillExchanges   SkillExchange[] // One-to-many relation with skill exchanges (added here)
+//   chatRoomsAsUser1 ChatRoom[]      @relation("User1ChatRooms")
+//   chatRoomsAsUser2 ChatRoom[]      @relation("User2ChatRooms")
+// }
+
+
+// Messages Table: Information about messages between users
+// model Message {
+//   id         Int      @id @default(autoincrement())
+//   senderId   Int // Foreign Key to User table (sender)
+//   receiverId Int // Foreign Key to User table (receiver)
+//   message    String
+//   timestamp  DateTime @default(now())
+//   sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+//   receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+// }
