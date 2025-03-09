@@ -1,20 +1,9 @@
-import React from 'react';
-import Navbar from '../components/Navbar';
-import HeroSection from '../components/HeroSection';
-import Categories from '../components/Categories';
-import Testimonials from '../components/Testimonials';
-import Footer from '../components/Footer';
+import React from 'react'
 
-const Home = () => {
+function DashBoard() {
   return (
-    <>
-      <Navbar />
-      <HeroSection />
-      <Categories />
-      <Testimonials />
-      <Footer />
-    </>
-  );
-};
+    <div>DashBoard</div>
+  )
+}
 
-export default Home;
+export default DashBoard
