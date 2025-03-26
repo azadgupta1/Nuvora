@@ -1,8 +1,13 @@
 import React from 'react'
+import Sidebar from '../components/Dashboard/SideBar'
+import Header from '../components/Dashboard/Header'
 
 function DashBoard() {
   return (
-    <div>DashBoard</div>
+    <div>
+      <Header />
+      <Sidebar />
+    </div>
   )
 }
 
