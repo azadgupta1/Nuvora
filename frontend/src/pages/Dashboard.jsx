@@ -7,6 +7,7 @@ function DashBoard() {
     <div>
       <Header />
       <Sidebar />
+      {/* Hello */}
     </div>
   )
 }
