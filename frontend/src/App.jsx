@@ -5,7 +5,10 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import DashBoard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
-import SkillDPage from './pages/skillDPage';
+import SkillsList from './pages/SkillsList';
+import SkillDetails from './pages/SkillDetails';
+import Bookings from './pages/Bookings';
+
 
 function App() {
   return (
@@ -30,10 +33,28 @@ function App() {
           path="/dash"
           element={
             <ProtectedRoute>
-              <SkillDPage />
+              <SkillsList />
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/skill/:id"
+          element={
+            <ProtectedRoute>
+              <SkillDetails />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route 
+          path="/bookings"
+          element={
+            <ProtectedRoute>
+              <Bookings />
+            </ProtectedRoute>
+          }
+         />
 
       </Routes>
     </Router>

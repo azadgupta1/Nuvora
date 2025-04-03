@@ -11,6 +11,21 @@ import prisma from '../config/prismaClient.js';
 //             return res.status(400).json({ message: "Invalid time format!" });
 //         }
 
+//         // Check for duplicate booking
+//         const existingBooking = await prisma.booking.findFirst({
+//             where: {
+//                 userId,
+//                 skillId,
+//                 date: new Date(date),
+//                 time: bookingTime,
+//             },
+//         });
+
+//         if (existingBooking) {
+//             return res.status(400).json({ message: "You already have a booking for this skill at the specified time." });
+//         }
+
+//         // Create the booking
 //         const booking = await prisma.booking.create({
 //             data: {
 //                 userId,
@@ -31,7 +46,7 @@ import prisma from '../config/prismaClient.js';
 
 export const createBooking = async (req, res) => {
     const { skillId, date, time } = req.body;
-    const userId = req.user.userId; // Assuming userId is extracted from the token.
+    const userId = req.user.userId; // Extract userId from the token.
 
     try {
         const bookingTime = new Date(`${date}T${time}`);
@@ -40,11 +55,17 @@ export const createBooking = async (req, res) => {
             return res.status(400).json({ message: "Invalid time format!" });
         }
 
+        // 🛠 Convert skillId to an integer
+        const parsedSkillId = parseInt(skillId, 10);
+        if (isNaN(parsedSkillId)) {
+            return res.status(400).json({ message: "Invalid skillId. Must be a number." });
+        }
+
         // Check for duplicate booking
         const existingBooking = await prisma.booking.findFirst({
             where: {
                 userId,
-                skillId,
+                skillId: parsedSkillId, // ✅ Use the parsed integer
                 date: new Date(date),
                 time: bookingTime,
             },
@@ -58,7 +79,7 @@ export const createBooking = async (req, res) => {
         const booking = await prisma.booking.create({
             data: {
                 userId,
-                skillId,
+                skillId: parsedSkillId, // ✅ Use the parsed integer
                 date: new Date(date),
                 time: bookingTime,
                 status: "Pending",
