@@ -15,8 +15,9 @@ export const createChatRoom = async (req, res) => {
     });
 
     if (existingRoom) {
-      return res.status(400).json({ message: 'Chat room already exists' });
+      return res.status(200).json(existingRoom); // ✅ Just return the room
     }
+    
 
     const newRoom = await prisma.chatRoom.create({
       data: {
