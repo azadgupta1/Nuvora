@@ -108,7 +108,7 @@ const SkillDetails = () => {
   const [loading, setLoading] = useState(true);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(""); // ✅ FIXED: Declare message state
 
   useEffect(() => {
     const fetchSkillDetails = async () => {
@@ -145,42 +145,17 @@ const SkillDetails = () => {
     }
   };
 
-  const handleMessage = async () => {
-    const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("user"));
-    const currentUserId = user?.id;
-  
-    console.log("Current user ID:", currentUserId);
-    console.log("Skill provider user ID:", skill?.userId);
-  
-    if (!currentUserId || !skill?.userId) {
-      console.warn("Missing user ID or skill provider ID");
-      return;
-    }
-  
-    try {
-      const response = await fetch("http://localhost:3000/api/chatrooms", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user1Id: currentUserId,
-          user2Id: skill.userId,
-        }),
-      });
-  
-      const room = await response.json();
-      console.log("Navigating to chatroom ID:", room.id);
-      navigate(`/chat/${room.id}`);
-    } catch (error) {
-      console.error("Error creating chat room:", error);
-    }
-  };
-  
   if (loading) return <p className="text-center text-gray-600">Loading...</p>;
 
   if (!skill) return <p className="text-center text-red-500">Skill not found.</p>;
+
+  const handleMessage = () => {
+    if (!localStorage.getItem("token")) {
+      return navigate("/login");
+    }
+
+    navigate("/chat", { state: { receiverId: skill.userId } });
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">

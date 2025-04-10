@@ -79,6 +79,7 @@ import Bookmarks from "./pages/Bookmarks";
 import Reviews from "./pages/Reviews";
 import ChatRoom from './pages/ChatRoom';
 import Chat from "./pages/Chat";
+import ChatPage from './pages/ChatPage';
 
 
 function App() {
@@ -88,6 +89,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/chat" element={<ChatPage />} />
 
         {/* Dashboard layout with nested routes */}
         <Route
@@ -105,7 +107,8 @@ function App() {
           <Route path="bookmarks" element={<Bookmarks />} />
           <Route path="reviews" element={<Reviews />} />
           {/* <Route path="chat/:roomId" element={<ChatRoom />} /> */}
-          <Route path="chat/:roomId" element={<Chat />} />
+          {/* <Route path="chat/:roomId" element={<Chat />} /> */}
+          
           {/* Add more as needed */}
         </Route>
       </Routes>
