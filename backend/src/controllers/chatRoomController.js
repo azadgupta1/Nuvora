@@ -32,3 +32,32 @@ export const createChatRoom = async (req, res) => {
     res.status(500).json({ message: 'Error creating chat room' });
   }
 };
+
+
+export const getUserChatRooms = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const rooms = await prisma.chatRoom.findMany({
+      where: {
+        OR: [
+          { user1Id: parseInt(userId) },
+          { user2Id: parseInt(userId) },
+        ],
+      },
+      include: {
+        messages: {
+          orderBy: { timestamp: 'desc' },
+          take: 1, // Only last message
+        },
+        user1: true,
+        user2: true,
+      },
+    });
+
+    res.status(200).json(rooms);
+  } catch (error) {
+    console.error("Error fetching chat rooms:", error);
+    res.status(500).json({ message: "Failed to fetch chat rooms" });
+  }
+};

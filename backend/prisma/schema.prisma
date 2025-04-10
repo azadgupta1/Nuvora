@@ -82,6 +82,8 @@ model ChatRoom {
   user2    User      @relation("User2ChatRooms", fields: [user2Id], references: [id])
   user2Id  Int
   messages Message[]
+
+  @@unique([user1Id, user2Id])
 }
 
 // Reviews Table: Reviews given by users after completing a skill exchange

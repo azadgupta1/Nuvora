@@ -18,7 +18,6 @@ export default function Login() {
     try {
       const response = await loginUser(user);
       localStorage.setItem("token", response.token); // Store token
-      localStorage.setItem("user", JSON.stringify(response.user));
       navigate("/dashboard"); // Redirect to dashboard after login
     } catch (err) {
       setError(err.message);

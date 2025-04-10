@@ -26,7 +26,7 @@ export const createMessage = async (req, res) => {
         roomId: parseInt(roomId),
         senderId,
         receiverId,
-        content,
+        message,
         timestamp: new Date(),
       },
     });
