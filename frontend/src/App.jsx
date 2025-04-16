@@ -109,7 +109,6 @@ function App() {
           {/* <Route path="chat/:roomId" element={<ChatRoom />} /> */}
           {/* <Route path="chat/:roomId" element={<Chat />} /> */}
           
-          {/* Add more as needed */}
         </Route>
       </Routes>
     </Router>
