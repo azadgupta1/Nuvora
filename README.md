@@ -1,3 +1,4 @@
 !! LearnMate
 
-A skill exchange platform!
+A skill exchange platform
+
