@@ -144,3 +144,60 @@ export const cancelBooking = async (req, res) => {
         res.status(500).json({ message: "Something went wrong while cancelling the booking!" });
     }
 };
+
+
+export const getRequestsOnMySkills = async (req, res) => {
+    const userId = req.user.userId; // Current logged-in user (skill owner)
+
+    try {
+        // Step 1: Find all skills offered by the user
+        const mySkills = await prisma.skill.findMany({
+            where: { userId },
+            select: { id: true }, // Only need skill IDs
+        });
+
+        const mySkillIds = mySkills.map(skill => skill.id);
+
+        if (mySkillIds.length === 0) {
+            return res.status(200).json({ message: "You haven't offered any skills yet.", bookings: [] });
+        }
+
+        // Step 2: Find all bookings made on these skills
+        const bookings = await prisma.booking.findMany({
+            where: {
+                skillId: { in: mySkillIds },
+            },
+            include: {
+                user: true,   // Includes who made the booking
+                skill: true,  // Includes skill info
+            },
+        });
+
+        res.status(200).json({ message: "Bookings on your skills retrieved successfully!", bookings });
+    } catch (error) {
+        console.error("Error fetching booking requests:", error);
+        res.status(500).json({ message: "Something went wrong while fetching booking requests!" });
+    }
+};
+
+
+export const updateBookingStatus = async (req, res) => {
+  const bookingId = parseInt(req.params.id);
+  const { status } = req.body;
+
+  if (!['Pending', 'Confirmed', 'Cancelled'].includes(status)) {
+    return res.status(400).json({ message: "Invalid status" });
+  }
+
+  try {
+    const booking = await prisma.booking.update({
+      where: { id: bookingId },
+      data: { status }
+    });
+
+    res.status(200).json({ message: "Booking status updated", booking });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to update booking status" });
+  }
+};
