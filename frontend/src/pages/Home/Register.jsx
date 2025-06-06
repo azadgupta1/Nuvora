@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerUser } from "../services/authServices";
+import { registerUser } from "../../services/authServices";
 
 export default function Register() {
   const [user, setUser] = useState({ name: "", email: "", password: "" });

@@ -20,7 +20,8 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "prisma": "^6.1.0",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "zod": "^3.25.48"
   },
   "devDependencies": {
     "@types/socket.io": "^3.0.1",

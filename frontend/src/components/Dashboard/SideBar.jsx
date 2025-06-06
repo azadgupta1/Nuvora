@@ -29,6 +29,12 @@ export default function Sidebar() {
         >
           <FaBookmark className="mr-3" /> Bookmark
         </Link>
+        <Link
+          to="/dashboard/incoming-request"
+          className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300"
+        >
+          <FaBookmark className="mr-3" /> Incoming Requests
+        </Link>
       </nav>
     </div>
   );

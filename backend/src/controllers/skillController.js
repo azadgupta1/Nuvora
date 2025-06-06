@@ -71,6 +71,43 @@ export const getSkillById = async (req, res) => {
       res.status(500).json({ message: 'Something went wrong while fetching the skill.' });
     }
   };
+
+  // export const getMySkills = async (req, res) => {
+  //   try {
+  //     const userId = req.user.userId;
+
+  //     console.log("USER ID is ", userId);
+  
+  //     const mySkills = await prisma.skill.findMany({
+  //       where: { userId },
+  //       orderBy: { createdAt: 'desc' }, // Optional: newest first
+  //     });
+  
+  //     res.status(200).json(mySkills);
+  //   } catch (error) {
+  //     console.error("Error fetching user's skills:", error);
+  //     res.status(500).json({ message: 'Something went wrong while fetching your skills.' });
+  //   }
+  // };
+  
+
+  export const getMySkills = async (req, res) => {
+    try {
+      const userId = req.user.userId; // Extracting user ID from authenticated request
+  
+      console.log("USER ID is ", userId); // Debugging
+  
+      const mySkills = await prisma.skill.findMany({
+        where: { userId },
+      });
+  
+      res.status(200).json(mySkills);
+    } catch (error) {
+      console.error("Error fetching user's skills:", error);
+      res.status(500).json({ message: 'Something went wrong while fetching your skills.' });
+    }
+  };
+  
   
 
   export const updateSkill = async (req, res) => {

@@ -67,9 +67,9 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LandingPage from './pages/LandingPage';
-import Register from './pages/Register';
-import Login from './pages/Login';
+import LandingPage from './pages/Home/LandingPage'
+import Register from './pages/Home/Register';
+import Login from './pages/Home/Login';
 import DashBoard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import SkillsList from './pages/SkillsList';
@@ -80,6 +80,10 @@ import Reviews from "./pages/Reviews";
 import ChatRoom from './pages/ChatRoom';
 import Chat from "./pages/Chat";
 import ChatPage from './pages/ChatPage';
+import SkillCreate from './pages/Header/SkillCreate';
+import MySkills from './pages/Header/MySkills';
+import { FiSkipForward } from 'react-icons/fi';
+import IncomingBookings from './pages/IncomingBookings';
 
 
 function App() {
@@ -90,6 +94,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/create-skill" element={<SkillCreate />} />
+        <Route path="/my-skills" element={<MySkills />} />
+        {/* <Route path="/incoming-request" element={<IncomingBookings />} /> */}
 
         {/* Dashboard layout with nested routes */}
         <Route
@@ -101,11 +108,15 @@ function App() {
           }
         >
           {/* These now render inside the Outlet in DashBoard.jsx */}
+
+          <Route index element={<SkillsList />} />
           <Route path="dash" element={<SkillsList />} />
           <Route path="skill/:id" element={<SkillDetails />} />
           <Route path="bookings" element={<Bookings />} />
           <Route path="bookmarks" element={<Bookmarks />} />
           <Route path="reviews" element={<Reviews />} />
+          <Route path="incoming-request" element={<IncomingBookings />} />
+          
           {/* <Route path="chat/:roomId" element={<ChatRoom />} /> */}
           {/* <Route path="chat/:roomId" element={<Chat />} /> */}
           

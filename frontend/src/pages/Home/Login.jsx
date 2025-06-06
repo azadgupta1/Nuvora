@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../services/authServices";
+import { loginUser } from "../../services/authServices";
 
 export default function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
