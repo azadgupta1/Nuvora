@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
 import { FaSearch, FaUserCircle, FaBell, FaEnvelope } from 'react-icons/fa';
 import { FiMoreVertical } from 'react-icons/fi'; // 'fi' for Feather Icons
-
-
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+
+
+
+
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
 
 
   return (
-    <div className="bg-gray-800 text-white shadow-md px-6 py-4">
+    <div className="fixed top-0 left-0 w-full z-50 bg-gray-800 text-white shadow-md px-6 py-4">
       <div className="flex items-center justify-between max-w-screen-xl mx-auto">
         {/* Left: Company Name */}
         <div className="text-2xl font-bold">
-          <span className="text-blue-500">LearnMate</span>
+          <span className="text-blue-500">Nuvora</span>
         </div>
 
         {/* Center: Search Bar */}
@@ -35,9 +39,12 @@ export default function Header() {
         {/* Right: Profile, Messages, Notifications */}
         <div className="flex items-center space-x-6">
           {/* Message Icon */}
-          <button className="relative text-xl">
+          <button className="relative text-xl"
+            onClick={() => navigate("/dashboard/chatlayout")}
+            >
             <FaEnvelope />
-            <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-2">3</span>
+            Message
+            {/* <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-2">3</span> */}
           </button>
 
           {/* Notification Icon */}

@@ -84,6 +84,7 @@ import SkillCreate from './pages/Header/SkillCreate';
 import MySkills from './pages/Header/MySkills';
 import { FiSkipForward } from 'react-icons/fi';
 import IncomingBookings from './pages/IncomingBookings';
+import ChatLayout from './pages/ChatLayout';
 
 
 function App() {
@@ -93,7 +94,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/chat" element={<ChatPage />} />
+        {/* <Route path="/chat" element={<ChatPage />} /> */}
         <Route path="/create-skill" element={<SkillCreate />} />
         <Route path="/my-skills" element={<MySkills />} />
         {/* <Route path="/incoming-request" element={<IncomingBookings />} /> */}
@@ -116,6 +117,8 @@ function App() {
           <Route path="bookmarks" element={<Bookmarks />} />
           <Route path="reviews" element={<Reviews />} />
           <Route path="incoming-request" element={<IncomingBookings />} />
+          <Route path="chat" element={<ChatPage />} />
+          <Route path="chatlayout" element={<ChatLayout />} />
           
           {/* <Route path="chat/:roomId" element={<ChatRoom />} /> */}
           {/* <Route path="chat/:roomId" element={<Chat />} /> */}

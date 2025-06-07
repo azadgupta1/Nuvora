@@ -18,18 +18,32 @@ export const getMessagesByRoomId = async (req, res) => {
 };
 
 export const createMessage = async (req, res) => {
+  // const { roomId, senderId, receiverId, content } = req.body;
+
+  // try {
+  //   const message = await prisma.message.create({
+  //     data: {
+  //       roomId: parseInt(roomId),
+  //       senderId,
+  //       receiverId,
+  //       message,
+  //       timestamp: new Date(),
+  //     },
+  //   });
+
   const { roomId, senderId, receiverId, content } = req.body;
 
-  try {
-    const message = await prisma.message.create({
-      data: {
-        roomId: parseInt(roomId),
-        senderId,
-        receiverId,
-        message,
-        timestamp: new Date(),
-      },
-    });
+  try{
+      const message = await prisma.message.create({
+        data: {
+          roomId: parseInt(roomId),
+          senderId,
+          receiverId,
+          message: content, // ✅ use 'content' correctly here
+          timestamp: new Date(),
+        },
+      });
+
 
     res.status(201).json(message);
   } catch (error) {
