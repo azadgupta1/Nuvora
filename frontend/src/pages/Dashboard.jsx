@@ -35,7 +35,7 @@ function DashBoard() {
         </div>
 
         {/* Main Content on the right */}
-        <div className="flex-1 p-6 overflow-auto bg-gray-100">
+        <div className="flex-1 p-6 mt-10 overflow-auto bg-gray-100">
           <Outlet />
         </div>
       </div>

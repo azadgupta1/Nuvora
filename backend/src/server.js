@@ -149,6 +149,8 @@ import bookmarkRoutes from './routes/bookmarkRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import chatRoomRoutes from './routes/chatRoomRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import { getUserById } from './controllers/userController.js';
 
 dotenv.config();
 const app = express();
@@ -172,6 +174,7 @@ app.use('/api/bookmark', bookmarkRoutes);
 app.use('/api/review', reviewRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/chatrooms', chatRoomRoutes);
+app.use('/api/users', userRoutes);
 
 // Socket.IO Logic
 io.on('connection', (socket) => {
