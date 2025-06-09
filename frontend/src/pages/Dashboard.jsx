@@ -1,19 +1,3 @@
-// import React from 'react'
-// import Sidebar from '../components/Dashboard/SideBar'
-// import Header from '../components/Dashboard/Header'
-
-// function DashBoard() {
-//   return (
-//     <div>
-//       <Header />
-//       <Sidebar />
-//     </div>
-//   )
-// }
-
-// export default DashBoard
-
-
 import React from 'react';
 import Sidebar from '../components/Dashboard/SideBar';
 import Header from '../components/Dashboard/Header';
