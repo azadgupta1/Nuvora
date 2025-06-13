@@ -1,6 +1,36 @@
 @import "tailwindcss";
 
+@layer utilities {
+  .grid-pattern {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+                      linear-gradient(to top, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
 
-@layer components{
-    
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+  }
+
+  .animate-fadeOut {
+    animation: fadeOut 3s ease-out forwards;
+  }
+}
+
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
 }

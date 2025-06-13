@@ -85,15 +85,18 @@ import MySkills from './pages/Header/MySkills';
 import { FiSkipForward } from 'react-icons/fi';
 import IncomingBookings from './pages/IncomingBookings';
 import ChatLayout from './pages/ChatLayout';
+import Layout from './Layouts/Layout';
 
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
         {/* <Route path="/chat" element={<ChatPage />} /> */}
         <Route path="/create-skill" element={<SkillCreate />} />
         <Route path="/my-skills" element={<MySkills />} />
@@ -111,7 +114,7 @@ function App() {
           {/* These now render inside the Outlet in DashBoard.jsx */}
 
           <Route index element={<SkillsList />} />
-          <Route path="dash" element={<SkillsList />} />
+          <Route path="discovery" element={<SkillsList />} />
           <Route path="skill/:id" element={<SkillDetails />} />
           <Route path="bookings" element={<Bookings />} />
           <Route path="bookmarks" element={<Bookmarks />} />

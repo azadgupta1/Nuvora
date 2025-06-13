@@ -1,84 +1,38 @@
-// import { FaTachometerAlt, FaBook, FaStar, FaBookmark } from "react-icons/fa";
-// import { Link } from "react-router-dom";
-
-// export default function Sidebar() {
-//   return (
-//     <div className="h-screen w-64 bg-blue-500 text-white flex flex-col p-6 shadow-lg">
-//       <nav className="space-y-4">
-//         <Link
-//           to="/dashboard/dash"
-//           className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300"
-//         >
-//           <FaTachometerAlt className="mr-3" /> Dashboard
-//         </Link>
-//         <Link
-//           to="/dashboard/bookings"
-//           className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300"
-//         >
-//           <FaBook className="mr-3" /> Bookings
-//         </Link>
-//         <Link
-//           to="/dashboard/reviews?skillId=1"
-//           className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300"
-//         >
-//           <FaStar className="mr-3" /> Reviews
-//         </Link>
-//         <Link
-//           to="/dashboard/bookmarks"
-//           className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300"
-//         >
-//           <FaBookmark className="mr-3" /> Bookmark
-//         </Link>
-//         <Link
-//           to="/dashboard/incoming-request"
-//           className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300"
-//         >
-//           <FaBookmark className="mr-3" /> Incoming Requests
-//         </Link>
-//       </nav>
-//     </div>
-//   );
-// }
-
-import { FaTachometerAlt, FaBook, FaStar, FaBookmark } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaTachometerAlt, FaBook, FaStar, FaBookmark, FaInbox } from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Sidebar() {
-  return (
-    <div className="sticky top-16 h-[calc(100vh-4rem)] w-64 bg-blue-500 text-white flex flex-col p-6 shadow-lg overflow-y-auto">
+  const location = useLocation();
 
-      <nav className="space-y-4">
-        <Link
-          to="/dashboard/dash"
-          className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300"
-        >
-          <FaTachometerAlt className="mr-3" /> Dashboard
-        </Link>
-        <Link
-          to="/dashboard/bookings"
-          className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300"
-        >
-          <FaBook className="mr-3" /> Bookings
-        </Link>
-        <Link
-          to="/dashboard/reviews?skillId=1"
-          className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300"
-        >
-          <FaStar className="mr-3" /> Reviews
-        </Link>
-        <Link
-          to="/dashboard/bookmarks"
-          className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300"
-        >
-          <FaBookmark className="mr-3" /> Bookmark
-        </Link>
-        <Link
-          to="/dashboard/incoming-request"
-          className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300"
-        >
-          <FaBookmark className="mr-3" /> Incoming Requests
-        </Link>
+  const links = [
+    { path: "/dashboard/discovery", icon: <FaTachometerAlt />, label: "Discovery" },
+    { path: "/dashboard/bookings", icon: <FaBook />, label: "Bookings" },
+    { path: "/dashboard/reviews?skillId=1", icon: <FaStar />, label: "Reviews" },
+    { path: "/dashboard/bookmarks", icon: <FaBookmark />, label: "Bookmarks" },
+    { path: "/dashboard/incoming-request", icon: <FaInbox />, label: "Incoming Requests" },
+  ];
+
+  return (
+    <aside className="sticky top-18 h-[calc(100vh-5rem)] w-64 bg-[#003344] text-white shadow-xl flex flex-col p-3 border-r border-gray-700">
+      
+
+      <nav className="flex flex-col space-y-2">
+        {links.map(({ path, icon, label }) => (
+          <Link
+            key={path}
+            to={path}
+            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-all duration-300
+              ${
+                location.pathname === path || location.search.includes(label.toLowerCase())
+                  ? "bg-[#0DCEDA] text-[#001a25] font-semibold shadow-md"
+                  : "hover:bg-[#0DCEDA33] hover:text-[#0DCEDA]"
+              }`}
+          >
+            <span className="text-lg">{icon}</span>
+            <span className="text-base">{label}</span>
+          </Link>
+        ))}
       </nav>
-    </div>
+    </aside>
   );
 }
