@@ -293,10 +293,16 @@ const Hero = () => {
     <section className="relative overflow-hidden bg-[#E6F2F8] text-center py-20 px-4 md:px-8">
 
       {/* Background Image Layer */}
-      <div
+      {/* <div
         className="absolute inset-0 bg-cover bg-center opacity-10 z-0"
         style={{ backgroundImage: `url(${Nuvora_2})` }}
+      /> */}
+      <div
+        className="absolute inset-0 bg-cover opacity-10 z-0
+                  bg-[position:47.5%_center] sm:bg-center"
+        style={{ backgroundImage: `url(${Nuvora_2})` }}
       />
+
 
       {/* Main Content Layer */}
       <div className="relative z-10">

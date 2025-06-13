@@ -214,6 +214,121 @@ io.on('connection', (socket) => {
   });
 });
 
+// const onlineUsers = {};
+// const userLastSeen = {};
+
+// io.on('connection', (socket) => {
+//   console.log('✅ User connected:', socket.id);
+
+//   socket.on('userOnline', (userId) => {
+//     onlineUsers[userId] = socket.id;
+//     console.log(`🟢 User ${userId} is online`);
+//     io.emit('onlineUsers', Object.keys(onlineUsers));
+//   });
+
+//   socket.on('joinRoom', (roomId) => {
+//     socket.join(String(roomId));
+//     console.log(`User joined room ${roomId}`);
+//   });
+
+//   socket.on('sendMessage', async ({ roomId, senderId, receiverId, message }) => {
+//     try {
+//       const newMessage = await prisma.message.create({
+//         data: {
+//           roomId: parseInt(roomId),
+//           senderId: parseInt(senderId),
+//           receiverId: parseInt(receiverId),
+//           message,
+//         },
+//       });
+
+//       io.to(String(roomId)).emit('receiveMessage', {
+//         id: newMessage.id,
+//         roomId,
+//         senderId,
+//         receiverId,
+//         message,
+//         timestamp: newMessage.timestamp,
+//       });
+//     } catch (error) {
+//       console.error('❌ Error saving message:', error);
+//     }
+//   });
+
+//   socket.on('disconnect', () => {
+//     const userId = Object.keys(onlineUsers).find(
+//       (key) => onlineUsers[key] === socket.id
+//     );
+//     if (userId) {
+//       delete onlineUsers[userId];
+//       userLastSeen[userId] = new Date();
+//       console.log(`🔴 User ${userId} disconnected`);
+//       io.emit('onlineUsers', Object.keys(onlineUsers));
+//       io.emit('lastSeenUpdate', { userId, lastSeen: userLastSeen[userId] });
+//     }
+//   });
+// });
+
+
+const onlineUsers = new Map();
+
+io.on("connection", (socket) => {
+  console.log("✅ User connected:", socket.id);
+
+  // Handle user login and register socket
+  socket.on("userOnline", (userId) => {
+    onlineUsers.set(userId, socket.id);
+    console.log(`🟢 User ${userId} is online`);
+
+    io.emit("updateOnlineUsers", Array.from(onlineUsers.keys())); // broadcast online users
+  });
+
+  socket.on("joinRoom", (roomId) => {
+    socket.join(String(roomId));
+    console.log(`User joined room ${roomId}`);
+  });
+
+  socket.on("sendMessage", async ({ roomId, senderId, receiverId, message }) => {
+    try {
+      const newMessage = await prisma.message.create({
+        data: {
+          roomId: parseInt(roomId),
+          senderId: parseInt(senderId),
+          receiverId: parseInt(receiverId),
+          message,
+        },
+      });
+
+      io.to(String(roomId)).emit("receiveMessage", {
+        id: newMessage.id,
+        roomId,
+        senderId,
+        receiverId,
+        message,
+        timestamp: newMessage.timestamp,
+      });
+    } catch (error) {
+      console.error("❌ Error saving message:", error);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    // Remove from online users map
+    for (const [userId, id] of onlineUsers.entries()) {
+      if (id === socket.id) {
+        onlineUsers.delete(userId);
+        console.log(`🔴 User ${userId} disconnected`);
+        break;
+      }
+    }
+
+    io.emit("updateOnlineUsers", Array.from(onlineUsers.keys()));
+    console.log("❌ User disconnected:", socket.id);
+  });
+});
+
+
+
 app.get('/', (req, res) => {
   res.send('Welcome to LearnMate!');
 });
