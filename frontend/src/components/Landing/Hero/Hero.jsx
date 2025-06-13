@@ -297,7 +297,7 @@ const Hero = () => {
         className="absolute inset-0 bg-cover bg-center opacity-10 z-0"
         style={{ backgroundImage: `url(${Nuvora_2})` }}
       /> */}
-       {/* hello */}
+       
       <div
         className="absolute inset-0 bg-cover opacity-10 z-0
                   bg-[position:47.5%_center] sm:bg-center"
