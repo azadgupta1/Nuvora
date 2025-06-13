@@ -14,12 +14,12 @@ function DashBoard() {
       {/* Bottom Section: Sidebar + Content */}
       <div className="flex flex-1">
         {/* Sidebar on the left */}
-        <div className="w-64 bg-blue-500 text-white">
+        <div className="w-64 bg-[#003344] text-white">
           <Sidebar />
         </div>
 
         {/* Main Content on the right */}
-        <div className="flex-1 p-6 mt-10 overflow-auto bg-gray-100">
+        <div className="flex-1 p-0 mt-10 overflow-auto bg-gray-100">
           <Outlet />
         </div>
       </div>
@@ -28,3 +28,6 @@ function DashBoard() {
 }
 
 export default DashBoard;
+
+
+
