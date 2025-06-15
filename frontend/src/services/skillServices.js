@@ -1,6 +1,6 @@
 import axios from 'axios';
-
-const API_URL = 'http://localhost:3000/api/skills'; // Base URL for skills API
+import { API_URL } from './authServices';
+ // Base URL for skills API
 
 // Fetch all skills
 export const fetchSkills = async () => {

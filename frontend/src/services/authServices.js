@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/auth"; // Change based on your backend route
+export const API_URL = "https://nuvora-backend-fa1q.onrender.com"; // Change based on your backend route
 
 export const registerUser = async (userData) => {
   try {
