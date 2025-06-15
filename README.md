@@ -43,28 +43,6 @@ Nuvora is a full-stack web application that enables users to **exchange skills**
 
 ---
 
-## 📁 Project Structure
-
-nuvora/
-├── client/ # React frontend
-│ ├── src/
-│ │ ├── components/
-│ │ ├── pages/
-│ │ ├── assets/
-│ │ └── App.jsx
-├── backend/ # Express backend
-│ ├── src/
-│ │ ├── controller/
-│ │ ├── routes/
-│ │ ├── middleware/
-│ │ └── server.js
-│ ├── prisma/
-│ │ └── schema.prisma
-
-
-
----
-
 ## 🧪 Testing
 
 - Postman for API testing
