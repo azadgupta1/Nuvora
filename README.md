@@ -63,7 +63,6 @@ Nuvora is a full-stack web application that enables users to **exchange skills**
 ## 🤝 Contributors
 
 - **Azad Gupta** *(Backend + Frontend + DB Design)*
-- **Team Members @ GlobiFYE Internship** *(Collaboration & Review)*
 
 ---
 
