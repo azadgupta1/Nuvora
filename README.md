@@ -1,4 +1,4 @@
-#  Nuvora — Skill Exchange Platform
+# Nuvora — Skill Exchange Platform
 
 Nuvora is a full-stack web application that enables users to **exchange skills** with one another. Whether you're offering coding help in exchange for guitar lessons, or teaching yoga to learn French — Nuvora connects people looking to learn and share their skills.
 
