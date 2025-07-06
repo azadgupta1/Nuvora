@@ -4,7 +4,7 @@ Nuvora is a full-stack web application that enables users to **exchange skills**
 
 ---
 
-##  Features
+##  Feature
 
 - 👤 User Authentication (Signup/Login)
 - 🏠 Homepage with platform highlights
