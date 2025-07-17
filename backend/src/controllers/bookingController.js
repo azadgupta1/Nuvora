@@ -1,5 +1,6 @@
 import prisma from '../config/prismaClient.js';
 
+// import prisma from '../config/primsaClient.js';
 // export const createBooking = async (req, res) => {
 //     const { skillId, date, time } = req.body;
 //     const userId = req.user.userId; // Assuming userId is extracted from the token.
