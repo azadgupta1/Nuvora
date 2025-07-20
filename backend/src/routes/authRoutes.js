@@ -3,6 +3,9 @@ import { registerUser, loginUser } from '../controllers/authController.js';
 
 const router = express.Router();
 
+// add one more route here
+
+
 
 router.post('/signup', registerUser);
 
