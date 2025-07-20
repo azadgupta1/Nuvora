@@ -1,5 +1,7 @@
 import prisma from '../config/prismaClient.js';
 
+// this need to be reviewed again
+
 // import prisma from '../config/primsaClient.js';
 // export const createBooking = async (req, res) => {
 //     const { skillId, date, time } = req.body;
