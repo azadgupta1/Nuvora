@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { fetchSkills } from '../services/skillService';
 import SkillCard from '../components/SkillCard';
 
+
+
 const Dashboard = () => {
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const loadSkills = async () => {
