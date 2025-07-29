@@ -72,7 +72,7 @@ export default function Login() {
 
         {/* Social Login Buttons - Placeholder Visuals */}
         <div className="flex flex-col space-y-3">
-          <button className="flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition">
+          <button onClick={() => window.location.href = "http://localhost:3000/api/auth/google"} className="flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition">
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" className="w-5 h-5" />
             <span className="text-sm font-medium text-gray-700">Continue with Google</span>
           </button>

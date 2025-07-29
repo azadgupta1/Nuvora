@@ -151,6 +151,9 @@ import messageRoutes from './routes/messageRoutes.js';
 import chatRoomRoutes from './routes/chatRoomRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { getUserById } from './controllers/userController.js';
+import './config/passport.js';
+import passport from 'passport';
+import session from 'express-session';
 
 dotenv.config();
 const app = express();
@@ -161,6 +164,19 @@ const io = new Server(httpServer, {
     methods: ['GET', 'POST'],
   },
 });
+
+// Session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
+}));
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 app.use(cors());
 app.use(express.json());
