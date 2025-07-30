@@ -34,6 +34,10 @@ passport.use(
           expiresIn: '1h',
         });
 
+
+        // For debugging 
+        console.log("Your token is : ", token);
+
         // Attach token to user object or session
         done(null, { ...user, token });
       } catch (err) {
