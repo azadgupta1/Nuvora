@@ -1,111 +1,10 @@
-// import React, { useState } from 'react';
-// import { FaSearch, FaUserCircle, FaBell, FaEnvelope } from 'react-icons/fa';
-// import { FiMoreVertical } from 'react-icons/fi';
-// import { useNavigate, Link } from 'react-router-dom';
-// import Nuvora_2 from '../../assets/Nuvora_2.png';
-
-// export default function Header() {
-//   const [menuOpen, setMenuOpen] = useState(false);
-//   const [profileOpen, setProfileOpen] = useState(false);
-//   const [search, setSearch] = useState('');
-//   const navigate = useNavigate();
-
-//   const handleSearch = () => {
-//     if (search.trim()) {
-//       navigate(`/search?query=${search}`);
-//     }
-//   };
-
-//   return (
-//     <div className="fixed top-0 left-0 w-full z-50 bg-[#003344] text-white shadow-md px-6 py-4">
-//       <div className="flex items-center justify-between max-w-screen-xl mx-auto">
-//         {/* Logo */}
-//         <div className="flex items-center gap-2">
-//           <h1 className="font-extrabold text-[#0DCEDA] text-3xl tracking-normal font-mono">Nuvora</h1>
-//           <img src={Nuvora_2} alt="Nuvora" className="w-10 mt-1 h-auto object-contain" />
-//         </div>
-
-//         {/* Search Bar */}
-//         <div className="flex flex-1 justify-center mx-6">
-//           <div className="relative w-full max-w-md">
-//             <input
-//               type="text"
-//               placeholder="Search..."
-//               value={search}
-//               onChange={(e) => setSearch(e.target.value)}
-//               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-//               className="w-full px-4 py-2 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#0DCEDA] bg-gray-200 border border-gray-300"
-//             />
-//             <button onClick={handleSearch} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">
-//               <FaSearch />
-//             </button>
-//           </div>
-//         </div>
-
-//         {/* Right Icons */}
-//         <div className="flex items-center space-x-6">
-//           {/* Messages */}
-//           <div className="relative cursor-pointer" onClick={() => navigate('/dashboard/chatlayout')}>
-//             <FaEnvelope className="text-2xl" />
-//             <span className="absolute -top-2 -right-2 bg-red-600 text-xs text-white px-1.5 py-0.5 rounded-full">3</span>
-//           </div>
-
-//           {/* Notifications */}
-//           <div className="relative cursor-pointer">
-//             <FaBell className="text-2xl" />
-//             <span className="absolute -top-2 -right-2 bg-red-600 text-xs text-white px-1.5 py-0.5 rounded-full">5</span>
-//           </div>
-
-//           {/* Profile Dropdown */}
-//           <div className="relative">
-//             <button onClick={() => setProfileOpen(!profileOpen)}>
-//               <FaUserCircle className="text-3xl text-white hover:text-[#0DCEDA] transition duration-200" />
-//             </button>
-
-//             {profileOpen && (
-//               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-10 text-gray-800">
-//                 <Link to="/edit-profile" className="block px-4 py-2 hover:bg-gray-100" onClick={() => setProfileOpen(false)}>
-//                   Edit Profile
-//                 </Link>
-//                 <Link to="/settings" className="block px-4 py-2 hover:bg-gray-100" onClick={() => setProfileOpen(false)}>
-//                   Settings
-//                 </Link>
-//                 <Link to="/logout" className="block px-4 py-2 hover:bg-gray-100" onClick={() => setProfileOpen(false)}>
-//                   Logout
-//                 </Link>
-//               </div>
-//             )}
-//           </div>
-
-//           {/* More Menu */}
-//           <div className="relative">
-//             <button onClick={() => setMenuOpen(!menuOpen)} className="text-gray-200 hover:text-white">
-//               <FiMoreVertical size={24} />
-//             </button>
-
-//             {menuOpen && (
-//               <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded shadow-lg z-10 text-gray-800">
-//                 <Link to="/create-skill" className="block px-4 py-2 hover:bg-gray-100" onClick={() => setMenuOpen(false)}>
-//                   Create Skill
-//                 </Link>
-//                 <Link to="/my-skills" className="block px-4 py-2 hover:bg-gray-100" onClick={() => setMenuOpen(false)}>
-//                   My Skills
-//                 </Link>
-//               </div>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
 import React, { useState } from 'react';
 import { FaSearch, FaUserCircle, FaBell, FaEnvelope } from 'react-icons/fa';
 import { FiMoreVertical } from 'react-icons/fi';
 import { useNavigate, Link } from 'react-router-dom';
 import Nuvora_2 from '../../assets/Nuvora_2.png';
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -135,14 +34,14 @@ export default function Header() {
             className="relative cursor-pointer"
             onClick={() => navigate('/dashboard/chatlayout')}
           >
-            <FaEnvelope />
+            <IoChatbubbleEllipsesOutline />
             <span className="absolute -top-2 -right-2 bg-red-600 text-xs text-white px-1.5 py-0.5 rounded-full">3</span>
           </div>
 
           {/* Notifications */}
           <div className="relative cursor-pointer">
             <FaBell />
-            <span className="absolute -top-2 -right-2 bg-red-600 text-xs text-white px-1.5 py-0.5 rounded-full">5</span>
+            <span className="absolute -top-2 -right-2 bg-red-600 text-xs text-white px-1.5 py-0.5 rounded-full">1</span>
           </div>
 
           {/* Profile */}

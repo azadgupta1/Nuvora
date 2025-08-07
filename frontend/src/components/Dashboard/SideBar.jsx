@@ -1,6 +1,7 @@
 import { FaTachometerAlt, FaBook, FaStar, FaBookmark, FaInbox } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 
+
 export default function Sidebar() {
   const location = useLocation();
 
@@ -13,7 +14,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="sticky top-18 h-[calc(100vh-5rem)] w-64 bg-[#003344] text-white shadow-xl flex flex-col p-3 border-r border-gray-700">
+    <aside className="sticky top-18 h-[calc(100vh-5rem)] w-20 bg-white text-black shadow-xl flex flex-col p-3 border-r border-gray-700">
       
 
       <nav className="flex flex-col space-y-2">
@@ -29,7 +30,7 @@ export default function Sidebar() {
               }`}
           >
             <span className="text-lg">{icon}</span>
-            <span className="text-base">{label}</span>
+            {/* <span className="text-base">{label}</span> */}
           </Link>
         ))}
       </nav>

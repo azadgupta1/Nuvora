@@ -14,7 +14,7 @@ function DashBoard() {
       {/* Bottom Section: Sidebar + Content */}
       <div className="flex flex-1">
         {/* Sidebar on the left */}
-        <div className="w-64 bg-[#003344] text-white">
+        <div className="w-20 bg-white text-white">
           <Sidebar />
         </div>
 
