@@ -1,92 +1,3 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-model User {
-  id                 Int             @id @default(autoincrement())
-  name               String
-  email              String          @unique
-  password           String
-  profilePicture     String?
-  bio                String?
-  location           String?
-  skillsOffered      String[] // ["React", "Node"]
-  skillsWanted       String[] // ["Python", "Golang"]
-  bookings           Booking[]
-  messagesSent       Message[]       @relation("SentMessages")
-  messagesReceived   Message[]       @relation("ReceivedMessages")
-  reviews            Review[]
-  bookmarks          Bookmark[]
-  chatRoomsAsUser1   ChatRoom[]      @relation("User1ChatRooms")
-  chatRoomsAsUser2   ChatRoom[]      @relation("User2ChatRooms")
-  requestedExchanges SkillExchange[] @relation("RequestedExchanges")
-  respondedExchanges SkillExchange[] @relation("RespondedExchanges")
-}
-
-model Booking {
-  id     Int      @id @default(autoincrement())
-  userId Int
-  date   DateTime
-  time   DateTime
-  status String // Pending, Confirmed, Cancelled
-  user   User     @relation(fields: [userId], references: [id])
-}
-
-model Message {
-  id         Int      @id @default(autoincrement())
-  roomId     Int
-  senderId   Int
-  receiverId Int
-  message    String
-  timestamp  DateTime @default(now())
-  room       ChatRoom @relation(fields: [roomId], references: [id])
-  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
-  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
-}
-
-model ChatRoom {
-  id       Int       @id @default(autoincrement())
-  user1    User      @relation("User1ChatRooms", fields: [user1Id], references: [id])
-  user1Id  Int
-  user2    User      @relation("User2ChatRooms", fields: [user2Id], references: [id])
-  user2Id  Int
-  messages Message[]
-
-  @@unique([user1Id, user2Id])
-}
-
-model Review {
-  id     Int    @id @default(autoincrement())
-  userId Int
-  rating Int
-  review String
-  user   User   @relation(fields: [userId], references: [id])
-}
-
-model Bookmark {
-  id     Int  @id @default(autoincrement())
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
-}
-
-model SkillExchange {
-  id             Int      @id @default(autoincrement())
-  requesterId    Int // The user initiating the request
-  responderId    Int // The user receiving the request
-  skillOffered   String // Skill offered by requester
-  skillRequested String // Skill wanted from responder
-  status         String // Pending, Accepted, Rejected, Completed
-  createdAt      DateTime @default(now())
-
-  requester User @relation("RequestedExchanges", fields: [requesterId], references: [id])
-  responder User @relation("RespondedExchanges", fields: [responderId], references: [id])
-}
-
 // generator client {
 //   provider = "prisma-client-js"
 // }
@@ -201,6 +112,327 @@ model SkillExchange {
 //   skillOffered   Skill  @relation("OfferedSkills", fields: [skillOfferedId], references: [id])
 //   skillWanted    Skill  @relation("WantedSkills", fields: [skillWantedId], references: [id])
 // }
+
+// ------------------------------------------------------------------------
+
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+
+
+// model User {
+//   id               Int             @id @default(autoincrement())
+//   name             String
+//   email            String          @unique
+//   password         String
+//   profilePicture   String?
+//   bio              String?
+//   location         String?
+//   skill            Skill?          // One-to-one relation
+//   bookingsSent     Booking[]       @relation("BookingUser")
+//   bookingsReceived Booking[]       @relation("BookingReceiver")
+//   messagesSent     Message[]       @relation("SentMessages")
+//   messagesReceived Message[]       @relation("ReceivedMessages")
+//   reviews          Review[]
+//   bookmarks        Bookmark[]
+//   skillExchanges   SkillExchange[]
+//   chatRoomsAsUser1 ChatRoom[]      @relation("User1ChatRooms")
+//   chatRoomsAsUser2 ChatRoom[]      @relation("User2ChatRooms")
+// }
+
+
+
+
+// model Skill {
+//   id               Int      @id @default(autoincrement())
+//   skillsOffered    String[] // Array of skills the user can teach
+//   skillsWanted     String[] // Array of skills the user wants to learn
+//   category         String?
+//   description      String?
+//   image            String?
+//   duration         String?
+//   location         String?
+//   availability     Json?
+//   userId           Int      @unique // One-to-one with User
+//   user             User     @relation(fields: [userId], references: [id])
+//   bookings         Booking[]
+//   reviews          Review[]
+//   bookmarks        Bookmark[]
+//   offeredExchanges SkillExchange[] @relation("OfferedSkills")
+//   wantedExchanges  SkillExchange[] @relation("WantedSkills")
+// }
+
+
+
+// model Booking {
+//   id               Int      @id @default(autoincrement())
+//   userId           Int
+//   receiverId       Int
+//   skillId          Int
+//   date             DateTime
+//   time             DateTime
+//   status           String
+//   skillOfferedName String
+//   skillWantedName  String
+//   message          String?
+//   user             User     @relation("BookingUser", fields: [userId], references: [id])
+//   receiver         User     @relation("BookingReceiver", fields: [receiverId], references: [id])
+//   skill            Skill    @relation(fields: [skillId], references: [id])
+// }
+
+
+// model Message {
+//   id         Int      @id @default(autoincrement())
+//   roomId     Int
+//   senderId   Int
+//   receiverId Int
+//   message    String
+//   timestamp  DateTime @default(now())
+//   room       ChatRoom @relation(fields: [roomId], references: [id])
+//   sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+//   receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+// }
+
+// model ChatRoom {
+//   id       Int       @id @default(autoincrement())
+//   user1    User      @relation("User1ChatRooms", fields: [user1Id], references: [id])
+//   user1Id  Int
+//   user2    User      @relation("User2ChatRooms", fields: [user2Id], references: [id])
+//   user2Id  Int
+//   messages Message[]
+
+//   @@unique([user1Id, user2Id])
+// }
+
+// model Review {
+//   id      Int    @id @default(autoincrement())
+//   userId  Int
+//   skillId Int
+//   rating  Int
+//   review  String
+//   user    User   @relation(fields: [userId], references: [id])
+//   skill   Skill  @relation(fields: [skillId], references: [id])
+// }
+
+// model Bookmark {
+//   id      Int   @id @default(autoincrement())
+//   userId  Int
+//   skillId Int
+//   user    User  @relation(fields: [userId], references: [id])
+//   skill   Skill @relation(fields: [skillId], references: [id])
+// }
+
+// model SkillExchange {
+//   id             Int    @id @default(autoincrement())
+//   userId         Int
+//   skillOfferedId Int
+//   skillWantedId  Int
+//   status         String
+//   user           User   @relation(fields: [userId], references: [id])
+//   skillOffered   Skill  @relation("OfferedSkills", fields: [skillOfferedId], references: [id])
+//   skillWanted    Skill  @relation("WantedSkills", fields: [skillWantedId], references: [id])
+// }
+
+
+
+
+// ---------------------------------------------------------------------------------
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int             @id @default(autoincrement())
+  name             String
+  email            String          @unique
+  password         String
+  profilePicture   String?
+  bio              String?
+  location         String?
+  skill            Skill?          // One-to-one relation
+  bookingsSent     Booking[]       @relation("BookingUser")
+  bookingsReceived Booking[]       @relation("BookingReceiver")
+  messagesSent     Message[]       @relation("SentMessages")
+  messagesReceived Message[]       @relation("ReceivedMessages")
+  reviews          Review[]
+  bookmarks        Bookmark[]
+  skillExchanges   SkillExchange[]
+  chatRoomsAsUser1 ChatRoom[]      @relation("User1ChatRooms")
+  chatRoomsAsUser2 ChatRoom[]      @relation("User2ChatRooms")
+  notifications Notification[]
+}
+
+model Skill {
+  id               Int      @id @default(autoincrement())
+  skillsOffered    String[] // Array of skills the user can teach
+  skillsWanted     String[] // Array of skills the user wants to learn
+  category         String?
+  description      String?
+  image            String?
+  duration         String?
+  location         String?
+  availability     Json?
+  userId           Int      @unique // One-to-one with User
+  user             User     @relation(fields: [userId], references: [id])
+  bookings         Booking[]
+  reviews          Review[]
+  bookmarks        Bookmark[]
+  offeredExchanges SkillExchange[] @relation("OfferedSkills")
+  wantedExchanges  SkillExchange[] @relation("WantedSkills")
+}
+
+model Booking {
+  id               Int      @id @default(autoincrement())
+  userId           Int
+  receiverId       Int
+  skillId          Int
+  date             DateTime
+  time             DateTime
+  status           String
+  skillOfferedName String
+  skillWantedName  String
+  message          String?
+  user             User     @relation("BookingUser", fields: [userId], references: [id])
+  receiver         User    @relation("BookingReceiver", fields: [receiverId], references: [id])
+  skill            Skill    @relation(fields: [skillId], references: [id])
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  roomId     Int
+  senderId   Int
+  receiverId Int
+  message    String
+  timestamp  DateTime @default(now())
+  room       ChatRoom @relation(fields: [roomId], references: [id])
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+}
+
+model ChatRoom {
+  id       Int       @id @default(autoincrement())
+  user1    User      @relation("User1ChatRooms", fields: [user1Id], references: [id])
+  user1Id  Int
+  user2    User      @relation("User2ChatRooms", fields: [user2Id], references: [id])
+  user2Id  Int
+  messages Message[]
+
+  @@unique([user1Id, user2Id])
+}
+
+model Review {
+  id      Int    @id @default(autoincrement())
+  userId  Int
+  skillId Int
+  rating  Int
+  review  String
+  user    User   @relation(fields: [userId], references: [id])
+  skill   Skill  @relation(fields: [skillId], references: [id])
+}
+
+model Bookmark {
+  id      Int   @id @default(autoincrement())
+  userId  Int
+  skillId Int
+  user    User  @relation(fields: [userId], references: [id])
+  skill   Skill @relation(fields: [skillId], references: [id])
+}
+
+model SkillExchange {
+  id             Int    @id @default(autoincrement())
+  userId         Int
+  skillOfferedId Int
+  skillWantedId  Int
+  status         String
+  user           User   @relation(fields: [userId], references: [id])
+  skillOffered   Skill  @relation("OfferedSkills", fields: [skillOfferedId], references: [id])
+  skillWanted    Skill  @relation("WantedSkills", fields: [skillWantedId], references: [id])
+}
+
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  type      String   // e.g., "booking", "message", "review"
+  content   String   // short message like "Your booking was confirmed"
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+
+
+
+
+
+// model User {
+//   id               Int             @id @default(autoincrement())
+//   name             String
+//   email            String          @unique
+//   password         String
+//   profilePicture   String?
+//   bio              String?
+//   location         String?
+//   skill            Skill?          // One-to-one relation (one user, one skill row)
+//   bookings         Booking[]
+//   messagesSent     Message[]       @relation("SentMessages")
+//   messagesReceived Message[]       @relation("ReceivedMessages")
+//   reviews          Review[]
+//   bookmarks        Bookmark[]
+//   skillExchanges   SkillExchange[]
+//   chatRoomsAsUser1 ChatRoom[]      @relation("User1ChatRooms")
+//   chatRoomsAsUser2 ChatRoom[]      @relation("User2ChatRooms")
+
+//   BookingsSent Booking[] @relation("BookingUser")
+
+//   BookingsRecieved Booking[] @relation("BookingReceiver")
+// }
+
+
+
+
+
+
+
+// model Booking {
+//   id      Int      @id @default(autoincrement())
+//   userId  Int
+//   skillId Int
+//   date    DateTime
+//   time    DateTime
+//   status  String
+//   user    User     @relation(fields: [userId], references: [id])
+//   skill   Skill    @relation(fields: [skillId], references: [id])
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Users Table: Store user-related information
 // model User {
