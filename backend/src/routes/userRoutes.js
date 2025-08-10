@@ -1,11 +1,12 @@
 import express from 'express';
 import { getUserById } from '../controllers/userController.js';
+import { authenticate } from '../middlewares/authMiddleware.js';
 
 
 const router = express.Router();
 
 
-router.get('/:receiverId', getUserById);
+router.get('/:receiverId', authenticate, getUserById);
 
 
 

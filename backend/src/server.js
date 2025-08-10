@@ -325,6 +325,7 @@ import messageRoutes from './routes/messageRoutes.js';
 import chatRoomRoutes from './routes/chatRoomRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { getUserById } from './controllers/userController.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 import './config/passport.js';
 import passport from 'passport';
 import session from 'express-session';
@@ -353,7 +354,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middlewares
-app.use(cors());
+// app.use(cors());
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
+
 app.use(express.json());
 
 // REST API Routes
@@ -366,6 +373,7 @@ app.use('/api/review', reviewRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/chatrooms', chatRoomRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // ---------------------------
 // ✅ Socket.IO Logic (Merged)

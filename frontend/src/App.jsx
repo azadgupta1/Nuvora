@@ -87,6 +87,8 @@ import IncomingBookings from './pages/IncomingBookings';
 import ChatLayout from './pages/ChatLayout';
 import Layout from './Layouts/Layout';
 
+import Profile from './pages/Profile';
+
 
 function App() {
   return (
@@ -122,6 +124,7 @@ function App() {
           <Route path="incoming-request" element={<IncomingBookings />} />
           <Route path="chat" element={<ChatPage />} />
           <Route path="chatlayout" element={<ChatLayout />} />
+          <Route path="profile/:id" element={<Profile/>} />
           
           {/* <Route path="chat/:roomId" element={<ChatRoom />} /> */}
           {/* <Route path="chat/:roomId" element={<Chat />} /> */}
