@@ -250,6 +250,8 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import SkillRequestModal from "./SkillRequestModal";
+
 
 const categoryColors = {
   Technology: "bg-blue-100 text-blue-800",
@@ -267,6 +269,9 @@ const SkillsFeed = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedRatings, setSelectedRatings] = useState([]);
+
+  const [selectedSkillId, setSelectedSkillId] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -492,7 +497,8 @@ const SkillsFeed = () => {
                       : "Unknown"}
                   </span>
                   <button
-                    onClick={() => navigate(`/Dashboard/skill/${skill.id}`)}
+                    // onClick={() => navigate(`/Dashboard/skill/${skill.id}`)}
+                    onClick={() => setSelectedSkillId(skill.id)}
                     className="bg-black text-white px-4 py-2 rounded-md text-sm hover:bg-gray-800 transition"
                   >
                     Send Request
@@ -503,8 +509,22 @@ const SkillsFeed = () => {
           )}
         </div>
       </div>
+
+      {selectedSkillId && (
+      <SkillRequestModal
+        skillId={selectedSkillId}
+        onClose={() => setSelectedSkillId(null)}
+      />
+      )}
+
     </div>
+
+    
+
+
   );
+
+
 };
 
 export default SkillsFeed;

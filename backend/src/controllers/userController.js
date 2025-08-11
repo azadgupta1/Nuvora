@@ -1,4 +1,6 @@
 import prisma from '../config/prismaClient.js';
+import path from 'path';
+import fs from 'fs';
 
 export const getUserById = async (req, res) => {
   const { receiverId } = req.params;
@@ -26,6 +28,45 @@ export const getUserById = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
+
+export const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { name, bio, location } = req.body;
+
+  try {
+    // If an image was uploaded
+    let profilePictureUrl;
+    if (req.file) {
+      profilePictureUrl = `/uploads/${req.file.filename}`;
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: parseInt(id) },
+      data: {
+        name,
+        bio,
+        location,
+        ...(profilePictureUrl && { profilePicture: profilePictureUrl })
+      },
+      select: {
+        id: true,
+        name: true,
+        bio: true,
+        location: true,
+        profilePicture: true,
+        email: true
+      }
+    });
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 
 
 

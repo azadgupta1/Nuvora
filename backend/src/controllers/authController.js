@@ -40,6 +40,8 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 export const registerUser = async (req, res) => {
+
+    
     try {
         // Validate request body using Zod schema
         const validatedData = registerSchema.parse(req.body);

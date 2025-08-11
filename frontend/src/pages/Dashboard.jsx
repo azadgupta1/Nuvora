@@ -260,14 +260,14 @@ function DashBoard() {
         {/* Main Content */}
         <div className="flex-1 mt-10 overflow-auto bg-gray-100 relative">
           {/* ✅ This button is for manual toast testing */}
-          <div className="absolute top-4 right-4 z-50">
+          {/* <div className="absolute top-4 right-4 z-50">
             <button
               onClick={() => toast("✅ Test Toast is working!", { position: "top-right" })}
               className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700"
             >
               Test Toast
             </button>
-          </div>
+          </div> */}
 
           <Outlet />
         </div>

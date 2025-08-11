@@ -329,6 +329,9 @@ import notificationRoutes from './routes/notificationRoutes.js';
 import './config/passport.js';
 import passport from 'passport';
 import session from 'express-session';
+import path from 'path';
+
+
 
 dotenv.config();
 
@@ -362,6 +365,11 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+// Serve static files from "public/uploads"
+app.use("/uploads", express.static(path.join(process.cwd(), "public", "uploads")));
+
+
 
 // REST API Routes
 app.use('/api/auth', authRoutes);
