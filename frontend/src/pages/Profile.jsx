@@ -250,25 +250,7 @@ function Profile() {
         </div>
       </div>
 
-      {/* Edit Modal
-      {isModalOpen && (
-        <div className="fixed inset-0 backdrop-blur-md bg-white/20 flex justify-center items-center">
-          <div className="bg-white rounded-lg w-96 p-6 shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
-            <form onSubmit={handleEditSubmit} className="space-y-4">
-              <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full border p-2 rounded" placeholder="Name" />
-              <textarea value={formData.bio} onChange={(e) => setFormData({ ...formData, bio: e.target.value })} className="w-full border p-2 rounded" placeholder="Bio" rows="3"></textarea>
-              <input type="text" value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })} className="w-full border p-2 rounded" placeholder="Location" />
-              <input type="file" accept="image/*" onChange={(e) => setFormData({ ...formData, profilePicture: e.target.files[0] })} className="w-full" />
-              <div className="flex justify-end gap-2">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 border rounded">Cancel</button>
-                <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )} */}
-
+      
 
       {/* Edit Modal */}
 {isModalOpen && (
@@ -375,3 +357,24 @@ function Profile() {
 }
 
 export default Profile;
+
+
+
+{/* Edit Modal
+      {isModalOpen && (
+        <div className="fixed inset-0 backdrop-blur-md bg-white/20 flex justify-center items-center">
+          <div className="bg-white rounded-lg w-96 p-6 shadow-lg">
+            <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
+            <form onSubmit={handleEditSubmit} className="space-y-4">
+              <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full border p-2 rounded" placeholder="Name" />
+              <textarea value={formData.bio} onChange={(e) => setFormData({ ...formData, bio: e.target.value })} className="w-full border p-2 rounded" placeholder="Bio" rows="3"></textarea>
+              <input type="text" value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })} className="w-full border p-2 rounded" placeholder="Location" />
+              <input type="file" accept="image/*" onChange={(e) => setFormData({ ...formData, profilePicture: e.target.files[0] })} className="w-full" />
+              <div className="flex justify-end gap-2">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 border rounded">Cancel</button>
+                <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )} */}
