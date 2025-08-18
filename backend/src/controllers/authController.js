@@ -1,38 +1,3 @@
-// import prisma from '../config/prismaClient.js';
-// import jwt from 'jsonwebtoken';
-// import bcrypt from 'bcrypt';
-
-
-// export const registerUser = async (req, res) =>{
-//     const { name, email, password } = req.body;
-
-//     try{
-//         const userExist = await prisma.user.findUnique({
-//             where: {email},
-//         });
-
-//         if(userExist){
-//             return res.status(400).json({message: "User already exists!"});
-//         }
-        
-//         const hashedPassword = await bcrypt.hash(password, 10);
-
-//         const createUser = await prisma.user.create({
-//             data: {
-//                 name,
-//                 email,
-//                 password: hashedPassword,
-//             }
-//         });
-
-//         res.status(200).json({message: "User registered successfully!", createUser});
-//     }catch(error){
-//         console.error(error);
-//         res.status(500).json({message: "Something went wrong!"});
-//     }
-
-// };
-
 import { registerSchema } from '../validation/registerSchema.js';
 import { z } from 'zod';
 import prisma from '../config/prismaClient.js';
@@ -119,3 +84,46 @@ export const loginUser = async (req, res) =>{
         res.status(500).json({message: "Something went wrong!"});
     }
 };
+
+
+
+
+
+
+
+
+
+// import prisma from '../config/prismaClient.js';
+// import jwt from 'jsonwebtoken';
+// import bcrypt from 'bcrypt';
+
+
+// export const registerUser = async (req, res) =>{
+//     const { name, email, password } = req.body;
+
+//     try{
+//         const userExist = await prisma.user.findUnique({
+//             where: {email},
+//         });
+
+//         if(userExist){
+//             return res.status(400).json({message: "User already exists!"});
+//         }
+        
+//         const hashedPassword = await bcrypt.hash(password, 10);
+
+//         const createUser = await prisma.user.create({
+//             data: {
+//                 name,
+//                 email,
+//                 password: hashedPassword,
+//             }
+//         });
+
+//         res.status(200).json({message: "User registered successfully!", createUser});
+//     }catch(error){
+//         console.error(error);
+//         res.status(500).json({message: "Something went wrong!"});
+//     }
+
+// };
