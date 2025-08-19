@@ -299,7 +299,7 @@ const ChatPage = ({ receiverId, roomId, receiverName }) => {
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="bg-white text-gray-900 px-6 py-4 flex items-center shadow border-b border-gray-200">
+      <div className="bg-gray-50 text-gray-900 px-6 py-4 flex items-center shadow border-b border-gray-200">
         <div className="flex items-center gap-3">
           <img
             src={`https://ui-avatars.com/api/?name=${receiverName}&background=random`}
