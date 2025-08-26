@@ -800,6 +800,7 @@ const ChatLayout = () => {
           receiverId={activeRoom.user.id}
           roomId={activeRoom.roomId}
           receiverName={activeRoom.user.name}
+          isReceiverOnline={isUserOnline(activeRoom.user.id)}
         />
       ) : (
         <div className="flex-1 flex items-center justify-center text-gray-500 text-sm">
