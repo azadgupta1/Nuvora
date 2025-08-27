@@ -179,6 +179,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import UserSkillProfile from "./UserSkillProfile";
 
 function Profile() {
   const { id } = useParams();
@@ -255,11 +256,24 @@ function Profile() {
         </div>
 
         {/* Right Content */}
-        <div className="flex-1 bg-white shadow rounded-lg p-6">
+        {/* <div className="flex-1 bg-white shadow rounded-lg p-6">
           <h3 className="text-xl font-semibold mb-4">Profile Details</h3>
           <p><strong>Email:</strong> {data.email}</p>
           <p><strong>Skills:</strong> {data.skill?.name || "No skill listed"}</p>
+        </div> */}
+
+        {/* Right Content */}
+        <div className="flex-1 bg-white shadow rounded-lg p-6">
+          <h3 className="text-xl font-semibold mb-4">Profile Details</h3>
+          <p><strong>Email:</strong> {data.email}</p>
+
+          {/* Skill Profile Section */}
+          <div className="mt-6">
+            <UserSkillProfile />
+          </div>
         </div>
+
+
       </div>
 
       

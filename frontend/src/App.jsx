@@ -86,6 +86,8 @@ import { FiSkipForward } from 'react-icons/fi';
 import IncomingBookings from './pages/IncomingBookings';
 import ChatLayout from './pages/ChatLayout';
 import Layout from './Layouts/Layout';
+import UserSkillProfile from './pages/UserSkillProfile';
+
 
 import Profile from './pages/Profile';
 
@@ -125,6 +127,7 @@ function App() {
           <Route path="chat" element={<ChatPage />} />
           <Route path="chatlayout" element={<ChatLayout />} />
           <Route path="profile/:id" element={<Profile/>} />
+          <Route path="userskill" element={<UserSkillProfile />} />
           
           {/* <Route path="chat/:roomId" element={<ChatRoom />} /> */}
           {/* <Route path="chat/:roomId" element={<Chat />} /> */}
