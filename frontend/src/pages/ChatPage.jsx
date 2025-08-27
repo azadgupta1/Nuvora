@@ -187,8 +187,9 @@ import axios from "axios";
 import { FiImage, FiSend } from "react-icons/fi";
 import BG_Chat from "../assets/BG_Chat.png";
 import BGG_Chat from "../assets/BGG_Chat.jpg";
+import socket from "../socket";
 
-const socket = io("http://localhost:3000");
+// const socket = io("http://localhost:3000");
 
 const ChatPage = ({ receiverId, roomId, receiverName, isReceiverOnline }) => {
   const [message, setMessage] = useState("");
