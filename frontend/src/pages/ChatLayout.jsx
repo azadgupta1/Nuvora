@@ -655,8 +655,9 @@ import ChatPage from "./ChatPage";
 import { FiSearch, FiMoreVertical, FiX } from "react-icons/fi";
 import { io } from "socket.io-client";
 import { jwtDecode } from "jwt-decode";
+import socket from "../socket";
 
-const socket = io("http://localhost:3000");
+// const socket = io("http://localhost:3000");
 
 const ChatLayout = () => {
   const [rooms, setRooms] = useState([]);
