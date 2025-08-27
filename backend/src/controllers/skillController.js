@@ -222,12 +222,20 @@ export const addOrUpdateSkill = async (req, res) => {
   }
 };
 
-// Get All Skills
+// Get All Skills (excluding current user's)
 export const getAllSkills = async (req, res) => {
   try {
+    const userId = req.user.userId;
+
     const skills = await prisma.skill.findMany({
-      include: { user: true }
+      where: {
+        userId: {
+          not: userId,
+        },
+      },
+      include: { user: true },
     });
+
     res.status(200).json({ skills });
   } catch (error) {
     console.error(error);
@@ -235,25 +243,8 @@ export const getAllSkills = async (req, res) => {
   }
 };
 
-// // Get Skill by User ID
-// export const getSkillByUserId = async (req, res) => {
-//   const { userId } = req.params;
-//   try {
-//     const skill = await prisma.skill.findUnique({
-//       where: { userId: parseInt(userId) },
-//       include: { user: true }
-//     });
 
-//     if (!skill) {
-//       return res.status(404).json({ message: 'Skill profile not found' });
-//     }
 
-//     res.status(200).json(skill);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Something went wrong while fetching the skill profile.' });
-//   }
-// };
 
 
 // Get skill by Skill ID
@@ -322,5 +313,73 @@ export const deleteSkill = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Something went wrong!' });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+// // Get Skill by User ID
+// export const getSkillByUserId = async (req, res) => {
+//   const userId  = req.user.userId;
+//   try {
+//     const skill = await prisma.skill.findUnique({
+//       where: { userId },
+//       include: { user: true }
+//     });
+
+//     if (!skill) {
+//       return res.status(404).json({ message: 'Skill profile not found' });
+//     }
+
+//     res.status(200).json(skill);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Something went wrong while fetching the skill profile.' });
+//   }
+// };
+
+
+
+// Get Skill by User ID
+export const getSkillByUserId = async (req, res) => {
+  const userId = req.user?.userId;
+
+  // Safety check
+  if (!userId || isNaN(userId)) {
+    return res.status(400).json({ message: 'Invalid or missing user ID.' });
+  }
+
+  try {
+    const skill = await prisma.skill.findUnique({
+      where: { userId: Number(userId) },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            profilePicture: true
+          }
+        }
+      }
+    });
+
+    if (!skill) {
+      return res.status(404).json({ message: 'Skill profile not found.' });
+    }
+
+    return res.status(200).json(skill);
+  } catch (error) {
+    console.error('Error fetching skill by user ID:', error);
+    return res.status(500).json({ message: 'Server error while fetching skill profile.' });
   }
 };

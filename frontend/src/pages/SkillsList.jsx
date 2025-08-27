@@ -251,6 +251,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import SkillRequestModal from "./SkillRequestModal";
+import axios from "axios";
 
 
 const categoryColors = {
@@ -275,20 +276,26 @@ const SkillsFeed = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/skills");
-        const data = await response.json();
-        setSkills(data.skills || []);
-      } catch (error) {
-        console.error("Error fetching skills:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchSkills = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:3000/api/skills", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    fetchSkills();
-  }, []);
+      setSkills(response.data.skills || []);
+    } catch (error) {
+      console.error("Error fetching skills:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchSkills();
+}, []);
+
 
   const toggleCategory = (category) => {
     setSelectedCategories((prev) =>

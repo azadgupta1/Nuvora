@@ -197,30 +197,158 @@
 // export default DashBoard;
 
 
-import React, { useEffect } from 'react';
+// import React, { useEffect } from 'react';
+// import Sidebar from '../components/Dashboard/SideBar';
+// import Header from '../components/Dashboard/Header';
+// import { Outlet } from 'react-router-dom';
+// import { ToastContainer, toast } from 'react-toastify';
+// import { jwtDecode } from 'jwt-decode';
+// import io from 'socket.io-client';
+// import 'react-toastify/dist/ReactToastify.css';
+// import SkillModal from "./SkillModal";
+
+
+// const socket = io("http://localhost:3000"); // Change to production URL in deployment
+
+// function DashBoard() {
+//   useEffect(() => {
+//     const token = localStorage.getItem("token");
+
+//     if (token) {
+//       try {
+//         const { userId } = jwtDecode(token);
+//         socket.emit("userOnline", userId);
+//       } catch (err) {
+//         console.error("Invalid token:", err);
+//       }
+//     }
+
+//     socket.on("newBookingRequest", (data) => {
+//       toast.info(`📥 New booking from ${data.fromUser} for ${data.skillName}`, {
+//         position: "top-right",
+//         autoClose: 5000,
+//         toastId: `newBooking-${data.bookingId}`,
+//       });
+//     });
+
+//     socket.on("bookingStatusUpdated", (data) => {
+//       toast.success(`✅ Booking for ${data.skillName} is now ${data.status}`, {
+//         position: "top-right",
+//         autoClose: 5000,
+//         toastId: `statusUpdate-${data.id}`,
+//       });
+//     });
+
+//     return () => {
+//       socket.off("newBookingRequest");
+//       socket.off("bookingStatusUpdated");
+//     };
+//   }, []);
+
+//   return (
+//     <div className="h-screen flex flex-col">
+//       {/* Header */}
+//       <div className="w-full">
+//         <Header />
+//       </div>
+
+//       {/* Sidebar + Main Content */}
+//       <div className="flex flex-1 overflow-hidden">
+//         {/* Sidebar */}
+//         <div className="w-20 bg-white text-white">
+//           <Sidebar />
+//         </div>
+
+//         {/* Main Content */}
+//         <div className="flex-1 mt-10 overflow-auto bg-gray-100 relative">
+//           {/* ✅ This button is for manual toast testing */}
+//           {/* <div className="absolute top-4 right-4 z-50">
+//             <button
+//               onClick={() => toast("✅ Test Toast is working!", { position: "top-right" })}
+//               className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700"
+//             >
+//               Test Toast
+//             </button>
+//           </div> */}
+
+//           <Outlet />
+//         </div>
+//       </div>
+
+//       {/* ✅ Global Toast Container */}
+//       {/* Skill Setup Modal */}
+//       <SkillModal isOpen={showSkillModal} onClose={() => setShowSkillModal(false)} />
+//       <ToastContainer position="top-right" autoClose={4000} newestOnTop />
+//     </div>
+//   );
+// }
+
+// export default DashBoard;
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Dashboard/SideBar';
 import Header from '../components/Dashboard/Header';
 import { Outlet } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { jwtDecode } from 'jwt-decode';
 import io from 'socket.io-client';
+import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
+import SkillModal from './SkillModal';
 
-const socket = io("http://localhost:3000"); // Change to production URL in deployment
+const socket = io("http://localhost:3000"); // ✅ Update for production
 
 function DashBoard() {
+  const [showSkillModal, setShowSkillModal] = useState(false);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (token) {
-      try {
-        const { userId } = jwtDecode(token);
-        socket.emit("userOnline", userId);
-      } catch (err) {
-        console.error("Invalid token:", err);
-      }
+    if (!token) return;
+
+    try {
+      const { userId } = jwtDecode(token);
+
+      // Notify socket server
+      socket.emit("userOnline", userId);
+
+      // 🔍 Fetch user's skill profile
+      axios
+        .get("http://localhost:3000/api/skills/user", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          // If skill profile exists, do nothing
+          if (!res?.data?.id) {
+            setShowSkillModal(true); // No skill profile, show modal
+          }
+        })
+        .catch((err) => {
+          if (err.response?.status === 404) {
+            setShowSkillModal(true); // No skill found
+          } else {
+            console.error("Failed to fetch skill:", err);
+          }
+        });
+    } catch (err) {
+      console.error("Invalid token:", err);
     }
 
+    // 🔔 Socket notifications
     socket.on("newBookingRequest", (data) => {
       toast.info(`📥 New booking from ${data.fromUser} for ${data.skillName}`, {
         position: "top-right",
@@ -237,6 +365,7 @@ function DashBoard() {
       });
     });
 
+    // Clean up sockets
     return () => {
       socket.off("newBookingRequest");
       socket.off("bookingStatusUpdated");
@@ -259,27 +388,33 @@ function DashBoard() {
 
         {/* Main Content */}
         <div className="flex-1 mt-10 overflow-auto bg-gray-100 relative">
-          {/* ✅ This button is for manual toast testing */}
-          {/* <div className="absolute top-4 right-4 z-50">
-            <button
-              onClick={() => toast("✅ Test Toast is working!", { position: "top-right" })}
-              className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700"
-            >
-              Test Toast
-            </button>
-          </div> */}
-
           <Outlet />
         </div>
       </div>
 
-      {/* ✅ Global Toast Container */}
+      {/* Modal */}
+      <SkillModal isOpen={showSkillModal} onClose={() => setShowSkillModal(false)} />
+
+      {/* Toasts */}
       <ToastContainer position="top-right" autoClose={4000} newestOnTop />
     </div>
   );
 }
 
 export default DashBoard;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

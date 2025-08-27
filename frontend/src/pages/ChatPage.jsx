@@ -309,7 +309,7 @@ const ChatPage = ({ receiverId, roomId, receiverName, isReceiverOnline }) => {
           <div>
             <h2 className="font-semibold">{receiverName || "User"}</h2>
             {/* <span className="text-xs text-gray-500">Active now</span> */}
-            <span className={`text-xs ${isReceiverOnline ? "text-green-700" : "text-gray-400"}`}>
+            <span className={`text-xs ${isReceiverOnline ? "text-green-600" : "text-gray-400"}`}>
               {isReceiverOnline ? "Active now" : "Offline"}
             </span>
 
