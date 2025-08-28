@@ -646,187 +646,7 @@
 
 // export default ChatLayout;
 
-
-
-
-import { useEffect, useState } from "react";
-import axios from "axios";
-import ChatPage from "./ChatPage";
-import { FiSearch, FiMoreVertical, FiX } from "react-icons/fi";
-import { io } from "socket.io-client";
-import { jwtDecode } from "jwt-decode";
-import socket from "../socket";
-
 // const socket = io("http://localhost:3000");
-
-const ChatLayout = () => {
-  const [rooms, setRooms] = useState([]);
-  const [filteredRooms, setFilteredRooms] = useState([]);
-  const [activeRoom, setActiveRoom] = useState(null);
-  const [onlineUsers, setOnlineUsers] = useState([]);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const token = localStorage.getItem("token");
-  const user = token ? jwtDecode(token) : null;
-
-  useEffect(() => {
-    if (!token || !user) return;
-
-    const fetchRooms = async () => {
-      try {
-        const res = await axios.get("http://localhost:3000/api/chatrooms/rooms", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setRooms(res.data);
-        setFilteredRooms(res.data);
-      } catch (err) {
-        console.error("Error fetching rooms:", err);
-      }
-    };
-
-    fetchRooms();
-
-    socket.emit("userOnline", user.userId);
-
-    socket.on("updateOnlineUsers", (onlineUserIds) => {
-      setOnlineUsers(onlineUserIds);
-    });
-
-    return () => {
-      socket.off("updateOnlineUsers");
-    };
-  }, [token]);
-
-  useEffect(() => {
-    if (!searchTerm) {
-      setFilteredRooms(rooms);
-    } else {
-      const filtered = rooms.filter((room) =>
-        room.user.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setFilteredRooms(filtered);
-    }
-  }, [searchTerm, rooms]);
-
-  const isUserOnline = (id) => onlineUsers.includes(String(id));
-
-  useEffect(() => {
-    console.log("Online users from socket:", onlineUsers);
-    console.log("Room user IDs:", rooms.map(r => r.user.id));
-  }, [onlineUsers, rooms]);
-
-
-
-
-  return (
-    <div className="min-h-screen bg-gray-100 pt-10 px-10 pb-6">
-  <div className="h-[calc(100vh-5rem)] bg-white rounded-2xl shadow-lg overflow-hidden flex">
-    {/* Sidebar */}
-    <div className="w-[300px] bg-white border-r border-gray-200 flex flex-col">
-      
-      {/* Header Row 1 */}
-      <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
-        <span className="text-lg font-semibold text-gray-800">Messaging</span>
-        <div className="flex-1 ml-4">
-          <div className="relative">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search messages"
-              className="w-full pl-10 pr-3 py-2 text-sm bg-gray-100 rounded-full border border-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Header Row 2 - Filters */}
-      <div className="px-4 py-2 border-b border-gray-200 flex gap-2 overflow-x-auto">
-        <button className="px-4 py-1.5 bg-blue-50 text-blue-600 text-xs rounded-full border border-blue-200 hover:bg-blue-100">
-          Starred
-        </button>
-        <button className="px-4 py-1.5 bg-gray-100 text-gray-600 text-xs rounded-full border border-gray-300 hover:bg-gray-200">
-          Unread
-        </button>
-        <button className="px-4 py-1.5 bg-gray-100 text-gray-600 text-xs rounded-full border border-gray-300 hover:bg-gray-200">
-          All
-        </button>
-      </div>
-
-      {/* User List */}
-      <div className="flex-1 overflow-y-auto">
-        {filteredRooms.length > 0 ? (
-          filteredRooms.map((room) => (
-            <div
-              key={room.roomId}
-              onClick={() => setActiveRoom(room)}
-              className={`cursor-pointer px-4 py-3 flex items-center gap-3 transition ${
-                activeRoom?.roomId === room.roomId
-                  ? "bg-blue-50"
-                  : "hover:bg-gray-50"
-              }`}
-            >
-              <div className="relative">
-                <img
-                  src={room.user.profilePicture || "/default.png"}
-                  alt={room.user.name}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-                {isUserOnline(room.user.id) && (
-                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
-                )}
-              </div>
-              <div className="flex flex-col overflow-hidden">
-                <span className="font-medium text-sm text-gray-800 truncate">
-                  {room.user.name}
-                </span>
-                <span className="text-[11px] text-gray-500 truncate">
-                  {isUserOnline(room.user.id) ? "Online" : "Offline"}
-                </span>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="p-4 text-gray-400 text-xs">No chats available</div>
-        )}
-      </div>
-    </div>
-
-    {/* Chat Area */}
-    <div className="flex-1 bg-gray-50 flex flex-col overflow-hidden">
-      {activeRoom ? (
-        <ChatPage
-          receiverId={activeRoom.user.id}
-          roomId={activeRoom.roomId}
-          receiverName={activeRoom.user.name}
-          isReceiverOnline={isUserOnline(activeRoom.user.id)}
-        />
-      ) : (
-        <div className="flex-1 flex items-center justify-center text-gray-500 text-sm">
-          Select a chat to start messaging
-        </div>
-      )}
-    </div>
-  </div>
-</div>
-
-  );
-};
-
-export default ChatLayout;
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -835,19 +655,23 @@ export default ChatLayout;
 // import { useEffect, useState } from "react";
 // import axios from "axios";
 // import ChatPage from "./ChatPage";
-// import { io } from "socket.io-client";
+// import { FiSearch, FiMoreVertical, FiX } from "react-icons/fi";
 // import { jwtDecode } from "jwt-decode";
-// import { FaSearch } from "react-icons/fa";
+// import socket from "../socket";
+// import { useLocation } from "react-router-dom";
 
 
-// const socket = io("http://localhost:3000");
+
 
 // const ChatLayout = () => {
 //   const [rooms, setRooms] = useState([]);
 //   const [filteredRooms, setFilteredRooms] = useState([]);
 //   const [activeRoom, setActiveRoom] = useState(null);
 //   const [onlineUsers, setOnlineUsers] = useState([]);
+//   const [searchOpen, setSearchOpen] = useState(false);
 //   const [searchTerm, setSearchTerm] = useState("");
+
+//   const location = useLocation();
 
 //   const token = localStorage.getItem("token");
 //   const user = token ? jwtDecode(token) : null;
@@ -891,23 +715,46 @@ export default ChatLayout;
 //     }
 //   }, [searchTerm, rooms]);
 
-//   const isUserOnline = (id) => onlineUsers.includes(id);
+//   const isUserOnline = (id) => onlineUsers.includes(String(id));
+
+//   useEffect(() => {
+//     console.log("Online users from socket:", onlineUsers);
+//     console.log("Room user IDs:", rooms.map(r => r.user.id));
+//   }, [onlineUsers, rooms]);
+
+
+//   useEffect(() => {
+//     if (location.state?.roomId && location.state?.receiverId && location.state?.receiverName) {
+//       const directRoom = {
+//         roomId: location.state.roomId,
+//         user: {
+//           id: location.state.receiverId,
+//           name: location.state.receiverName,
+//           profilePicture: "/default.png", // or fetch from API if needed
+//         }
+//       };
+//       setActiveRoom(directRoom);
+//     }
+//   }, [location.state]);
+
+
 
 //   return (
-//     <div className="min-h-screen bg-gray-100 pt-10 px-10 pb-6 flex flex-col">
-//       {/* Row 1 - Messaging + Search */}
-//       <div className="w-full relative px-4 py-3 border-b border-gray-200 bg-white rounded-t-2xl  flex items-center">
-//         {/* Left - Messaging */}
+//     <div className="min-h-screen bg-gray-100 pt-10 px-10 pb-6">
+//   <div className="h-[calc(100vh-5rem)] bg-white rounded-2xl shadow-lg overflow-hidden flex">
+//     {/* Sidebar */}
+//     <div className="w-[300px] bg-white border-r border-gray-200 flex flex-col">
+      
+//       {/* Header Row 1 */}
+//       <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
 //         <span className="text-lg font-semibold text-gray-800">Messaging</span>
-
-//         {/* Center - Search Input */}
-//         <div className="absolute left-1/2 transform -translate-x-1/2">
+//         <div className="flex-1 ml-4">
 //           <div className="relative">
-//             <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+//             <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
 //             <input
 //               type="text"
 //               placeholder="Search messages"
-//               className="w-64 pl-10 pr-3 py-2 text-sm bg-gray-200 rounded-md border border-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500"
+//               className="w-full pl-10 pr-3 py-2 text-sm bg-gray-100 rounded-full border border-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500"
 //               value={searchTerm}
 //               onChange={(e) => setSearchTerm(e.target.value)}
 //             />
@@ -915,10 +762,8 @@ export default ChatLayout;
 //         </div>
 //       </div>
 
-
-
-//       {/* Row 2 - Filters */}
-//       <div className="w-full px-4 py-2 border-b border-gray-200 flex gap-2 bg-white">
+//       {/* Header Row 2 - Filters */}
+//       <div className="px-4 py-2 border-b border-gray-200 flex gap-2 overflow-x-auto">
 //         <button className="px-4 py-1.5 bg-blue-50 text-blue-600 text-xs rounded-full border border-blue-200 hover:bg-blue-100">
 //           Starred
 //         </button>
@@ -930,72 +775,264 @@ export default ChatLayout;
 //         </button>
 //       </div>
 
-//       {/* Main content area */}
-//      <div className="flex flex-1 bg-white rounded-b-2xl shadow overflow-hidden">
-//   {/* Sidebar */}
-//   <div className="w-[300px] border-r border-gray-200 flex flex-col">
-//     {/* User list - scrollable */}
-//     <div className="flex-1 overflow-y-auto">
-//       {filteredRooms.length > 0 ? (
-//         filteredRooms.map((room) => (
-//           <div
-//             key={room.roomId}
-//             onClick={() => setActiveRoom(room)}
-//             className={`cursor-pointer px-4 py-3 flex items-center gap-3 transition ${
-//               activeRoom?.roomId === room.roomId
-//                 ? "bg-blue-50"
-//                 : "hover:bg-gray-50"
-//             }`}
-//           >
-//             <div className="relative">
-//               <img
-//                 src={room.user.profilePicture || "/default.png"}
-//                 alt={room.user.name}
-//                 className="w-10 h-10 rounded-full object-cover"
-//               />
-//               {isUserOnline(room.user.id) && (
-//                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
-//               )}
+//       {/* User List */}
+//       <div className="flex-1 overflow-y-auto">
+//         {filteredRooms.length > 0 ? (
+//           filteredRooms.map((room) => (
+//             <div
+//               key={room.roomId}
+//               onClick={() => setActiveRoom(room)}
+//               className={`cursor-pointer px-4 py-3 flex items-center gap-3 transition ${
+//                 activeRoom?.roomId === room.roomId
+//                   ? "bg-blue-50"
+//                   : "hover:bg-gray-50"
+//               }`}
+//             >
+//               <div className="relative">
+//                 <img
+//                   src={room.user.profilePicture || "/default.png"}
+//                   alt={room.user.name}
+//                   className="w-10 h-10 rounded-full object-cover"
+//                 />
+//                 {isUserOnline(room.user.id) && (
+//                   <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+//                 )}
+//               </div>
+//               <div className="flex flex-col overflow-hidden">
+//                 <span className="font-medium text-sm text-gray-800 truncate">
+//                   {room.user.name}
+//                 </span>
+//                 <span className="text-[11px] text-gray-500 truncate">
+//                   {isUserOnline(room.user.id) ? "Online" : "Offline"}
+//                 </span>
+//               </div>
 //             </div>
-//             <div className="flex flex-col overflow-hidden">
-//               <span className="font-medium text-sm text-gray-800 truncate">
-//                 {room.user.name}
-//               </span>
-//               <span className="text-[11px] text-gray-500 truncate">
-//                 {isUserOnline(room.user.id) ? "Online" : "Offline"}
-//               </span>
-//             </div>
-//           </div>
-//         ))
+//           ))
+//         ) : (
+//           <div className="p-4 text-gray-400 text-xs">No chats available</div>
+//         )}
+//       </div>
+//     </div>
+
+//     {/* Chat Area */}
+//     <div className="flex-1 bg-gray-50 flex flex-col overflow-hidden">
+//       {activeRoom ? (
+//         <ChatPage
+//           receiverId={activeRoom.user.id}
+//           roomId={activeRoom.roomId}
+//           receiverName={activeRoom.user.name}
+//           isReceiverOnline={isUserOnline(activeRoom.user.id)}
+//         />
 //       ) : (
-//         <div className="p-4 text-gray-400 text-xs">No chats available</div>
+//         <div className="flex-1 flex items-center justify-center text-gray-500 text-sm">
+//           Select a chat to start messaging
+//         </div>
 //       )}
 //     </div>
 //   </div>
-
-//   {/* Chat Area */}
-//   <div className="flex-1 bg-gray-50 flex flex-col overflow-hidden">
-//     {activeRoom ? (
-//       <ChatPage
-//         receiverId={activeRoom.user.id}
-//         roomId={activeRoom.roomId}
-//         receiverName={activeRoom.user.name}
-//       />
-//     ) : (
-//       <div className="flex-1 flex items-center justify-center text-gray-500 text-sm">
-//         Select a chat to start messaging
-//       </div>
-//     )}
-//   </div>
 // </div>
 
-
-
-
-//     </div>
-
-    
 //   );
 // };
 
 // export default ChatLayout;
+
+
+
+
+
+
+
+
+
+
+
+import { useEffect, useState } from "react";
+import axios from "axios";
+import ChatPage from "./ChatPage";
+import { FiSearch } from "react-icons/fi";
+import { jwtDecode } from "jwt-decode";
+import socket from "../socket";
+import { useLocation } from "react-router-dom";
+
+const ChatLayout = () => {
+  const [rooms, setRooms] = useState([]);
+  const [filteredRooms, setFilteredRooms] = useState([]);
+  const [activeRoom, setActiveRoom] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const token = localStorage.getItem("token");
+  const user = token ? jwtDecode(token) : null;
+
+  const location = useLocation();
+
+  // Fetch chat rooms
+  useEffect(() => {
+    if (!token || !user) return;
+
+    const fetchRooms = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/api/chatrooms/rooms", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setRooms(res.data);
+        setFilteredRooms(res.data);
+      } catch (err) {
+        console.error("Error fetching rooms:", err);
+      }
+    };
+
+    fetchRooms();
+
+    socket.emit("userOnline", user.userId);
+    socket.on("updateOnlineUsers", (onlineUserIds) => {
+      setOnlineUsers(onlineUserIds);
+    });
+
+    return () => {
+      socket.off("updateOnlineUsers");
+    };
+  }, [token]);
+
+  // Search filtering
+  useEffect(() => {
+    if (!searchTerm) {
+      setFilteredRooms(rooms);
+    } else {
+      const filtered = rooms.filter((room) =>
+        room.user.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredRooms(filtered);
+    }
+  }, [searchTerm, rooms]);
+
+  // Determine if user is online
+  const isUserOnline = (id) => onlineUsers.includes(String(id));
+
+  // Pre-open chat room via navigation
+  useEffect(() => {
+    if (location.state?.roomId && location.state?.receiverId && location.state?.receiverName) {
+      const directRoom = {
+        roomId: location.state.roomId,
+        user: {
+          id: location.state.receiverId,
+          name: location.state.receiverName,
+          profilePicture: "/default.png",
+        },
+      };
+      setActiveRoom(directRoom);
+    }
+  }, [location.state]);
+
+  // Handle back navigation on mobile
+  const handleBack = () => {
+    setActiveRoom(null);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100 pt-10 px-2 sm:px-10 pb-6">
+      <div className="h-[calc(100vh-5rem)] bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col sm:flex-row">
+        {/* Sidebar */}
+        <div
+          className={`w-full sm:w-[300px] border-r border-gray-200 flex flex-col transition-all duration-300 ${
+            activeRoom ? "hidden sm:flex" : "flex"
+          }`}
+        >
+          {/* Header */}
+          <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+            <span className="text-lg font-semibold text-gray-800">Messaging</span>
+          </div>
+
+          {/* Search */}
+          <div className="px-4 py-2 border-b border-gray-200">
+            <div className="relative">
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search messages"
+                className="w-full pl-10 pr-3 py-2 text-sm bg-gray-100 rounded-full border border-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* Filters */}
+          {/* <div className="px-4 py-2 border-b border-gray-200 flex gap-2 overflow-x-auto">
+            <button className="px-4 py-1.5 bg-blue-50 text-blue-600 text-xs rounded-full border border-blue-200 hover:bg-blue-100">
+              Starred
+            </button>
+            <button className="px-4 py-1.5 bg-gray-100 text-gray-600 text-xs rounded-full border border-gray-300 hover:bg-gray-200">
+              Unread
+            </button>
+            <button className="px-4 py-1.5 bg-gray-100 text-gray-600 text-xs rounded-full border border-gray-300 hover:bg-gray-200">
+              All
+            </button>
+          </div> */}
+
+          {/* Chat List */}
+          <div className="flex-1 overflow-y-auto">
+            {filteredRooms.length > 0 ? (
+              filteredRooms.map((room) => (
+                <div
+                  key={room.roomId}
+                  onClick={() => setActiveRoom(room)}
+                  className={`cursor-pointer px-4 py-3 flex items-center gap-3 transition ${
+                    activeRoom?.roomId === room.roomId
+                      ? "bg-blue-50"
+                      : "hover:bg-gray-50"
+                  }`}
+                >
+                  <div className="relative">
+                    <img
+                      src={room.user.profilePicture || "/default.png"}
+                      alt={room.user.name}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    {isUserOnline(room.user.id) && (
+                      <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+                    )}
+                  </div>
+                  <div className="flex flex-col overflow-hidden">
+                    <span className="font-medium text-sm text-gray-800 truncate">
+                      {room.user.name}
+                    </span>
+                    <span className="text-[11px] text-gray-500 truncate">
+                      {isUserOnline(room.user.id) ? "Online" : "Offline"}
+                    </span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="p-4 text-gray-400 text-xs">No chats available</div>
+            )}
+          </div>
+        </div>
+
+        {/* Chat Area */}
+        <div
+          className={`flex-1 bg-gray-50 flex flex-col overflow-hidden transition-all duration-300 ${
+            activeRoom ? "flex" : "hidden sm:flex"
+          }`}
+        >
+          {activeRoom ? (
+            <ChatPage
+              receiverId={activeRoom.user.id}
+              roomId={activeRoom.roomId}
+              receiverName={activeRoom.user.name}
+              isReceiverOnline={isUserOnline(activeRoom.user.id)}
+              onBack={handleBack} // send back handler
+            />
+          ) : (
+            <div className="flex-1 flex items-center justify-center text-gray-500 text-sm">
+              Select a chat to start messaging
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ChatLayout;
