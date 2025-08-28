@@ -17,6 +17,7 @@ export const addReview = async (req, res) => {
         skillId,
         rating,
         review,
+        receiverId: skill.userId
       },
     });
 
@@ -43,3 +44,30 @@ export const getReviews = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
+export const getallReviews = async (req, res) =>{
+  const userId = req.user.userId;
+
+  try{
+    const data = await prisma.review.findMany({
+      where: {
+        receiverId: userId
+      },
+      include: {
+        user: true,
+        skill: true,
+      },
+
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    res.status(200).json(data);
+
+  }catch (error){
+    console.error(error);
+    res.status(500).json({message: 'Server error'});
+  }
+}
