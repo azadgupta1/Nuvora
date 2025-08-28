@@ -268,12 +268,16 @@ model User {
   bookingsReceived Booking[]       @relation("BookingReceiver")
   messagesSent     Message[]       @relation("SentMessages")
   messagesReceived Message[]       @relation("ReceivedMessages")
-  reviews          Review[]
+  // reviews          Review[]
   bookmarks        Bookmark[]
   skillExchanges   SkillExchange[]
   chatRoomsAsUser1 ChatRoom[]      @relation("User1ChatRooms")
   chatRoomsAsUser2 ChatRoom[]      @relation("User2ChatRooms")
   notifications Notification[]
+
+  Review Review[] @relation("ReviewsGiven")
+
+  ReviewsReceived Review[] @relation("ReviewsReceived")
 }
 
 model Skill {
@@ -334,15 +338,33 @@ model ChatRoom {
   @@unique([user1Id, user2Id])
 }
 
+// model Review {
+//   id      Int    @id @default(autoincrement())
+//   userId  Int
+//   skillId Int
+//   rating  Int
+//   review  String
+//   user    User   @relation(fields: [userId], references: [id])
+//   skill   Skill  @relation(fields: [skillId], references: [id])
+// }
+
+
 model Review {
-  id      Int    @id @default(autoincrement())
-  userId  Int
-  skillId Int
-  rating  Int
-  review  String
-  user    User   @relation(fields: [userId], references: [id])
-  skill   Skill  @relation(fields: [skillId], references: [id])
+  id          Int    @id @default(autoincrement())
+  userId      Int    // Reviewer
+  skillId     Int    // Skill being reviewed
+  receiverId  Int    // Owner of the skill
+
+  rating      Int
+  review      String
+  createdAt   DateTime @default(now()) // ✅ New field
+
+  user        User   @relation("ReviewsGiven", fields: [userId], references: [id])
+  receiver    User   @relation("ReviewsReceived", fields: [receiverId], references: [id])
+  skill       Skill  @relation(fields: [skillId], references: [id])
 }
+
+
 
 model Bookmark {
   id      Int   @id @default(autoincrement())
