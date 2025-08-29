@@ -180,6 +180,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import UserSkillProfile from "./UserSkillProfile";
+import ReceivedReviews from "./ReceivedReviews";
+
 
 function Profile() {
   const { id } = useParams();
@@ -239,142 +241,149 @@ function Profile() {
   if (error) return <div className="p-4 text-red-500">Error: {error}</div>;
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center">
-      <div className="flex max-w-5xl w-full p-8 gap-10">
+    <div>
+      <div className="min-h-screen bg-gray-100 flex justify-center">
+        <div className="flex max-w-5xl w-full p-8 gap-10">
+          
+          {/* Left Sidebar */}
+          <div className="w-72 bg-white shadow rounded-lg p-6">
+            {data?.profilePicture ? (
+              <img src={`http://localhost:3000${data.profilePicture}`} alt="Profile" className="w-40 h-40 rounded-full mx-auto border object-cover" />
+            ) : (
+              <div className="w-40 h-40 rounded-full bg-gray-200 mx-auto flex items-center justify-center text-gray-500">No Image</div>
+            )}
+            <h2 className="mt-4 text-xl font-bold text-center">{data.name}</h2>
+            {data.bio && <p className="text-gray-600 text-center mt-2">{data.bio}</p>}
+            {data.location && <p className="text-gray-500 text-center mt-1">{data.location}</p>}
+            <button onClick={() => setIsModalOpen(true)} className="mt-4 w-full bg-black text-white py-2 rounded hover:bg-blue-700">Edit Profile</button>
+          </div>
+
+          {/* Right Content */}
+          {/* <div className="flex-1 bg-white shadow rounded-lg p-6">
+            <h3 className="text-xl font-semibold mb-4">Profile Details</h3>
+            <p><strong>Email:</strong> {data.email}</p>
+            <p><strong>Skills:</strong> {data.skill?.name || "No skill listed"}</p>
+          </div> */}
+
+          {/* Right Content */}
+          <div className="flex-1 bg-white shadow rounded-lg p-6">
+            <h3 className="text-xl font-semibold mb-4">Profile Details</h3>
+            <p><strong>Email:</strong> {data.email}</p>
+
+            {/* Skill Profile Section */}
+            <div className="mt-6">
+              <UserSkillProfile />
+            </div>
+          </div>
+
+
+        </div>
+
         
-        {/* Left Sidebar */}
-        <div className="w-72 bg-white shadow rounded-lg p-6">
-          {data?.profilePicture ? (
-            <img src={`http://localhost:3000${data.profilePicture}`} alt="Profile" className="w-40 h-40 rounded-full mx-auto border object-cover" />
-          ) : (
-            <div className="w-40 h-40 rounded-full bg-gray-200 mx-auto flex items-center justify-center text-gray-500">No Image</div>
-          )}
-          <h2 className="mt-4 text-xl font-bold text-center">{data.name}</h2>
-          {data.bio && <p className="text-gray-600 text-center mt-2">{data.bio}</p>}
-          {data.location && <p className="text-gray-500 text-center mt-1">{data.location}</p>}
-          <button onClick={() => setIsModalOpen(true)} className="mt-4 w-full bg-black text-white py-2 rounded hover:bg-blue-700">Edit Profile</button>
-        </div>
 
-        {/* Right Content */}
-        {/* <div className="flex-1 bg-white shadow rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-4">Profile Details</h3>
-          <p><strong>Email:</strong> {data.email}</p>
-          <p><strong>Skills:</strong> {data.skill?.name || "No skill listed"}</p>
-        </div> */}
-
-        {/* Right Content */}
-        <div className="flex-1 bg-white shadow rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-4">Profile Details</h3>
-          <p><strong>Email:</strong> {data.email}</p>
-
-          {/* Skill Profile Section */}
-          <div className="mt-6">
-            <UserSkillProfile />
-          </div>
-        </div>
-
-
-      </div>
-
-      
-
-      {/* Edit Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-gradient-to-b from-black/70 to-black/50 backdrop-blur-sm flex justify-center items-center px-4 py-10">
-          <div className="relative bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-lg p-8 animate-fadeIn">
-            
-            {/* Close Button */}
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="absolute top-5 right-6 text-gray-500 hover:text-gray-800 text-2xl transition"
-            >
-              &times;
-            </button>
-
-            {/* Title */}
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-              Edit Profile
-            </h2>
-
-            {/* Form */}
-            <form onSubmit={handleEditSubmit} className="space-y-6">
+        {/* Edit Modal */}
+        {isModalOpen && (
+          
+          <div className="fixed inset-0 bg-gradient-to-b from-black/70 to-black/50 backdrop-blur-sm flex justify-center items-center px-4 py-10">
+            <div className="relative bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-lg p-8 animate-fadeIn">
               
-              {/* Name */}
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition"
-                placeholder="Name"
-              />
+              {/* Close Button */}
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="absolute top-5 right-6 text-gray-500 hover:text-gray-800 text-2xl transition"
+              >
+                &times;
+              </button>
 
-              {/* Bio */}
-              <textarea
-                value={formData.bio}
-                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition"
-                placeholder="Bio"
-                rows="3"
-              ></textarea>
+              {/* Title */}
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+                Edit Profile
+              </h2>
 
-              {/* Location */}
-              <input
-                type="text"
-                value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition"
-                placeholder="Location"
-              />
-
-              {/* Divider */}
-              <hr className="border-gray-200" />
-
-              {/* Profile Picture Upload */}
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-indigo-400 transition cursor-pointer">
-                <svg
-                  className="w-12 h-12 text-gray-400 mb-2"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 15a4 4 0 004 4h10a4 4 0 004-4M7 10l5-5m0 0l5 5m-5-5v12" />
-                </svg>
-                <p className="text-sm text-gray-600">
-                  Click to upload or drag and drop
-                </p>
-                <p className="text-xs text-gray-400">PNG, JPG, JPEG up to 2MB</p>
+              {/* Form */}
+              <form onSubmit={handleEditSubmit} className="space-y-6">
+                
+                {/* Name */}
                 <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) =>
-                    setFormData({ ...formData, profilePicture: e.target.files[0] })
-                  }
-                  className="hidden"
-                  id="profileUpload"
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition"
+                  placeholder="Name"
                 />
-              </div>
 
-              {/* Buttons */}
-              <div className="flex justify-end gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="px-5 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-lg shadow-lg transition-transform transform hover:scale-[1.02]"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
+                {/* Bio */}
+                <textarea
+                  value={formData.bio}
+                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                  className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition"
+                  placeholder="Bio"
+                  rows="3"
+                ></textarea>
+
+                {/* Location */}
+                <input
+                  type="text"
+                  value={formData.location}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition"
+                  placeholder="Location"
+                />
+
+                {/* Divider */}
+                <hr className="border-gray-200" />
+
+                {/* Profile Picture Upload */}
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-indigo-400 transition cursor-pointer">
+                  <svg
+                    className="w-12 h-12 text-gray-400 mb-2"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 15a4 4 0 004 4h10a4 4 0 004-4M7 10l5-5m0 0l5 5m-5-5v12" />
+                  </svg>
+                  <p className="text-sm text-gray-600">
+                    Click to upload or drag and drop
+                  </p>
+                  <p className="text-xs text-gray-400">PNG, JPG, JPEG up to 2MB</p>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) =>
+                      setFormData({ ...formData, profilePicture: e.target.files[0] })
+                    }
+                    className="hidden"
+                    id="profileUpload"
+                  />
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-end gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(false)}
+                    className="px-5 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-5 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-lg shadow-lg transition-transform transform hover:scale-[1.02]"
+                  >
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+
+        
+      </div>
+      
+      <ReceivedReviews />
     </div>
   );
 }
