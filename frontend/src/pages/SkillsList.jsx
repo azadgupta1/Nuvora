@@ -447,14 +447,14 @@ const SkillsFeed = () => {
             filteredSkills.map((skill) => (
               <div
                 key={skill.id}
-                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 border border-gray-100 p-4 flex flex-col"
+                className="bg-white rounded-xl shadow-sm hover:shadow-md transition duration-200 border border-gray-100 p-3 flex flex-col space-y-2"
               >
                 {/* User Info */}
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center gap-2">
                   <img
                     src={skill.user?.profilePicture || "https://via.placeholder.com/40"}
                     alt={skill.user?.name || "User"}
-                    className="w-10 h-10 rounded-full object-cover"
+                    className="w-8 h-8 rounded-full object-cover"
                   />
                   <span className="font-semibold text-gray-800">
                     {skill.user?.name || "Unknown User"}
@@ -468,7 +468,7 @@ const SkillsFeed = () => {
                     {skill.skillsOffered?.map((s, i) => (
                       <span
                         key={i}
-                        className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
+                        className="px-2 py-[2px] bg-blue-100 text-blue-700 text-xs rounded-full"
                       >
                         {s}
                       </span>
@@ -492,7 +492,7 @@ const SkillsFeed = () => {
                 </div>
 
                 {/* Footer */}
-                <hr className="my-4" />
+                <hr className="my-2" />
                 <div className="flex justify-between items-center text-sm text-gray-600">
                   <span>
                     Member since{" "}

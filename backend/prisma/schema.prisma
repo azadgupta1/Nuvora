@@ -338,16 +338,6 @@ model ChatRoom {
   @@unique([user1Id, user2Id])
 }
 
-// model Review {
-//   id      Int    @id @default(autoincrement())
-//   userId  Int
-//   skillId Int
-//   rating  Int
-//   review  String
-//   user    User   @relation(fields: [userId], references: [id])
-//   skill   Skill  @relation(fields: [skillId], references: [id])
-// }
-
 
 model Review {
   id          Int    @id @default(autoincrement())
@@ -396,6 +386,24 @@ model Notification {
 
   user      User     @relation(fields: [userId], references: [id])
 }
+
+
+
+
+
+
+
+
+// model Review {
+//   id      Int    @id @default(autoincrement())
+//   userId  Int
+//   skillId Int
+//   rating  Int
+//   review  String
+//   user    User   @relation(fields: [userId], references: [id])
+//   skill   Skill  @relation(fields: [skillId], references: [id])
+// }
+
 
 
 
