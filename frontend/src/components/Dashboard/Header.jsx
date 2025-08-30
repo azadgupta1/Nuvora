@@ -312,8 +312,14 @@ export default function Header() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
+  const [unreadChatCount, setUnreadChatCount] = useState(0);
+
+
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+
+
+  
 
   const decodeToken = (token) => {
     try {
@@ -325,6 +331,27 @@ export default function Header() {
       return null;
     }
   };
+
+  const decoded = token ? decodeToken(token) : null;
+  const currentUserId = decoded?.userId;
+
+  useEffect(() => {
+    if (!token) return;
+
+    socket.on("chatNotification", (message) => {
+      if (message.receiverId === currentUserId) {
+        setUnreadChatCount((prev) => prev + 1);
+      }
+    });
+
+    return () => {
+      socket.off("chatNotification");
+    };
+  }, [token]);
+
+
+
+
 
   const fetchNotifications = async () => {
     try {
@@ -402,21 +429,45 @@ export default function Header() {
   }, [token]);
 
 
+  // const getRelativeTime = (date) => {
+  //   const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+
+  //   const now = new Date();
+  //   const then = new Date(date);
+  //   const diff = (now - then) / 1000; // in seconds
+
+  //   if (diff < 60) return rtf.format(-Math.floor(diff), 'second');
+  //   if (diff < 3600) return rtf.format(-Math.floor(diff / 60), 'minute');
+  //   if (diff < 86400) return rtf.format(-Math.floor(diff / 3600), 'hour');
+  //   if (diff < 2592000) return rtf.format(-Math.floor(diff / 86400), 'day');
+  //   if (diff < 31536000) return rtf.format(-Math.floor(diff / 2592000), 'month');
+
+  //   return rtf.format(-Math.floor(diff / 31536000), 'year');
+  // };
+
   const getRelativeTime = (date) => {
-    const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+  const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 
-    const now = new Date();
-    const then = new Date(date);
-    const diff = (now - then) / 1000; // in seconds
+  const now = new Date();
+  const then = new Date(date);
 
-    if (diff < 60) return rtf.format(-Math.floor(diff), 'second');
-    if (diff < 3600) return rtf.format(-Math.floor(diff / 60), 'minute');
-    if (diff < 86400) return rtf.format(-Math.floor(diff / 3600), 'hour');
-    if (diff < 2592000) return rtf.format(-Math.floor(diff / 86400), 'day');
-    if (diff < 31536000) return rtf.format(-Math.floor(diff / 2592000), 'month');
+  if (isNaN(then.getTime())) {
+    return "Just now"; // fallback for invalid date
+  }
 
-    return rtf.format(-Math.floor(diff / 31536000), 'year');
-  };
+  const diff = (now - then) / 1000; // in seconds
+
+  if (diff < 60) return rtf.format(-Math.floor(diff), 'second');
+  if (diff < 3600) return rtf.format(-Math.floor(diff / 60), 'minute');
+  if (diff < 86400) return rtf.format(-Math.floor(diff / 3600), 'hour');
+  if (diff < 2592000) return rtf.format(-Math.floor(diff / 86400), 'day');
+  if (diff < 31536000) return rtf.format(-Math.floor(diff / 2592000), 'month');
+
+  console.log("Invalid date in notification:", notif);
+
+
+  return rtf.format(-Math.floor(diff / 31536000), 'year');
+};
 
 
   return (
@@ -424,7 +475,7 @@ export default function Header() {
       <div className="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto gap-3">
         {/* Logo */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          <h1 className="text-[#0DCEDA] font-extrabold text-2xl tracking-wide font-mono">Nuvora</h1>
+          <h1 className="text-[#0DCEDA] font-extrabold text-2xl tracking-wide font-mono">LearnMate</h1>
           <img src={Nuvora_2} alt="Nuvora" className="w-8 h-8 object-contain" />
         </div>
 
@@ -433,10 +484,20 @@ export default function Header() {
           {/* Chat */}
           <div
             className="relative cursor-pointer"
-            onClick={() => navigate('/dashboard/chatlayout')}
+            onClick={() => {
+              setUnreadChatCount(0); // reset counter
+              navigate('/dashboard/chatlayout')}
+            }
+              
           >
             <IoChatbubbleEllipsesOutline />
-            <span className="absolute -top-2 -right-2 bg-red-600 text-xs text-white px-1.5 py-0.5 rounded-full">3</span>
+            {/* <span className="absolute -top-2 -right-2 bg-red-600 text-xs text-white px-1.5 py-0.5 rounded-full">3</span> */}
+            {unreadChatCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-xs text-white px-1.5 py-0.5 rounded-full">
+                {unreadChatCount}
+              </span>
+            )}
+
           </div>
 
           {/* Notifications */}
@@ -448,8 +509,69 @@ export default function Header() {
               </span>
             )}
 
-            {/* Dropdown modal */}
-            {notifOpen && (
+           
+
+          {notifOpen && (
+            <div className="
+              absolute top-full mt-2 
+              w-[95vw] sm:w-80 
+              left-1/2 sm:left-auto 
+              transform -translate-x-1/2 sm:transform-none 
+              bg-white border border-gray-200 rounded-lg shadow-lg 
+              z-50 text-gray-800 max-h-96 overflow-y-auto
+            ">
+              <div className="p-3 border-b font-semibold text-gray-700">
+                Notifications
+              </div>
+              {notifications.length === 0 ? (
+                <div className="p-4 text-gray-500 text-sm">No notifications</div>
+              ) : (
+                notifications.map((notif) => (
+                  <div
+                    key={notif.id}
+                    className={`p-3 text-sm border-b hover:bg-gray-100 cursor-pointer ${
+                      notif.isRead ? 'text-gray-500' : 'text-gray-800 font-medium'
+                    }`}
+                    onClick={() => markAsRead(notif.id)}
+                  >
+                    {notif.content}
+                    <div className="text-xs text-gray-400 mt-1">
+                      {getRelativeTime(notif.createdAt)}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+
+
+          </div>
+
+          {/* My Profile */}
+          <div
+            onClick={handleClick}
+            className="flex items-center space-x-2 cursor-pointer text-gray-600 hover:text-[#0DCEDA] transition"
+          >
+            <FaUserCircle className="text-2xl sm:text-3xl" />
+            <span className="text-sm sm:text-base">My Profile</span>
+          </div>
+
+        </div>
+      </div>
+    </header>
+  );
+}
+
+
+
+
+
+
+
+
+
+ {/* Dropdown modal */}
+            {/* {notifOpen && (
               <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-30 text-gray-800 max-h-96 overflow-y-auto">
                 <div className="p-3 border-b font-semibold text-gray-700">
                   Notifications
@@ -473,20 +595,47 @@ export default function Header() {
                   ))
                 )}
               </div>
-            )}
-          </div>
+            )} */}
 
-          {/* My Profile */}
-          <div
-            onClick={handleClick}
-            className="flex items-center space-x-2 cursor-pointer text-gray-600 hover:text-[#0DCEDA] transition"
-          >
-            <FaUserCircle className="text-2xl sm:text-3xl" />
-            <span className="text-sm sm:text-base">My Profile</span>
+            {/* {notifOpen && (
+  <div className="absolute top-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 text-gray-800 max-h-96 overflow-y-auto
+                  w-[95vw] sm:w-80 right-2 sm:right-0 sm:left-auto">
+    <div className="p-3 border-b font-semibold text-gray-700">
+      Notifications
+    </div>
+    {notifications.length === 0 ? (
+      <div className="p-4 text-gray-500 text-sm">No notifications</div>
+    ) : (
+      notifications.map((notif) => (
+        <div
+          key={notif.id}
+          className={`p-3 text-sm border-b hover:bg-gray-100 cursor-pointer ${
+            notif.isRead ? 'text-gray-500' : 'text-gray-800 font-medium'
+          }`}
+          onClick={() => markAsRead(notif.id)}
+        >
+          {notif.content}
+          <div className="text-xs text-gray-400 mt-1">
+            {getRelativeTime(notif.createdAt)}
           </div>
+        </div>
+      ))
+    )}
+  </div>
+)} */}    
 
-          {/* More */}
-          <div className="relative">
+
+
+
+
+
+
+
+
+
+
+{/* More */}
+          {/* <div className="relative">
             <button onClick={() => setMenuOpen(!menuOpen)} className="text-gray-200 hover:text-white">
               <FiMoreVertical size={22} />
             </button>
@@ -500,9 +649,4 @@ export default function Header() {
                 </Link>
               </div>
             )}
-          </div>
-        </div>
-      </div>
-    </header>
-  );
-}
+          </div> */}

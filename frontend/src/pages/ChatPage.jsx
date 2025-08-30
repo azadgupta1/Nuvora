@@ -453,6 +453,9 @@ import axios from "axios";
 import { FiImage, FiSend, FiArrowLeft } from "react-icons/fi"; // Added back icon
 import BGG_Chat from "../assets/BGG_Chat.jpg";
 import socket from "../socket";
+import { BiCheckDouble } from "react-icons/bi";
+
+
 
 const ChatPage = ({ receiverId, roomId, receiverName, isReceiverOnline, onBack }) => {
   const [message, setMessage] = useState("");
@@ -611,12 +614,27 @@ const ChatPage = ({ receiverId, roomId, receiverName, isReceiverOnline, onBack }
                 />
               )}
               {item.message && <p className="break-words">{item.message}</p>}
-              <span className="block text-[10px] text-gray-500 mt-1">
+              {/* <span className="block text-[10px] text-gray-500 mt-1">
                 {new Date(item.timestamp || Date.now()).toLocaleTimeString([], {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
-              </span>
+                {item.senderId === senderId && (
+                  <BiCheckDouble size={12} className="text-green-600" />
+                )}
+
+              </span> */}
+
+              <span className={`mt-1 text-[10px] text-gray-500 flex items-center gap-1 ${item.senderId === senderId ? 'justify-end' : 'justify-start'}`}>
+  {new Date(item.timestamp || Date.now()).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  })}
+  {item.senderId === senderId && (
+    <BiCheckDouble size={12} className="text-gray-600" />
+  )}
+</span>
+
             </div>
           )
         )}

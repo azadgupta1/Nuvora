@@ -396,9 +396,13 @@ export const createBooking = async (req, res) => {
       data: {
         userId: parsedReceiverId,
         type: "booking",
-        content: `${booking.user.name} requested a booking for ${booking.skill.name}`,
+        content: `${booking.user.name} requested a booking for ${booking.skillOfferedName} in exchange for ${booking.skillWantedName}`,
       },
     });
+
+    console.log("Booking skill: ", booking.skillOfferedName);
+
+
 
     // ✅ Send socket notification
     const receiverSocketId = onlineUsers.get(String(receiverId));
@@ -406,7 +410,7 @@ export const createBooking = async (req, res) => {
       io.to(receiverSocketId).emit("newBookingRequest", {
         bookingId: booking.id,
         fromUser: booking.user.name,
-        skillName: booking.skill.name,
+        skillName: booking.skillOfferedName,
         date: booking.date,
         time: booking.time,
         message: booking.message,
