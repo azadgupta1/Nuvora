@@ -248,10 +248,416 @@
 
 
 
+// import { useEffect, useState, useMemo } from "react";
+// import { useNavigate } from "react-router-dom";
+// import SkillRequestModal from "./SkillRequestModal";
+// import axios from "axios";
+
+
+// const categoryColors = {
+//   Technology: "bg-blue-100 text-blue-800",
+//   Sports: "bg-green-100 text-green-800",
+//   Languages: "bg-yellow-100 text-yellow-800",
+//   "Life Coach": "bg-purple-100 text-purple-800",
+//   Art: "bg-pink-100 text-pink-800",
+//   Music: "bg-indigo-100 text-indigo-800",
+//   Others: "bg-gray-100 text-gray-800",
+// };
+
+// const SkillsFeed = () => {
+//   const [skills, setSkills] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [selectedCategories, setSelectedCategories] = useState([]);
+//   const [selectedRatings, setSelectedRatings] = useState([]);
+
+//   const [selectedSkillId, setSelectedSkillId] = useState(null);
+
+//   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//   const fetchSkills = async () => {
+//     try {
+//       const token = localStorage.getItem("token");
+//       const response = await axios.get("http://localhost:3000/api/skills", {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       });
+
+//       setSkills(response.data.skills || []);
+//     } catch (error) {
+//       console.error("Error fetching skills:", error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   fetchSkills();
+// }, []);
+
+
+//   const toggleCategory = (category) => {
+//     setSelectedCategories((prev) =>
+//       prev.includes(category)
+//         ? prev.filter((c) => c !== category)
+//         : [...prev, category]
+//     );
+//   };
+
+//   const toggleRating = (rating) => {
+//     setSelectedRatings((prev) =>
+//       prev.includes(rating)
+//         ? prev.filter((r) => r !== rating)
+//         : [...prev, rating]
+//     );
+//   };
+
+//   const resetFilters = () => {
+//     setSelectedCategories([]);
+//     setSelectedRatings([]);
+//     setSearchTerm("");
+//   };
+
+//   const filteredSkills = useMemo(() => {
+//     let filtered = [...skills];
+
+//     // Search filter
+//     if (searchTerm) {
+//       filtered = filtered.filter(
+//         (skill) =>
+//           skill.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//           skill.skillsOffered?.some((s) =>
+//             s.toLowerCase().includes(searchTerm.toLowerCase())
+//           ) ||
+//           skill.skillsWanted?.some((s) =>
+//             s.toLowerCase().includes(searchTerm.toLowerCase())
+//           )
+//       );
+//     }
+
+//     // Category filter
+//     if (selectedCategories.length > 0) {
+//       filtered = filtered.filter((skill) =>
+//         selectedCategories.includes(skill.category || "Others")
+//       );
+//     }
+
+//     // Star rating filter
+//     if (selectedRatings.length > 0) {
+//       filtered = filtered.filter((skill) =>
+//         selectedRatings.includes(Math.round(skill.avgRating || 0))
+//       );
+//     }
+
+//     // Sort by latest
+//     filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+//     return filtered;
+//   }, [skills, searchTerm, selectedCategories, selectedRatings]);
+
+//   return (
+//     <div className="min-h-screen bg-[#F7FAFC] px-6 py-10">
+//       {/* Top Bar */}
+//       <div className="max-w-6xl mx-auto flex flex-row md:flex-row justify-between items-center gap-4 mb-10">
+//         <input
+//           type="text"
+//           placeholder="Search skills..."
+//           value={searchTerm}
+//           onChange={(e) => setSearchTerm(e.target.value)}
+//           className="w-full md:w-[60%] px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+//         />
+
+//         {/* Filter toggle for mobile */}
+//         <button
+//           onClick={() => setIsFilterOpen(true)}
+//           className="md:hidden px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+//         >
+//           🔍 Filter
+//         </button>
+
+//       </div>
+
+
+
+//       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8">
+//         {/* Sidebar Filter */}
+//         <div className="hidden md:block w-full md:w-64">
+//           <div className="sticky top-28 bg-white p-4 rounded-xl shadow-md border border-gray-200">
+//             <h3 className="text-lg font-semibold text-gray-800 mb-4">Filter By</h3>
+
+//             {/* Categories */}
+//             <div className="mb-6">
+//               <h4 className="text-sm font-medium text-gray-700 mb-2">Category</h4>
+//               <div className="space-y-2">
+//                 {Object.keys(categoryColors).map((category) => (
+//                   <label
+//                     key={category}
+//                     className="flex items-center space-x-2 text-sm text-gray-600"
+//                   >
+//                     <input
+//                       type="checkbox"
+//                       className="accent-blue-500"
+//                       checked={selectedCategories.includes(category)}
+//                       onChange={() => toggleCategory(category)}
+//                     />
+//                     <span>{category}</span>
+//                   </label>
+//                 ))}
+//               </div>
+//             </div>
+
+//             {/* Star Rating */}
+//             <div className="mb-6">
+//               <h4 className="text-sm font-medium text-gray-700 mb-2">Star Rating</h4>
+//               <div className="space-y-2">
+//                 {[5, 4, 3, 2, 1].map((star) => (
+//                   <label
+//                     key={star}
+//                     className="flex items-center space-x-2 text-sm text-gray-600"
+//                   >
+//                     <input
+//                       type="checkbox"
+//                       className="accent-yellow-500"
+//                       checked={selectedRatings.includes(star)}
+//                       onChange={() => toggleRating(star)}
+//                     />
+//                     <span className="flex items-center">
+//                       {Array.from({ length: star }).map((_, i) => (
+//                         <svg
+//                           key={i}
+//                           className="w-4 h-4 text-yellow-500 fill-current"
+//                           viewBox="0 0 20 20"
+//                         >
+//                           <path d="M10 15l-5.878 3.09L5.5 12.18.999 8.27l6.09-.885L10 2l2.91 5.385 6.09.885-4.501 3.91 1.378 5.91z" />
+//                         </svg>
+//                       ))}
+//                     </span>
+//                   </label>
+//                 ))}
+//               </div>
+//             </div>
+
+//             {/* Reset Button */}
+//             <button
+//               onClick={resetFilters}
+//               className="w-full text-sm mt-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md font-medium transition"
+//             >
+//               Reset Filters
+//             </button>
+//           </div>
+//         </div>
+
+//         {/* Skills Grid */}
+//         <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
+//           {loading ? (
+//             <p className="text-center text-gray-600 text-lg">Loading skills...</p>
+//           ) : filteredSkills.length === 0 ? (
+//             <p className="text-center text-gray-600 text-lg">No skills found.</p>
+//           ) : (
+//             filteredSkills.map((skill) => (
+//               <div
+//                 key={skill.id}
+//                 className="bg-white rounded-xl shadow-sm hover:shadow-md transition duration-200 border border-gray-100 p-3 flex flex-col space-y-2"
+//               >
+//                 {/* User Info */}
+//                 <div className="flex items-center gap-2">
+//                   <img
+//                     src={skill.user?.profilePicture || "https://via.placeholder.com/40"}
+//                     alt={skill.user?.name || "User"}
+//                     className="w-8 h-8 rounded-full object-cover"
+//                   />
+//                   <span className="font-semibold text-gray-800">
+//                     {skill.user?.name || "Unknown User"}
+//                   </span>
+//                 </div>
+
+//                 {/* Skills Offered */}
+//                 <div className="mt-4">
+//                   <p className="text-sm font-medium text-gray-700 mb-2">Skills I Can Teach:</p>
+//                   <div className="flex flex-wrap gap-2">
+//                     {skill.skillsOffered?.map((s, i) => (
+//                       <span
+//                         key={i}
+//                         className="px-2 py-[2px] bg-blue-100 text-blue-700 text-xs rounded-full"
+//                       >
+//                         {s}
+//                       </span>
+//                     ))}
+//                   </div>
+//                 </div>
+
+//                 {/* Skills Wanted */}
+//                 <div className="mt-4">
+//                   <p className="text-sm font-medium text-gray-700 mb-2">Skills I Want to Learn:</p>
+//                   <div className="flex flex-wrap gap-2">
+//                     {skill.skillsWanted?.map((s, i) => (
+//                       <span
+//                         key={i}
+//                         className="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full"
+//                       >
+//                         {s}
+//                       </span>
+//                     ))}
+//                   </div>
+//                 </div>
+
+//                 {/* Footer */}
+//                 <hr className="my-2" />
+//                 <div className="flex justify-between items-center text-sm text-gray-600">
+//                   <span>
+//                     Member since{" "}
+//                     {skill.user?.createdAt
+//                       ? new Date(skill.user.createdAt).toLocaleString("en-US", {
+//                           month: "long",
+//                           year: "numeric",
+//                         })
+//                       : "Unknown"}
+//                   </span>
+//                   <button
+//                     // onClick={() => navigate(`/Dashboard/skill/${skill.id}`)}
+//                     onClick={() => setSelectedSkillId(skill.id)}
+//                     className="bg-black text-white px-4 py-2 rounded-md text-sm hover:bg-gray-800 transition"
+//                   >
+//                     Send Request
+//                   </button>
+//                 </div>
+//               </div>
+//             ))
+//           )}
+//         </div>
+
+        
+
+
+//       </div>
+
+
+//       {/* Mobile Filter Modal */}
+// {isFilterOpen && (
+//   <div className="fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-end md:hidden">
+//     <div className="w-4/5 max-w-xs h-full bg-white p-5 shadow-lg overflow-y-auto relative">
+
+//       {/* Close Button */}
+//       <button
+//         onClick={() => setIsFilterOpen(false)}
+//         className="absolute top-3 right-4 text-gray-700 text-2xl"
+//       >
+//         &times;
+//       </button>
+
+//       <h3 className="text-lg font-semibold text-gray-800 mb-4">Filter By</h3>
+
+//       {/* Categories */}
+//       <div className="mb-6">
+//         <h4 className="text-sm font-medium text-gray-700 mb-2">Category</h4>
+//         <div className="space-y-2">
+//           {Object.keys(categoryColors).map((category) => (
+//             <label
+//               key={category}
+//               className="flex items-center space-x-2 text-sm text-gray-600"
+//             >
+//               <input
+//                 type="checkbox"
+//                 className="accent-blue-500"
+//                 checked={selectedCategories.includes(category)}
+//                 onChange={() => toggleCategory(category)}
+//               />
+//               <span>{category}</span>
+//             </label>
+//           ))}
+//         </div>
+//       </div>
+
+//       {/* Ratings */}
+//       <div className="mb-6">
+//         <h4 className="text-sm font-medium text-gray-700 mb-2">Star Rating</h4>
+//         <div className="space-y-2">
+//           {[5, 4, 3, 2, 1].map((star) => (
+//             <label
+//               key={star}
+//               className="flex items-center space-x-2 text-sm text-gray-600"
+//             >
+//               <input
+//                 type="checkbox"
+//                 className="accent-yellow-500"
+//                 checked={selectedRatings.includes(star)}
+//                 onChange={() => toggleRating(star)}
+//               />
+//               <span className="flex items-center">
+//                 {Array.from({ length: star }).map((_, i) => (
+//                   <svg
+//                     key={i}
+//                     className="w-4 h-4 text-yellow-500 fill-current"
+//                     viewBox="0 0 20 20"
+//                   >
+//                     <path d="M10 15l-5.878 3.09L5.5 12.18.999 8.27l6.09-.885L10 2l2.91 5.385 6.09.885-4.501 3.91 1.378 5.91z" />
+//                   </svg>
+//                 ))}
+//               </span>
+//             </label>
+//           ))}
+//         </div>
+//       </div>
+
+//       {/* Reset */}
+//       <button
+//         onClick={resetFilters}
+//         className="w-full text-sm mt-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md font-medium transition"
+//       >
+//         Reset Filters
+//       </button>
+//     </div>
+//   </div>
+// )}
+
+      
+
+//       {selectedSkillId && (
+//       <SkillRequestModal
+//         skillId={selectedSkillId}
+//         onClose={() => setSelectedSkillId(null)}
+//       />
+//       )}
+
+      
+      
+
+//     </div>
+//   );
+
+
+// };
+
+// export default SkillsFeed;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// SkillsFeed.jsx
+
 import { useEffect, useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import SkillRequestModal from "./SkillRequestModal";
 import axios from "axios";
+import SkillRequestModal from "./SkillRequestModal";
+import SkillsFilterPanel from "./SkillsFilterPanel";
+import { useNavigate } from "react-router-dom";
+import { PiSlidersHorizontalBold } from "react-icons/pi";
+import { FaRegBookmark } from "react-icons/fa";
+import { FaBookmark } from "react-icons/fa";
+
 
 
 const categoryColors = {
@@ -270,46 +676,115 @@ const SkillsFeed = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedRatings, setSelectedRatings] = useState([]);
-
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedSkillId, setSelectedSkillId] = useState(null);
+
+  const [bookmarkedSkillIds, setBookmarkedSkillIds] = useState([]);
+  const [bookmarksMap, setBookmarksMap] = useState({}); // map skillId -> bookmarkId
+
 
   const navigate = useNavigate();
 
   useEffect(() => {
-  const fetchSkills = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:3000/api/skills", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    const fetchBookmarks = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:3000/api/bookmark", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      setSkills(response.data.skills || []);
+        const bookmarks = response.data;
+        const ids = bookmarks.map((b) => b.skillId);
+        const map = {};
+        bookmarks.forEach((b) => {
+          map[b.skillId] = b.id;
+        });
+
+        setBookmarkedSkillIds(ids);
+        setBookmarksMap(map);
+      } catch (error) {
+        console.error("Error fetching bookmarks:", error);
+      }
+    };
+
+    fetchBookmarks();
+  }, []);
+
+
+  const handleBookmarkToggle = async (skillId) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      if (bookmarkedSkillIds.includes(skillId)) {
+        // Unbookmark
+        const bookmarkId = bookmarksMap[skillId];
+        await axios.delete(`http://localhost:3000/api/bookmark/${bookmarkId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setBookmarkedSkillIds((prev) => prev.filter((id) => id !== skillId));
+        setBookmarksMap((prev) => {
+          const newMap = { ...prev };
+          delete newMap[skillId];
+          return newMap;
+        });
+      } else {
+        // Bookmark
+        const response = await axios.post(
+          `http://localhost:3000/api/bookmark`,
+          { skillId },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const newBookmark = response.data;
+        setBookmarkedSkillIds((prev) => [...prev, skillId]);
+        setBookmarksMap((prev) => ({ ...prev, [skillId]: newBookmark.id }));
+      }
     } catch (error) {
-      console.error("Error fetching skills:", error);
-    } finally {
-      setLoading(false);
+      console.error("Error toggling bookmark:", error);
     }
   };
 
-  fetchSkills();
-}, []);
 
+
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:3000/api/skills", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setSkills(response.data.skills || []);
+      } catch (error) {
+        console.error("Error fetching skills:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSkills();
+  }, []);
 
   const toggleCategory = (category) => {
     setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
     );
   };
 
   const toggleRating = (rating) => {
     setSelectedRatings((prev) =>
-      prev.includes(rating)
-        ? prev.filter((r) => r !== rating)
-        : [...prev, rating]
+      prev.includes(rating) ? prev.filter((r) => r !== rating) : [...prev, rating]
     );
   };
 
@@ -322,44 +797,36 @@ const SkillsFeed = () => {
   const filteredSkills = useMemo(() => {
     let filtered = [...skills];
 
-    // Search filter
     if (searchTerm) {
       filtered = filtered.filter(
         (skill) =>
           skill.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          skill.skillsOffered?.some((s) =>
-            s.toLowerCase().includes(searchTerm.toLowerCase())
-          ) ||
-          skill.skillsWanted?.some((s) =>
-            s.toLowerCase().includes(searchTerm.toLowerCase())
-          )
+          skill.skillsOffered?.some((s) => s.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          skill.skillsWanted?.some((s) => s.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
-    // Category filter
     if (selectedCategories.length > 0) {
       filtered = filtered.filter((skill) =>
         selectedCategories.includes(skill.category || "Others")
       );
     }
 
-    // Star rating filter
     if (selectedRatings.length > 0) {
       filtered = filtered.filter((skill) =>
         selectedRatings.includes(Math.round(skill.avgRating || 0))
       );
     }
 
-    // Sort by latest
     filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     return filtered;
   }, [skills, searchTerm, selectedCategories, selectedRatings]);
 
   return (
-    <div className="min-h-screen bg-[#F7FAFC] px-6 py-10">
+    <div className="min-h-screen bg-[#F7FAFC] px-0 py-2">
       {/* Top Bar */}
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 mb-10">
+      <div className="max-w-6xl mx-auto flex flex-row md:flex-row justify-between items-center gap-4 mb-10">
         <input
           type="text"
           placeholder="Search skills..."
@@ -367,78 +834,39 @@ const SkillsFeed = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full md:w-[60%] px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
         />
+
+        {/* <button
+          onClick={() => setIsFilterOpen(true)}
+          className="md:hidden px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+        >
+          🔍 Filter
+        </button> */}
+
+        <button
+          onClick={() => setIsFilterOpen(true)}
+          className="md:hidden flex items-center gap-2 px-5 py-2 text-black rounded-full border-1 border-gray-400 hover:bg-gray-100 transition"
+        >
+          <span>Filter</span>
+          <PiSlidersHorizontalBold size={20}/>
+        </button>
+
       </div>
 
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8">
-        {/* Sidebar Filter */}
-        <div className="w-full md:w-64">
-          <div className="sticky top-28 bg-white p-4 rounded-xl shadow-md border border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Filter By</h3>
-
-            {/* Categories */}
-            <div className="mb-6">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">Category</h4>
-              <div className="space-y-2">
-                {Object.keys(categoryColors).map((category) => (
-                  <label
-                    key={category}
-                    className="flex items-center space-x-2 text-sm text-gray-600"
-                  >
-                    <input
-                      type="checkbox"
-                      className="accent-blue-500"
-                      checked={selectedCategories.includes(category)}
-                      onChange={() => toggleCategory(category)}
-                    />
-                    <span>{category}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Star Rating */}
-            <div className="mb-6">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">Star Rating</h4>
-              <div className="space-y-2">
-                {[5, 4, 3, 2, 1].map((star) => (
-                  <label
-                    key={star}
-                    className="flex items-center space-x-2 text-sm text-gray-600"
-                  >
-                    <input
-                      type="checkbox"
-                      className="accent-yellow-500"
-                      checked={selectedRatings.includes(star)}
-                      onChange={() => toggleRating(star)}
-                    />
-                    <span className="flex items-center">
-                      {Array.from({ length: star }).map((_, i) => (
-                        <svg
-                          key={i}
-                          className="w-4 h-4 text-yellow-500 fill-current"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M10 15l-5.878 3.09L5.5 12.18.999 8.27l6.09-.885L10 2l2.91 5.385 6.09.885-4.501 3.91 1.378 5.91z" />
-                        </svg>
-                      ))}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Reset Button */}
-            <button
-              onClick={resetFilters}
-              className="w-full text-sm mt-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md font-medium transition"
-            >
-              Reset Filters
-            </button>
-          </div>
-        </div>
+        {/* Filters Panel */}
+        <SkillsFilterPanel
+          categoryColors={categoryColors}
+          selectedCategories={selectedCategories}
+          selectedRatings={selectedRatings}
+          toggleCategory={toggleCategory}
+          toggleRating={toggleRating}
+          resetFilters={resetFilters}
+          isFilterOpen={isFilterOpen}
+          setIsFilterOpen={setIsFilterOpen}
+        />
 
         {/* Skills Grid */}
-        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="flex-1 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-2">
           {loading ? (
             <p className="text-center text-gray-600 text-lg">Loading skills...</p>
           ) : filteredSkills.length === 0 ? (
@@ -447,21 +875,42 @@ const SkillsFeed = () => {
             filteredSkills.map((skill) => (
               <div
                 key={skill.id}
-                className="bg-white rounded-xl shadow-sm hover:shadow-md transition duration-200 border border-gray-100 p-3 flex flex-col space-y-2"
+                className="relative bg-white rounded-x shadow-sm hover:shadow-md transition duration-200 border border-gray-100 p-3 flex flex-col space-y-2"
               >
-                {/* User Info */}
+
+                 {/* Bookmark Icon */}
+                <button
+                  onClick={() => handleBookmarkToggle(skill.id)}
+                  className="absolute top-3 right-3 text-xl text-gray-500"
+                >
+                  {bookmarkedSkillIds.includes(skill.id) ? <FaBookmark /> : <FaRegBookmark />}
+                </button>
+
                 <div className="flex items-center gap-2">
-                  <img
+                  {/* <img
                     src={skill.user?.profilePicture || "https://via.placeholder.com/40"}
                     alt={skill.user?.name || "User"}
                     className="w-8 h-8 rounded-full object-cover"
-                  />
+                  /> */}
+                  {skill.user?.profilePicture ? (
+                    <img
+                      src={skill.user.profilePicture}
+                      alt={skill.user.name || "User"}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div
+                      className="w-8 h-8 rounded-full bg-green-200 text-white flex items-center justify-center text-xs font-bold uppercase"
+                      title={skill.user?.name || "User"}
+                    >
+                      {skill.user?.name?.slice(0, 2) || "NA"}
+                    </div>
+                  )}
                   <span className="font-semibold text-gray-800">
                     {skill.user?.name || "Unknown User"}
                   </span>
                 </div>
 
-                {/* Skills Offered */}
                 <div className="mt-4">
                   <p className="text-sm font-medium text-gray-700 mb-2">Skills I Can Teach:</p>
                   <div className="flex flex-wrap gap-2">
@@ -476,7 +925,6 @@ const SkillsFeed = () => {
                   </div>
                 </div>
 
-                {/* Skills Wanted */}
                 <div className="mt-4">
                   <p className="text-sm font-medium text-gray-700 mb-2">Skills I Want to Learn:</p>
                   <div className="flex flex-wrap gap-2">
@@ -491,9 +939,10 @@ const SkillsFeed = () => {
                   </div>
                 </div>
 
-                {/* Footer */}
-                <hr className="my-2" />
-                <div className="flex justify-between items-center text-sm text-gray-600">
+                <hr className="my-3" />
+
+
+                {/* <div className="flex justify-between items-center text-sm text-gray-600">
                   <span>
                     Member since{" "}
                     {skill.user?.createdAt
@@ -504,13 +953,32 @@ const SkillsFeed = () => {
                       : "Unknown"}
                   </span>
                   <button
-                    // onClick={() => navigate(`/Dashboard/skill/${skill.id}`)}
                     onClick={() => setSelectedSkillId(skill.id)}
-                    className="bg-black text-white px-4 py-2 rounded-md text-sm hover:bg-gray-800 transition"
+                    className="bg-black text-white px-4 py-1 rounded-md text-sm hover:bg-gray-800 transition"
+                  >
+                    Send Request
+                  </button>
+                </div> */}
+                
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-sm text-gray-600 gap-2">
+                  <span>
+                    Member since{" "}
+                    {skill.user?.createdAt
+                      ? new Date(skill.user.createdAt).toLocaleString("en-US", {
+                          month: "long",
+                          year: "numeric",
+                        })
+                      : "July"}
+                  </span>
+                  <button
+                    onClick={() => setSelectedSkillId(skill.id)}
+                    className="bg-black text-white px-4 py-2 sm:py-1 rounded-md text-sm hover:bg-gray-800 transition"
                   >
                     Send Request
                   </button>
                 </div>
+
+
               </div>
             ))
           )}
@@ -518,16 +986,10 @@ const SkillsFeed = () => {
       </div>
 
       {selectedSkillId && (
-      <SkillRequestModal
-        skillId={selectedSkillId}
-        onClose={() => setSelectedSkillId(null)}
-      />
+        <SkillRequestModal skillId={selectedSkillId} onClose={() => setSelectedSkillId(null)} />
       )}
-
     </div>
   );
-
-
 };
 
 export default SkillsFeed;

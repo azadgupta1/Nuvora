@@ -5,6 +5,8 @@ import { loginUser } from "../../services/authServices";
 export default function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -14,14 +16,18 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
     try {
       const response = await loginUser(user);
       localStorage.setItem("token", response.token);
       navigate("/dashboard");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
@@ -29,6 +35,8 @@ export default function Login() {
         <h2 className="text-3xl font-bold text-center text-blue-800 mb-6">Welcome Back</h2>
 
         {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
+        
+        
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -56,12 +64,26 @@ export default function Login() {
             />
           </div>
 
+          {/* <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-200"
+          >
+            Login
+          </button> */}
+          {loading ? (
+          <div className="flex justify-center">
+            <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : (
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-200"
           >
             Login
           </button>
+        )}
+
+
         </form>
 
         <div className="my-6 flex items-center justify-between">

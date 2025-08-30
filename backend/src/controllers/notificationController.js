@@ -19,39 +19,6 @@ export const getNotifications = async (req, res) => {
 };
 
 
-
-// // Mark a specific notification as read
-// export const markNotificationAsRead = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const userId = req.user.id;
-
-//     const notification = await prisma.notification.findUnique({
-//       where: { id: parseInt(id) }
-//     });
-
-//     if (!notification || notification.userId !== userId) {
-//       return res.status(404).json({ success: false, message: 'Notification not found' });
-//     }
-
-//     await prisma.notification.update({
-//       where: { id: parseInt(id) },
-//       data: { isRead: true }
-//     });
-
-//     res.status(200).json({ success: true, message: 'Notification marked as read' });
-//   } catch (error) {
-//     console.error('Error marking notification as read:', error);
-//     res.status(500).json({ success: false, message: 'Server error' });
-//   }
-// };
-
-
-
-
-
-
-
 export const markNotificationAsRead = async (req, res) => {
   try {
     const { id } = req.params;

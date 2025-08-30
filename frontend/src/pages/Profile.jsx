@@ -242,8 +242,8 @@ function Profile() {
 
   return (
     <div>
-      <div className="min-h-screen bg-gray-100 flex justify-center">
-        <div className="flex max-w-5xl w-full p-8 gap-10">
+      <div className="min-h-screen bg-gray-100 flex  justify-center">
+        <div className="flex flex-col max-w-5xl w-full p-8 gap-10">
           
           {/* Left Sidebar */}
           <div className="w-72 bg-white shadow rounded-lg p-6">

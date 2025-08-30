@@ -64,13 +64,49 @@ export const getUserChatRooms = async (req, res) => {
 
 
 
+// export const getChatRooms = async (req, res) => {
+//   // const userId = req.user.userId;
+//   const userId = Number(req.user?.userId); // 💥 force it into a number
+
+
+//   console.log("✅ Authenticated user ID:", userId, typeof userId);
+
+
+//   try {
+//     const rooms = await prisma.chatRoom.findMany({
+//       where: {
+//         OR: [{ user1Id: userId }, { user2Id: userId }],
+//       },
+//       include: {
+//         user1: true,
+//         user2: true,
+//       },
+//     });
+
+//     const formattedRooms = rooms.map((room) => {
+//       const otherUser = room.user1Id === userId ? room.user2 : room.user1;
+//       return {
+//         roomId: room.id,
+//         user: {
+//           id: otherUser.id,
+//           name: otherUser.name,
+//           profilePicture: otherUser.profilePicture,
+//         },
+//       };
+//     });
+
+//     res.json(formattedRooms);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Failed to load chat rooms" });
+//   }
+// };
+
+
+
+
 export const getChatRooms = async (req, res) => {
-  // const userId = req.user.userId;
-  const userId = Number(req.user?.userId); // 💥 force it into a number
-
-
-  console.log("✅ Authenticated user ID:", userId, typeof userId);
-
+  const userId = Number(req.user?.userId);
 
   try {
     const rooms = await prisma.chatRoom.findMany({
@@ -80,11 +116,17 @@ export const getChatRooms = async (req, res) => {
       include: {
         user1: true,
         user2: true,
+        messages: {
+          orderBy: { timestamp: 'desc' },
+          take: 1, // 🆕 get latest message only
+        },
       },
     });
 
     const formattedRooms = rooms.map((room) => {
       const otherUser = room.user1Id === userId ? room.user2 : room.user1;
+      const lastMessage = room.messages[0];
+
       return {
         roomId: room.id,
         user: {
@@ -92,12 +134,19 @@ export const getChatRooms = async (req, res) => {
           name: otherUser.name,
           profilePicture: otherUser.profilePicture,
         },
+        lastMessageTime: lastMessage?.timestamp || null,
+        lastMessageText: lastMessage?.message || "",
       };
+    });
+
+    // ✅ Sort by most recent message
+    formattedRooms.sort((a, b) => {
+      return new Date(b.lastMessageTime || 0) - new Date(a.lastMessageTime || 0);
     });
 
     res.json(formattedRooms);
   } catch (err) {
-    console.error(err);
+    console.error("❌ Failed to fetch chat rooms:", err);
     res.status(500).json({ message: "Failed to load chat rooms" });
   }
 };

@@ -847,10 +847,224 @@
 
 
 
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+// import ChatPage from "./ChatPage";
+// import { FiSearch } from "react-icons/fi";
+// import { jwtDecode } from "jwt-decode";
+// import socket from "../socket";
+// import { useLocation } from "react-router-dom";
+
+// const ChatLayout = () => {
+//   const [rooms, setRooms] = useState([]);
+//   const [filteredRooms, setFilteredRooms] = useState([]);
+//   const [activeRoom, setActiveRoom] = useState(null);
+//   const [onlineUsers, setOnlineUsers] = useState([]);
+//   const [searchTerm, setSearchTerm] = useState("");
+
+//   const token = localStorage.getItem("token");
+//   const user = token ? jwtDecode(token) : null;
+
+//   const location = useLocation();
+
+//   // Fetch chat rooms
+//   useEffect(() => {
+//     if (!token || !user) return;
+
+//     const fetchRooms = async () => {
+//       try {
+//         const res = await axios.get("http://localhost:3000/api/chatrooms/rooms", {
+//           headers: { Authorization: `Bearer ${token}` },
+//         });
+//         setRooms(res.data);
+//         setFilteredRooms(res.data);
+
+//         console.log(res.data);
+//       } catch (err) {
+//         console.error("Error fetching rooms:", err);
+//       }
+//     };
+
+//     fetchRooms();
+
+//     socket.emit("userOnline", user.userId);
+//     socket.on("updateOnlineUsers", (onlineUserIds) => {
+//       setOnlineUsers(onlineUserIds);
+//     });
+
+//     socket.on("receiveMessage", (newMessage) => {
+//       setRooms((prevRooms) => {
+//         const updatedRooms = prevRooms.map((room) => {
+//           if (room.roomId === newMessage.roomId) {
+//             return {
+//               ...room,
+//               lastMessageText: newMessage.message,
+//               lastMessageTime: newMessage.timestamp,
+//             };
+//           }
+//           return room;
+//         });
+
+//         // Move the updated room to the top
+//         const sorted = updatedRooms.sort((a, b) => {
+//           return new Date(b.lastMessageTime || 0) - new Date(a.lastMessageTime || 0);
+//         });
+
+//         setFilteredRooms(sorted); // update filtered list too
+//         return sorted;
+//       });
+//     });
+
+
+//     return () => {
+//       socket.off("updateOnlineUsers");
+//       socket.off("receiveMessage");
+//     };
+//   }, [token]);
+
+//   // Search filtering
+//   useEffect(() => {
+//     if (!searchTerm) {
+//       setFilteredRooms(rooms);
+//     } else {
+//       const filtered = rooms.filter((room) =>
+//         room.user.name.toLowerCase().includes(searchTerm.toLowerCase())
+//       );
+//       setFilteredRooms(filtered);
+//     }
+//   }, [searchTerm, rooms]);
+
+//   // Determine if user is online
+//   const isUserOnline = (id) => onlineUsers.includes(String(id));
+
+//   // Pre-open chat room via navigation
+//   useEffect(() => {
+//     if (location.state?.roomId && location.state?.receiverId && location.state?.receiverName) {
+//       const directRoom = {
+//         roomId: location.state.roomId,
+//         user: {
+//           id: location.state.receiverId,
+//           name: location.state.receiverName,
+//           profilePicture: "/default.png",
+//         },
+//       };
+//       setActiveRoom(directRoom);
+//     }
+//   }, [location.state]);
+
+//   // Handle back navigation on mobile
+//   const handleBack = () => {
+//     setActiveRoom(null);
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gray-100 pt-10 px-2 sm:px-10 pb-6">
+//       <div className="h-[calc(100vh-5rem)] bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col sm:flex-row">
+//         {/* Sidebar */}
+//         <div
+//           className={`w-full sm:w-[300px] border-r border-gray-200 flex flex-col transition-all duration-300 ${
+//             activeRoom ? "hidden sm:flex" : "flex"
+//           }`}
+//         >
+//           {/* Header */}
+//           <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+//             <span className="text-lg font-semibold text-gray-800">Messaging</span>
+//           </div>
+
+//           {/* Search */}
+//           <div className="px-4 py-2 border-b border-gray-200">
+//             <div className="relative">
+//               <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+//               <input
+//                 type="text"
+//                 placeholder="Search messages"
+//                 className="w-full pl-10 pr-3 py-2 text-sm bg-gray-100 rounded-full border border-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500"
+//                 value={searchTerm}
+//                 onChange={(e) => setSearchTerm(e.target.value)}
+//               />
+//             </div>
+//           </div>
+
+          
+
+//           {/* Chat List */}
+//           <div className="flex-1 overflow-y-auto">
+//             {filteredRooms.length > 0 ? (
+//               filteredRooms.map((room) => (
+//                 <div
+//                   key={room.roomId}
+//                   onClick={() => setActiveRoom(room)}
+//                   className={`cursor-pointer px-4 py-3 flex items-center gap-3 transition ${
+//                     activeRoom?.roomId === room.roomId
+//                       ? "bg-blue-50"
+//                       : "hover:bg-gray-50"
+//                   }`}
+//                 >
+//                   <div className="relative">
+//                     <img
+//                       src={room.user.profilePicture || "/default.png"}
+//                       alt={room.user.name}
+//                       className="w-10 h-10 rounded-full object-cover"
+//                     />
+//                     {isUserOnline(room.user.id) && (
+//                       <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+//                     )}
+//                   </div>
+//                   <div className="flex flex-col overflow-hidden">
+//                     <span className="font-medium text-sm text-gray-800 truncate">
+//                       {room.user.name}
+//                     </span>
+//                     {/* <span className="text-[11px] text-gray-500 truncate">
+//                       {isUserOnline(room.user.id) ? "Online" : "Offline"}
+//                     </span> */}
+
+//                     <span className="text-[11px] text-gray-500 truncate">
+//                       {room.lastMessageText || (isUserOnline(room.user.id) ? "Online" : "Offline")}
+//                     </span>
+
+//                   </div>
+//                 </div>
+//               ))
+//             ) : (
+//               <div className="p-4 text-gray-400 text-xs">No chats available</div>
+//             )}
+//           </div>
+//         </div>
+
+//         {/* Chat Area */}
+//         <div
+//           className={`flex-1 bg-gray-50 flex flex-col overflow-hidden transition-all duration-300 ${
+//             activeRoom ? "flex" : "hidden sm:flex"
+//           }`}
+//         >
+//           {activeRoom ? (
+//             <ChatPage
+//               receiverId={activeRoom.user.id}
+//               roomId={activeRoom.roomId}
+//               receiverName={activeRoom.user.name}
+//               isReceiverOnline={isUserOnline(activeRoom.user.id)}
+//               onBack={handleBack} // send back handler
+//             />
+//           ) : (
+//             <div className="flex-1 flex items-center justify-center text-gray-500 text-sm">
+//               Select a chat to start messaging
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ChatLayout;
+
+
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ChatPage from "./ChatPage";
 import { FiSearch } from "react-icons/fi";
+import { BiCheckDouble } from "react-icons/bi";
 import { jwtDecode } from "jwt-decode";
 import socket from "../socket";
 import { useLocation } from "react-router-dom";
@@ -864,10 +1078,37 @@ const ChatLayout = () => {
 
   const token = localStorage.getItem("token");
   const user = token ? jwtDecode(token) : null;
+  const userId = user?.userId;
 
   const location = useLocation();
 
-  // Fetch chat rooms
+  const formatLastMessageTime = (timestamp) => {
+    if (!timestamp) return "";
+
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diff = now - date;
+    const oneDay = 1000 * 60 * 60 * 24;
+
+    const isToday = date.toDateString() === now.toDateString();
+    const yesterday = new Date();
+    yesterday.setDate(now.getDate() - 1);
+    const isYesterday = date.toDateString() === yesterday.toDateString();
+
+    if (isToday) {
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } else if (isYesterday) {
+      return "Yesterday";
+    } else if (diff <= 7 * oneDay) {
+      return date.toLocaleDateString(undefined, { weekday: "long" }); // Monday, Tuesday
+    } else {
+      return date.toLocaleDateString(); // 8/21/2025
+    }
+  };
+
   useEffect(() => {
     if (!token || !user) return;
 
@@ -890,12 +1131,35 @@ const ChatLayout = () => {
       setOnlineUsers(onlineUserIds);
     });
 
+    socket.on("receiveMessage", (newMessage) => {
+      setRooms((prevRooms) => {
+        const updatedRooms = prevRooms.map((room) => {
+          if (room.roomId === newMessage.roomId) {
+            return {
+              ...room,
+              lastMessageText: newMessage.message,
+              lastMessageTime: newMessage.timestamp,
+              lastSenderId: newMessage.senderId,
+            };
+          }
+          return room;
+        });
+
+        const sorted = updatedRooms.sort((a, b) => {
+          return new Date(b.lastMessageTime || 0) - new Date(a.lastMessageTime || 0);
+        });
+
+        setFilteredRooms(sorted);
+        return sorted;
+      });
+    });
+
     return () => {
       socket.off("updateOnlineUsers");
+      socket.off("receiveMessage");
     };
   }, [token]);
 
-  // Search filtering
   useEffect(() => {
     if (!searchTerm) {
       setFilteredRooms(rooms);
@@ -907,12 +1171,14 @@ const ChatLayout = () => {
     }
   }, [searchTerm, rooms]);
 
-  // Determine if user is online
   const isUserOnline = (id) => onlineUsers.includes(String(id));
 
-  // Pre-open chat room via navigation
   useEffect(() => {
-    if (location.state?.roomId && location.state?.receiverId && location.state?.receiverName) {
+    if (
+      location.state?.roomId &&
+      location.state?.receiverId &&
+      location.state?.receiverName
+    ) {
       const directRoom = {
         roomId: location.state.roomId,
         user: {
@@ -925,7 +1191,6 @@ const ChatLayout = () => {
     }
   }, [location.state]);
 
-  // Handle back navigation on mobile
   const handleBack = () => {
     setActiveRoom(null);
   };
@@ -958,19 +1223,6 @@ const ChatLayout = () => {
             </div>
           </div>
 
-          {/* Filters */}
-          {/* <div className="px-4 py-2 border-b border-gray-200 flex gap-2 overflow-x-auto">
-            <button className="px-4 py-1.5 bg-blue-50 text-blue-600 text-xs rounded-full border border-blue-200 hover:bg-blue-100">
-              Starred
-            </button>
-            <button className="px-4 py-1.5 bg-gray-100 text-gray-600 text-xs rounded-full border border-gray-300 hover:bg-gray-200">
-              Unread
-            </button>
-            <button className="px-4 py-1.5 bg-gray-100 text-gray-600 text-xs rounded-full border border-gray-300 hover:bg-gray-200">
-              All
-            </button>
-          </div> */}
-
           {/* Chat List */}
           <div className="flex-1 overflow-y-auto">
             {filteredRooms.length > 0 ? (
@@ -978,29 +1230,41 @@ const ChatLayout = () => {
                 <div
                   key={room.roomId}
                   onClick={() => setActiveRoom(room)}
-                  className={`cursor-pointer px-4 py-3 flex items-center gap-3 transition ${
+                  className={`cursor-pointer px-4 py-3 flex items-center justify-between transition ${
                     activeRoom?.roomId === room.roomId
                       ? "bg-blue-50"
                       : "hover:bg-gray-50"
                   }`}
                 >
-                  <div className="relative">
-                    <img
-                      src={room.user.profilePicture || "/default.png"}
-                      alt={room.user.name}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                    {isUserOnline(room.user.id) && (
-                      <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
-                    )}
+                  <div className="flex items-center gap-3 overflow-hidden">
+                    <div className="relative">
+                      <img
+                        src={room.user.profilePicture || "/default.png"}
+                        alt={room.user.name}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      {isUserOnline(room.user.id) && (
+                        <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+                      )}
+                    </div>
+                    <div className="flex flex-col overflow-hidden">
+                      <span className="font-medium text-sm text-gray-800 truncate">
+                        {room.user.name}
+                      </span>
+                      <div className="flex items-center gap-1 text-[11px] text-gray-500 truncate">
+                        {/* Show double tick if last message is from me */}
+                        {room.lastSenderId === userId && (
+                          <BiCheckDouble size={14} className="text-gray-500" />
+                        )}
+                        <span className="truncate">
+                          {room.lastMessageText ||
+                            (isUserOnline(room.user.id) ? "Online" : "Offline")}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-col overflow-hidden">
-                    <span className="font-medium text-sm text-gray-800 truncate">
-                      {room.user.name}
-                    </span>
-                    <span className="text-[11px] text-gray-500 truncate">
-                      {isUserOnline(room.user.id) ? "Online" : "Offline"}
-                    </span>
+                  <div className="text-[10px] text-gray-400 ml-2 whitespace-nowrap">
+                    {formatLastMessageTime(room.lastMessageTime)}
                   </div>
                 </div>
               ))
@@ -1022,7 +1286,7 @@ const ChatLayout = () => {
               roomId={activeRoom.roomId}
               receiverName={activeRoom.user.name}
               isReceiverOnline={isUserOnline(activeRoom.user.id)}
-              onBack={handleBack} // send back handler
+              onBack={handleBack}
             />
           ) : (
             <div className="flex-1 flex items-center justify-center text-gray-500 text-sm">
@@ -1036,3 +1300,79 @@ const ChatLayout = () => {
 };
 
 export default ChatLayout;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{/* Filters */}
+          {/* <div className="px-4 py-2 border-b border-gray-200 flex gap-2 overflow-x-auto">
+            <button className="px-4 py-1.5 bg-blue-50 text-blue-600 text-xs rounded-full border border-blue-200 hover:bg-blue-100">
+              Starred
+            </button>
+            <button className="px-4 py-1.5 bg-gray-100 text-gray-600 text-xs rounded-full border border-gray-300 hover:bg-gray-200">
+              Unread
+            </button>
+            <button className="px-4 py-1.5 bg-gray-100 text-gray-600 text-xs rounded-full border border-gray-300 hover:bg-gray-200">
+              All
+            </button>
+          </div> */}

@@ -68,6 +68,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FaStar, FaRegStar } from "react-icons/fa";
+import ReceivedReviews from "./ReceivedReviews";
+
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -110,7 +112,7 @@ const Reviews = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 px-6 py-10">
-      <div className="max-w-3xl mx-auto">
+      {/* <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl font-bold text-center text-blue-700 mb-8">⭐ Skill Reviews</h1>
 
         {!skillId ? (
@@ -135,7 +137,9 @@ const Reviews = () => {
             ))}
           </div>
         )}
-      </div>
+      </div> */}
+
+      <ReceivedReviews />
     </div>
   );
 };

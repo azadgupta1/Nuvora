@@ -512,6 +512,121 @@
 
 
 
+// import React, { useEffect, useState } from 'react';
+// import Sidebar from '../components/Dashboard/SideBar';
+// import Header from '../components/Dashboard/Header';
+// import { Outlet } from 'react-router-dom';
+// import { ToastContainer, toast } from 'react-toastify';
+// import { jwtDecode } from 'jwt-decode';
+// import axios from 'axios';
+// import 'react-toastify/dist/ReactToastify.css';
+// import SkillModal from './SkillModal';
+// import socket from '../socket'; // ✅ use shared instance
+
+// function DashBoard() {
+//   const [showSkillModal, setShowSkillModal] = useState(false);
+
+//   useEffect(() => {
+//     const token = localStorage.getItem("token");
+//     if (!token) return;
+
+//     try {
+//       const { userId } = jwtDecode(token);
+
+//       // ✅ Connect only once and emit userOnline
+//       if (!socket.connected) {
+//         socket.connect();
+//         socket.emit("userOnline", userId);
+//       }
+
+//       // ✅ Only set listeners once
+//       const handleNewBooking = (data) => {
+//         toast.info(`📥 New booking from ${data.fromUser} for ${data.skillName}`, {
+//           position: "top-right",
+//           autoClose: 5000,
+//           toastId: `newBooking-${data.bookingId}`,
+//         });
+//       };
+
+//       const handleBookingStatus = (data) => {
+//         toast.success(`✅ Booking for ${data.skill.name} is now ${data.status}`, {
+//           position: "top-right",
+//           autoClose: 5000,
+//           toastId: `statusUpdate-${data.id}`,
+//         });
+//       };
+
+//       socket.on("newBookingRequest", handleNewBooking);
+//       socket.on("bookingStatusUpdated", handleBookingStatus);
+
+//       // ✅ Check for skill profile (unchanged)
+//       axios
+//         .get("http://localhost:3000/api/skills/user", {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         })
+//         .then((res) => {
+//           if (!res?.data?.id) setShowSkillModal(true);
+//         })
+//         .catch((err) => {
+//           if (err.response?.status === 404) setShowSkillModal(true);
+//         });
+
+//       // ✅ Clean up listeners only (not socket disconnect)
+//       return () => {
+//         socket.off("newBookingRequest", handleNewBooking);
+//         socket.off("bookingStatusUpdated", handleBookingStatus);
+//       };
+//     } catch (err) {
+//       console.error("Invalid token:", err);
+//     }
+//   }, []);
+
+//   return (
+//     <div className="h-screen flex flex-col">
+//       {/* Header */}
+//       <div className="w-full">
+//         <Header />
+//       </div>
+
+//       {/* Sidebar + Main Content */}
+//       <div className="flex flex-1 overflow-hidden">
+//         <div className="w-20 bg-white text-white">
+//           <Sidebar />
+//         </div>
+
+//         <div className="flex-1 mt-10 overflow-auto bg-gray-100 relative">
+//           <Outlet />
+//         </div>
+//       </div>
+
+//       <SkillModal isOpen={showSkillModal} onClose={() => setShowSkillModal(false)} />
+
+//       {/* Global Toast Container */}
+//       <ToastContainer position="top-right" autoClose={4000} newestOnTop />
+//     </div>
+//   );
+// }
+
+// export default DashBoard;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Dashboard/SideBar';
 import Header from '../components/Dashboard/Header';
@@ -521,7 +636,7 @@ import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import SkillModal from './SkillModal';
-import socket from '../socket'; // ✅ use shared instance
+import socket from '../socket';
 
 function DashBoard() {
   const [showSkillModal, setShowSkillModal] = useState(false);
@@ -533,13 +648,11 @@ function DashBoard() {
     try {
       const { userId } = jwtDecode(token);
 
-      // ✅ Connect only once and emit userOnline
       if (!socket.connected) {
         socket.connect();
         socket.emit("userOnline", userId);
       }
 
-      // ✅ Only set listeners once
       const handleNewBooking = (data) => {
         toast.info(`📥 New booking from ${data.fromUser} for ${data.skillName}`, {
           position: "top-right",
@@ -559,7 +672,6 @@ function DashBoard() {
       socket.on("newBookingRequest", handleNewBooking);
       socket.on("bookingStatusUpdated", handleBookingStatus);
 
-      // ✅ Check for skill profile (unchanged)
       axios
         .get("http://localhost:3000/api/skills/user", {
           headers: {
@@ -573,7 +685,6 @@ function DashBoard() {
           if (err.response?.status === 404) setShowSkillModal(true);
         });
 
-      // ✅ Clean up listeners only (not socket disconnect)
       return () => {
         socket.off("newBookingRequest", handleNewBooking);
         socket.off("bookingStatusUpdated", handleBookingStatus);
@@ -584,26 +695,24 @@ function DashBoard() {
   }, []);
 
   return (
-    <div className="h-screen flex flex-col">
-      {/* Header */}
-      <div className="w-full">
+    <div className="h-screen flex flex-col overflow-hidden">
+      {/* Fixed Header */}
+      <div className="w-full fixed top-0 left-0 z-40">
         <Header />
       </div>
 
-      {/* Sidebar + Main Content */}
-      <div className="flex flex-1 overflow-hidden">
-        <div className="w-20 bg-white text-white">
-          <Sidebar />
-        </div>
+      {/* Sidebar + Content */}
+      <div className="flex flex-1 pt-[68px] overflow-hidden">
+        {/* pt-[68px] gives space below fixed header */}
+        <Sidebar />
 
-        <div className="flex-1 mt-10 overflow-auto bg-gray-100 relative">
+        <main className="flex-1 overflow-auto bg-gray-100 p-0">
           <Outlet />
-        </div>
+        </main>
       </div>
 
       <SkillModal isOpen={showSkillModal} onClose={() => setShowSkillModal(false)} />
 
-      {/* Global Toast Container */}
       <ToastContainer position="top-right" autoClose={4000} newestOnTop />
     </div>
   );
