@@ -657,8 +657,10 @@ import { useNavigate } from "react-router-dom";
 import { PiSlidersHorizontalBold } from "react-icons/pi";
 import { FaRegBookmark } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa";
-
-
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { MdStarRate } from "react-icons/md";
+import { MdStarBorder } from "react-icons/md";
+import { MdOutlineStarHalf } from "react-icons/md";
 
 const categoryColors = {
   Technology: "bg-blue-100 text-blue-800",
@@ -766,6 +768,8 @@ const SkillsFeed = () => {
           },
         });
         setSkills(response.data.skills || []);
+
+        console.log("Skill Data : ", response.data.skills);
       } catch (error) {
         console.error("Error fetching skills:", error);
       } finally {
@@ -823,6 +827,25 @@ const SkillsFeed = () => {
     return filtered;
   }, [skills, searchTerm, selectedCategories, selectedRatings]);
 
+  const renderStars = (rating) => {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating - fullStars >= 0.5;
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+  return (
+    <div className="flex items-center gap-0 text-[#f19812] text-sm">
+      {[...Array(fullStars)].map((_, i) => (
+        <MdStarRate key={`full-${i}`} />
+      ))}
+      {hasHalfStar && <MdOutlineStarHalf  />}
+      {[...Array(emptyStars)].map((_, i) => (
+        <MdStarBorder key={`empty-${i}`} />
+      ))}
+    </div>
+  );
+};
+
+
   return (
     <div className="min-h-screen bg-[#F7FAFC] px-0 py-2">
       {/* Top Bar */}
@@ -834,13 +857,6 @@ const SkillsFeed = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full md:w-[60%] px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
         />
-
-        {/* <button
-          onClick={() => setIsFilterOpen(true)}
-          className="md:hidden px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-        >
-          🔍 Filter
-        </button> */}
 
         <button
           onClick={() => setIsFilterOpen(true)}
@@ -886,12 +902,8 @@ const SkillsFeed = () => {
                   {bookmarkedSkillIds.includes(skill.id) ? <FaBookmark /> : <FaRegBookmark />}
                 </button>
 
-                <div className="flex items-center gap-2">
-                  {/* <img
-                    src={skill.user?.profilePicture || "https://via.placeholder.com/40"}
-                    alt={skill.user?.name || "User"}
-                    className="w-8 h-8 rounded-full object-cover"
-                  /> */}
+                {/* <div className="flex items-center gap-2">
+                  
                   {skill.user?.profilePicture ? (
                     <img
                       src={skill.user.profilePicture}
@@ -909,7 +921,68 @@ const SkillsFeed = () => {
                   <span className="font-semibold text-gray-800">
                     {skill.user?.name || "Unknown User"}
                   </span>
+
+                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                    {renderStars(skill.averageRating || 0)}
+                    <span className="ml-1 text-gray-500">
+                      ({skill.reviewCount || 0})
+                    </span>
+                  </div>
+
+                </div> */}
+
+
+                <div className="flex items-center gap-2">
+                  {/* Profile Image */}
+                  {/* {skill.user?.profilePicture ? (
+                    <img
+                      src={skill.user.profilePicture}
+                      alt={skill.user.name || "User"}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div
+                      className="w-8 h-8 rounded-full bg-green-200 text-white flex items-center justify-center text-xs font-bold uppercase"
+                      title={skill.user?.name || "User"}
+                    >
+                      {skill.user?.name?.slice(0, 2) || "NA"}
+                    </div>
+                  )} */}
+
+                  {skill.user?.profilePicture && skill.user.profilePicture.trim() !== "" ? (
+                    <img
+                      src={`http://localhost:3000${skill.user.profilePicture}`}
+                      alt={skill.user.name || "User"}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div
+                      className="w-8 h-8 rounded-full bg-green-200 text-white flex items-center justify-center text-xs font-bold uppercase"
+                      title={skill.user?.name || "User"}
+                    >
+                      {skill.user?.name?.slice(0, 2) || "NA"}
+                    </div>
+                  )}
+
+
+                  {/* Name + Rating (in column) */}
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-gray-800 text-sm">
+                      {skill.user?.name || "Unknown User"}
+                    </span>
+
+                    {/* Star rating display below name */}
+                    <div className="flex items-center gap-1 text-xs text-gray-500">
+                      {renderStars(skill.averageRating || 0)}
+                      <span className="ml-1 text-gray-500">
+                        ({skill.reviewCount || 0})
+                      </span>
+                    </div>
+                  </div>
                 </div>
+
+
+
 
                 <div className="mt-4">
                   <p className="text-sm font-medium text-gray-700 mb-2">Skills I Can Teach:</p>
