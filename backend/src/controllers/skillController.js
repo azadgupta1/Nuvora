@@ -223,20 +223,68 @@ export const addOrUpdateSkill = async (req, res) => {
 };
 
 // Get All Skills (excluding current user's)
+// export const getAllSkills = async (req, res) => {
+//   try {
+//     const userId = req.user.userId;
+
+//     const skills = await prisma.skill.findMany({
+//       where: {
+//         userId: {
+//           not: userId,
+//         },
+//       },
+//       include: { 
+//         user: true,
+//         reviews: true 
+//       },
+//     });
+
+//     res.status(200).json({ skills });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Something went wrong while fetching skills.' });
+//   }
+// };
+
+
+
 export const getAllSkills = async (req, res) => {
   try {
     const userId = req.user.userId;
 
+    // Step 1: Fetch all skills (excluding current user)
     const skills = await prisma.skill.findMany({
       where: {
         userId: {
           not: userId,
         },
       },
-      include: { user: true },
+      include: {
+        user: true,
+        reviews: {
+          include: {
+            user: true,
+          },
+        },
+      },
     });
 
-    res.status(200).json({ skills });
+    // Step 2: Add average rating & count to each skill
+    const skillsWithRatings = skills.map((skill) => {
+      const totalReviews = skill.reviews.length;
+      const avgRating =
+        totalReviews > 0
+          ? skill.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+          : 0;
+
+      return {
+        ...skill,
+        averageRating: Number(avgRating.toFixed(1)),
+        reviewCount: totalReviews,
+      };
+    });
+
+    res.status(200).json({ skills: skillsWithRatings });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Something went wrong while fetching skills.' });

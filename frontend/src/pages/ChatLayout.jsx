@@ -1060,6 +1060,9 @@
 
 
 
+
+
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ChatPage from "./ChatPage";
@@ -1196,7 +1199,10 @@ const ChatLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-10 px-2 sm:px-10 pb-6">
+    // <div className="min-h-screen bg-gray-100 pt-5 sm:px-10 pb-6">
+    // New (fixed height layout)
+    <div className="h-screen bg-gray-100 pt-5 sm:px-10 pb-6 overflow-hidden">
+
       <div className="h-[calc(100vh-5rem)] bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col sm:flex-row">
         {/* Sidebar */}
         <div
@@ -1230,7 +1236,7 @@ const ChatLayout = () => {
                 <div
                   key={room.roomId}
                   onClick={() => setActiveRoom(room)}
-                  className={`cursor-pointer px-4 py-3 flex items-center justify-between transition ${
+                  className={`cursor-pointer px-4 py-3 flex items-center border-b border-gray-200 justify-between transition ${
                     activeRoom?.roomId === room.roomId
                       ? "bg-blue-50"
                       : "hover:bg-gray-50"
