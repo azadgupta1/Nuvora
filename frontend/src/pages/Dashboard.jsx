@@ -702,7 +702,7 @@ function DashBoard() {
       </div>
 
       {/* Sidebar + Content */}
-      <div className="flex flex-1 pt-[68px] overflow-hidden">
+      <div className="flex flex-1 pt-[57px] overflow-hidden">
         {/* pt-[68px] gives space below fixed header */}
         <Sidebar />
 

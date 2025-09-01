@@ -429,22 +429,6 @@ export default function Header() {
   }, [token]);
 
 
-  // const getRelativeTime = (date) => {
-  //   const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-
-  //   const now = new Date();
-  //   const then = new Date(date);
-  //   const diff = (now - then) / 1000; // in seconds
-
-  //   if (diff < 60) return rtf.format(-Math.floor(diff), 'second');
-  //   if (diff < 3600) return rtf.format(-Math.floor(diff / 60), 'minute');
-  //   if (diff < 86400) return rtf.format(-Math.floor(diff / 3600), 'hour');
-  //   if (diff < 2592000) return rtf.format(-Math.floor(diff / 86400), 'day');
-  //   if (diff < 31536000) return rtf.format(-Math.floor(diff / 2592000), 'month');
-
-  //   return rtf.format(-Math.floor(diff / 31536000), 'year');
-  // };
-
   const getRelativeTime = (date) => {
   const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 
@@ -470,8 +454,10 @@ export default function Header() {
 };
 
 
+// #003344
+
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-[#003344] text-white px-4 py-5 sm:px-6 sm:py-3 ">
+    <header className="fixed top-0 left-0 w-full z-50 bg-black text-white px-4 py-5 sm:px-6 sm:py-3 ">
       <div className="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto gap-3">
         {/* Logo */}
         <div className="flex items-center gap-2 flex-shrink-0">
