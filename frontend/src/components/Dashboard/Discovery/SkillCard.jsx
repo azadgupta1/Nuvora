@@ -120,7 +120,7 @@
 import React from "react";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
 import { MdStarRate, MdStarBorder, MdOutlineStarHalf } from "react-icons/md";
-import DefaultIMG from "../assets/DefaultLM.png"; // ✅ Make sure it's a default export or use curly braces if it's named
+import DefaultIMG from "../../../assets/DefaultLM.png"; // ✅ Make sure it's a default export or use curly braces if it's named
 
 const renderStars = (rating) => {
   const fullStars = Math.floor(rating);
