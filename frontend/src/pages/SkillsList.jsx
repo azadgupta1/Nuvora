@@ -1049,10 +1049,10 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
-import SkillRequestModal from "./SkillRequestModal";
-import SkillsFilterPanel from "./SkillsFilterPanel";
-import SkillCard from "./SkillCard";
-import SearchAndFilterBar from "./SearchAndFilterBar";
+import SkillRequestModal from "../components/Dashboard/Discovery/SkillRequestModal";
+import SkillsFilterPanel from "../components/Dashboard/Discovery/SkillsFilterPanel";
+import SkillCard from "../components/Dashboard/Discovery/SkillCard";
+import SearchAndFilterBar from "../components/Dashboard/Discovery/SearchAndFilterBar";
 
 
 const defaultCategoryColors = {

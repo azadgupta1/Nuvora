@@ -68,7 +68,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FaStar, FaRegStar } from "react-icons/fa";
-import ReceivedReviews from "./ReceivedReviews";
+import ReceivedReviews from "../components/Dashboard/Reviews/ReceivedReviews";
 
 
 const Reviews = () => {

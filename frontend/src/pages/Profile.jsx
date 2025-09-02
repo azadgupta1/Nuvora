@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import UserSkillProfile from "./UserSkillProfile";
-import ReceivedReviews from "./ReceivedReviews";
+import ReceivedReviews from "../components/Dashboard/Reviews/ReceivedReviews";
 
 
 function Profile() {

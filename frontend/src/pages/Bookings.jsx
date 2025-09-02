@@ -539,7 +539,7 @@ import {
 } from "react-icons/fa";
 import { toast } from "react-toastify";
 import socket from "../socket";
-import ReviewModal from "./ReviewModal";
+import ReviewModal from "../components/Dashboard/Bookings/ReviewModal";
 
 // Professional, minimal and accessible Bookings page
 // - Uses a neutral palette and subtle accents for a corporate look
