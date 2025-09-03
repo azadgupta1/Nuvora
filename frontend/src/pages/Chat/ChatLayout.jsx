@@ -1200,10 +1200,11 @@ const ChatLayout = () => {
 
   return (
     // <div className="min-h-screen bg-gray-100 pt-5 sm:px-10 pb-6">
+    // [calc(100vh-5rem)]
     // New (fixed height layout)
-    <div className="h-screen bg-gray-100 pt-5 sm:px-10 pb-6 overflow-hidden">
+    <div className="h-full bg-gray-100 pt-5 sm:px-10 pb-6 overflow-hidden">
 
-      <div className="h-[calc(100vh-5rem)] bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col sm:flex-row">
+      <div className="h-full bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col sm:flex-row">
         {/* Sidebar */}
         <div
           className={`w-full sm:w-[300px] border-r border-gray-200 flex flex-col transition-all duration-300 ${
