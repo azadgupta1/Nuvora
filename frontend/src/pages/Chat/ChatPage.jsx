@@ -451,8 +451,8 @@ import { useEffect, useRef, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { FiImage, FiSend, FiArrowLeft } from "react-icons/fi"; // Added back icon
-import BGG_Chat from "../assets/BGG_Chat.jpg";
-import socket from "../socket";
+import BGG_Chat from "../../assets/BGG_Chat.jpg";
+import socket from "../../socket";
 import { BiCheckDouble } from "react-icons/bi";
 
 

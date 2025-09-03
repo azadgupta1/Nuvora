@@ -1067,7 +1067,7 @@ const defaultCategoryColors = {
 
 
 
-const SkillsFeed = () => {
+const Discovery = () => {
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -1243,4 +1243,4 @@ return (
 
 };
 
-export default SkillsFeed;
+export default Discovery;
