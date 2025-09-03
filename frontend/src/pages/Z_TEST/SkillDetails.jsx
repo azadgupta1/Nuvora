@@ -654,7 +654,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import ChatPage from "./Chat/ChatPage";
+import ChatPage from "../Chat/ChatPage";
 
 const categoryColors = {
   Technology: "bg-blue-100 text-blue-700",
