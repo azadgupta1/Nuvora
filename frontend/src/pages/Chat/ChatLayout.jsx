@@ -1069,7 +1069,7 @@ import ChatPage from "./ChatPage";
 import { FiSearch } from "react-icons/fi";
 import { BiCheckDouble } from "react-icons/bi";
 import { jwtDecode } from "jwt-decode";
-import socket from "../socket";
+import socket from "../../socket";
 import { useLocation } from "react-router-dom";
 
 const ChatLayout = () => {

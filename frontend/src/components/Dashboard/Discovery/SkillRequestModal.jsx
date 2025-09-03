@@ -749,7 +749,7 @@
 
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import ChatPage from "../../../pages/ChatPage";
+import ChatPage from "../../../pages/Chat/ChatPage";
 import { useNavigate } from "react-router-dom";
 
 const categoryColors = {
