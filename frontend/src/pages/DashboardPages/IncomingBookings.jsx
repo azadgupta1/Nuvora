@@ -903,7 +903,7 @@
 import React, { useEffect, useState } from "react";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { FiClock } from "react-icons/fi";
-import socket from "../socket"; // ✅ shared socket instance
+import socket from "../../socket"; // ✅ shared socket instance
 
 const IncomingBookings = () => {
   const [bookings, setBookings] = useState([]);
