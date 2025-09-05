@@ -55,18 +55,42 @@ app.use(passport.session());
 //   credentials: true
 // }));
 
-const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
+// const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
+
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true
+// }));
+
+
+const allowedOrigins = [
+  'https://nuvora.onrender.com', // Your frontend
+  'http://localhost:3000'         // Local dev (optional)
+];
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow requests with no origin (like mobile apps, curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Ensure the server handles preflight requests
+app.options('*', cors());
 
 
 app.use(express.json());
