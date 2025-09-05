@@ -541,6 +541,9 @@ import { toast } from "react-toastify";
 import socket from "../../socket";
 import ReviewModal from "../../components/Dashboard/Bookings/ReviewModal";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
 // Professional, minimal and accessible Bookings page
 // - Uses a neutral palette and subtle accents for a corporate look
 // - Card-based layout with compact metadata rows
@@ -661,7 +664,7 @@ const Bookings = () => {
     const fetchBookings = async () => {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:3000/api/bookings", {
+        const response = await fetch(`${backendUrl}/api/bookings`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -714,7 +717,7 @@ const Bookings = () => {
     if (!confirmed) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/api/bookings/${bookingId}`, {
+      const response = await fetch(`${backendUrl}/api/bookings/${bookingId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

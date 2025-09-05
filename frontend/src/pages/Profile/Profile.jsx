@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import UserSkillProfile from "./UserSkillProfile";
 import ReceivedReviews from "../../components/Dashboard/Reviews/ReceivedReviews";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 
 function Profile() {
   const { id } = useParams();
@@ -16,7 +18,7 @@ function Profile() {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
       try {
-        const res = await fetch(`http://localhost:3000/api/users/${id}`, {
+        const res = await fetch(`${backendUrl}/api/users/${id}`, {
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error(`Error: ${await res.text()}`);
@@ -44,7 +46,7 @@ function Profile() {
     }
 
     try {
-      const res = await fetch(`http://localhost:3000/api/users/${id}`, {
+      const res = await fetch(`${backendUrl}/api/users/${id}`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: form,
@@ -69,7 +71,7 @@ function Profile() {
           {/* Left Sidebar */}
           <div className="w-72 bg-white shadow rounded-lg p-6">
             {data?.profilePicture ? (
-              <img src={`http://localhost:3000${data.profilePicture}`} alt="Profile" className="w-40 h-40 rounded-full mx-auto border object-cover" />
+              <img src={`${backendUrl}${data.profilePicture}`} alt="Profile" className="w-40 h-40 rounded-full mx-auto border object-cover" />
             ) : (
               <div className="w-40 h-40 rounded-full bg-gray-200 mx-auto flex items-center justify-center text-gray-500">No Image</div>
             )}

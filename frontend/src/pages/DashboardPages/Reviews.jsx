@@ -70,6 +70,8 @@ import { useSearchParams } from "react-router-dom";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import ReceivedReviews from "../../components/Dashboard/Reviews/ReceivedReviews";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -79,7 +81,7 @@ const Reviews = () => {
 
   const fetchReviews = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/review/${skillId}`);
+      const res = await fetch(`${backendUrl}/api/review/${skillId}`);
       const data = await res.json();
 
       if (res.ok) {

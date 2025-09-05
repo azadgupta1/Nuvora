@@ -1055,6 +1055,10 @@ import SkillCard from "../../components/Dashboard/Discovery/SkillCard";
 import SearchAndFilterBar from "../../components/Dashboard/Discovery/SearchAndFilterBar";
 
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
+
 const defaultCategoryColors = {
   Technology: "bg-blue-100 text-blue-800",
   Sports: "bg-green-100 text-green-800",
@@ -1083,7 +1087,7 @@ const Discovery = () => {
     const fetchBookmarks = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:3000/api/bookmark", {
+        const res = await axios.get(`${backendUrl}/api/bookmark`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const map = {};
@@ -1103,7 +1107,7 @@ const Discovery = () => {
     try {
       if (bookmarkedSkillIds.includes(skillId)) {
         const bookmarkId = bookmarksMap[skillId];
-        await axios.delete(`http://localhost:3000/api/bookmark/${bookmarkId}`, {
+        await axios.delete(`${backendUrl}/api/bookmark/${bookmarkId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setBookmarkedSkillIds((prev) => prev.filter((id) => id !== skillId));
@@ -1114,7 +1118,7 @@ const Discovery = () => {
         });
       } else {
         const res = await axios.post(
-          `http://localhost:3000/api/bookmark`,
+          `${backendUrl}/api/bookmark`,
           { skillId },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -1126,11 +1130,14 @@ const Discovery = () => {
     }
   };
 
+  
+
+
   useEffect(() => {
     const fetchSkills = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:3000/api/skills", {
+        const res = await axios.get(`${backendUrl}/api/skills`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setSkills(res.data.skills || []);

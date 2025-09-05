@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { toast } from "react-toastify";
 
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
 const ReceivedReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [showAll, setShowAll] = useState(false);
@@ -11,7 +15,7 @@ const ReceivedReviews = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/review", {
+        const response = await fetch(`${backendUrl}/api/review`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

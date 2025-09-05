@@ -4,6 +4,9 @@ import Modal from "react-modal";
 
 Modal.setAppElement('#root'); // Set for accessibility
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
 const UserSkillProfile = () => {
   const [skill, setSkill] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,7 +27,7 @@ const UserSkillProfile = () => {
     const fetchSkill = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:3000/api/skills/user", {
+        const res = await axios.get(`${backendUrl}/api/skills/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -58,7 +61,7 @@ const UserSkillProfile = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.post("http://localhost:3000/api/skills", formData, {
+      await axios.post(`${backendUrl}/api/skills`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

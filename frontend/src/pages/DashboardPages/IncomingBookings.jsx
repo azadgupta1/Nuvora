@@ -905,6 +905,9 @@ import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { FiClock } from "react-icons/fi";
 import socket from "../../socket"; // ✅ shared socket instance
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
 const IncomingBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -914,7 +917,7 @@ const IncomingBookings = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/bookings/received", {
+        const response = await fetch(`${backendUrl}/api/bookings/received`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -962,7 +965,7 @@ const IncomingBookings = () => {
   // Handle confirmation / cancellation
   const updateStatus = async (id, newStatus) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/bookings/${id}/status`, {
+      const response = await fetch(`${backendUrl}/api/bookings/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

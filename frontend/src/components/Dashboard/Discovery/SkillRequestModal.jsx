@@ -752,6 +752,9 @@ import { jwtDecode } from "jwt-decode";
 import ChatPage from "../../../pages/Chat/ChatPage";
 import { useNavigate } from "react-router-dom";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
 const categoryColors = {
   Technology: "bg-blue-50 text-blue-700 border border-blue-200",
   Sports: "bg-green-50 text-green-700 border border-green-200",
@@ -790,7 +793,7 @@ const SkillRequestModal = ({ skillId, onClose }) => {
   useEffect(() => {
     const fetchSkillDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/skills/${skillId}`);
+        const response = await fetch(`${backendUrl}/api/skills/${skillId}`);
         const data = await response.json();
         setSkill(data);
       } catch (error) {
@@ -856,7 +859,7 @@ const SkillRequestModal = ({ skillId, onClose }) => {
     const startTimeStr = extractStartTime(time);         // "08:30 AM"
     const startTime24 = convertTo24Hour(startTimeStr);   // "08:30"
 
-    const response = await fetch("http://localhost:3000/api/bookings", {
+    const response = await fetch(`${backendUrl}/api/bookings`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -898,7 +901,7 @@ const SkillRequestModal = ({ skillId, onClose }) => {
       const senderId = user.userId;
       const receiverId = skill.userId;
 
-      const res = await fetch("http://localhost:3000/api/chatrooms", {
+      const res = await fetch(`${backendUrl}/api/chatrooms`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -910,7 +913,7 @@ const SkillRequestModal = ({ skillId, onClose }) => {
       const data = await res.json();
 
       if (data?.id) {
-        const receiverRes = await fetch(`http://localhost:3000/api/users/${receiverId}`);
+        const receiverRes = await fetch(`${backendUrl}/api/users/${receiverId}`);
         const receiverData = await receiverRes.json();
 
         navigate("/dashboard/chatlayout", {

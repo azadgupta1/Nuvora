@@ -157,7 +157,7 @@ const SkillCard = ({
       <div className="flex items-center gap-2">
         {skill.user?.profilePicture ? (
           <img
-            src={`http://localhost:3000${skill.user.profilePicture}`}
+            src={`${backendUrl}${skill.user.profilePicture}`}
             alt={skill.user.name}
             className="w-8 h-8 rounded-full object-cover"
           />

@@ -9,6 +9,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import SkillModal from './Home/SkillModal';
 import socket from '../socket';
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
 
 function DashBoard() {
   const [showSkillModal, setShowSkillModal] = useState(false);
@@ -45,7 +48,7 @@ function DashBoard() {
       socket.on("bookingStatusUpdated", handleBookingStatus);
 
       axios
-        .get("http://localhost:3000/api/skills/user", {
+        .get(`${backendUrl}/api/skills/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

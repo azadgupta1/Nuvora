@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import { FaTrashAlt, FaMapMarkerAlt, FaTag } from "react-icons/fa";
 import { BiBookmarkAltMinus } from "react-icons/bi";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchBookmarks = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/bookmark", {
+      const response = await fetch(`${backendUrl}/api/bookmark`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -29,7 +32,7 @@ const Bookmarks = () => {
 
   const removeBookmark = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/bookmark/${id}`, {
+      const res = await fetch(`${backendUrl}/api/bookmark/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -7,6 +7,9 @@ import Nuvora_2 from '../../assets/Nuvora_2.png';
 import axios from 'axios';
 import socket from '../../socket';
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -57,7 +60,7 @@ export default function Header() {
 
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/notifications", {
+      const response = await axios.get(`${backendUrl}/api/notifications`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -77,7 +80,7 @@ export default function Header() {
 
   const markAsRead = async (id) => {
     try {
-      await axios.patch(`http://localhost:3000/api/notifications/${id}/read`, {}, {
+      await axios.patch(`${backendUrl}/api/notifications/${id}/read`, {}, {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });

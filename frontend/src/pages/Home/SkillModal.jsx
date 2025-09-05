@@ -120,6 +120,9 @@
 import { useState } from "react";
 import axios from "axios";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
 export default function SkillModal({ isOpen, onClose }) {
   const [skillsOffered, setSkillsOffered] = useState([]);
   const [skillsWanted, setSkillsWanted] = useState([]);
@@ -140,7 +143,7 @@ export default function SkillModal({ isOpen, onClose }) {
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/skills",
+        `${backendUrl}/api/skills`,
         {
           skillsOffered,
           skillsWanted,
