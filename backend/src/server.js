@@ -51,7 +51,7 @@ app.use(passport.session());
 // app.use(cors());
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://nuvora.onrender.com',
   credentials: true
 }));
 
