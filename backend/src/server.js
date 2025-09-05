@@ -30,9 +30,7 @@ const app = express();
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',')
   : [
-      'https://nuvora.onrender.com',
-      'http://localhost:5173',  // ✅ Vite dev server
-      'http://localhost:3000'   // Optional local dev
+      'https://nuvora.onrender.com'
     ];
 
 // Create HTTP server and Socket.IO instance
