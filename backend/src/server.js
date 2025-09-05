@@ -15,22 +15,31 @@ import reviewRoutes from './routes/reviewRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import chatRoomRoutes from './routes/chatRoomRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-import { getUserById } from './controllers/userController.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+
 import './config/passport.js';
 import passport from 'passport';
 import session from 'express-session';
 import path from 'path';
 
-
-
 dotenv.config();
 
 const app = express();
+
+// ✅ Allowed origins from env or default
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',')
+  : [
+      'https://nuvora.onrender.com',
+      'http://localhost:5173',  // ✅ Vite dev server
+      'http://localhost:3000'   // Optional local dev
+    ];
+
+// Create HTTP server and Socket.IO instance
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -38,7 +47,7 @@ const io = new Server(httpServer, {
 
 // Session middleware
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || 'keyboard_cat',
   resave: false,
   saveUninitialized: true
 }));
@@ -47,36 +56,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Middlewares
-// app.use(cors());
-
-// app.use(cors({
-//   origin: 'https://nuvora.onrender.com',
-//   credentials: true
-// }));
-
-// const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
-
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     if (!origin || allowedOrigins.includes(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-//   credentials: true
-// }));
-
-
-const allowedOrigins = [
-  'https://nuvora.onrender.com', // Your frontend
-  'http://localhost:3000'         // Local dev (optional)
-];
-
+// ✅ CORS middleware for Express
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl)
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -89,18 +71,16 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Ensure the server handles preflight requests
+// Preflight
 app.options('*', cors());
 
-
+// JSON middleware
 app.use(express.json());
 
-// Serve static files from "public/uploads"
+// ✅ Serve static files (e.g., profile pictures, etc.)
 app.use("/uploads", express.static(path.join(process.cwd(), "public", "uploads")));
 
-
-
-// REST API Routes
+// ✅ API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/skills', skillRoutes);
 app.use('/api/bookings', bookingRoutes);
@@ -112,16 +92,12 @@ app.use('/api/chatrooms', chatRoomRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/notifications', notificationRoutes);
 
-// ---------------------------
-// ✅ Socket.IO Logic (Merged)
-// ---------------------------
-
+// ✅ Socket.IO Logic
 const onlineUsers = new Map();
 
 io.on("connection", (socket) => {
   console.log("✅ User connected:", socket.id);
 
-  // Track user online
   socket.on("userOnline", (userId) => {
     const stringUserId = String(userId);
     onlineUsers.set(stringUserId, socket.id);
@@ -129,13 +105,11 @@ io.on("connection", (socket) => {
     io.emit("updateOnlineUsers", Array.from(onlineUsers.keys()));
   });
 
-  // Join chat/message room
   socket.on("joinRoom", (roomId) => {
     socket.join(String(roomId));
     console.log(`User joined room ${roomId}`);
   });
 
-  // Handle sending messages
   socket.on("sendMessage", async ({ roomId, senderId, receiverId, message }) => {
     try {
       const newMessage = await prisma.message.create({
@@ -146,15 +120,6 @@ io.on("connection", (socket) => {
           message,
         },
       });
-
-      // io.to(String(roomId)).emit("receiveMessage", {
-      //   id: newMessage.id,
-      //   roomId,
-      //   senderId,
-      //   receiverId,
-      //   message,
-      //   timestamp: newMessage.timestamp,
-      // });
 
       const messagePayload = {
         id: newMessage.id,
@@ -168,7 +133,7 @@ io.on("connection", (socket) => {
       // Emit to room (chat page)
       io.to(String(roomId)).emit("receiveMessage", messagePayload);
 
-      // Emit to receiver directly if they're online (for notification)
+      // Notify receiver directly if online
       const receiverSocketId = onlineUsers.get(String(receiverId));
       if (receiverSocketId) {
         io.to(receiverSocketId).emit("chatNotification", messagePayload);
@@ -179,7 +144,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  // Handle disconnect
   socket.on("disconnect", () => {
     for (const [userId, socketId] of onlineUsers.entries()) {
       if (socketId === socket.id) {
@@ -194,20 +158,251 @@ io.on("connection", (socket) => {
   });
 });
 
-// Test route
+// Health check route
 app.get('/', (req, res) => {
-  res.send('Welcome to LearnMate!');
+  res.send('🚀 Welcome to LearnMate API!');
 });
 
-// Start server
+// Start the server
 const PORT = process.env.PORT || 3000;
-
 httpServer.listen(PORT, () => {
-  console.log('🚀 Server is running on port ' + PORT);
+  console.log(`🚀 Server is running on port ${PORT}`);
 });
 
-// Export for use in controllers
+// Export Socket.IO for controller usage
 export { io, onlineUsers };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import express from 'express';
+// import { createServer } from 'http';
+// import { Server } from 'socket.io';
+// import dotenv from 'dotenv';
+// import cors from 'cors';
+// import prisma from './config/prismaClient.js';
+
+// // Routes
+// import authRoutes from './routes/authRoutes.js';
+// import skillRoutes from './routes/skillRoutes.js';
+// import bookingRoutes from './routes/bookingRoutes.js';
+// import skillExchangeRoutes from './routes/skillExchangeRoutes.js';
+// import bookmarkRoutes from './routes/bookmarkRoutes.js';
+// import reviewRoutes from './routes/reviewRoutes.js';
+// import messageRoutes from './routes/messageRoutes.js';
+// import chatRoomRoutes from './routes/chatRoomRoutes.js';
+// import userRoutes from './routes/userRoutes.js';
+// import { getUserById } from './controllers/userController.js';
+// import notificationRoutes from './routes/notificationRoutes.js';
+// import './config/passport.js';
+// import passport from 'passport';
+// import session from 'express-session';
+// import path from 'path';
+
+
+
+// dotenv.config();
+
+// const app = express();
+// const httpServer = createServer(app);
+// const io = new Server(httpServer, {
+//   cors: {
+//     origin: 'http://localhost:5173',
+//     methods: ['GET', 'POST'],
+//     credentials: true,
+//   },
+// });
+
+// // Session middleware
+// app.use(session({
+//   secret: process.env.SESSION_SECRET,
+//   resave: false,
+//   saveUninitialized: true
+// }));
+
+// // Passport middleware
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+// // Middlewares
+// // app.use(cors());
+
+// // app.use(cors({
+// //   origin: 'https://nuvora.onrender.com',
+// //   credentials: true
+// // }));
+
+// // const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
+
+// // app.use(cors({
+// //   origin: function (origin, callback) {
+// //     if (!origin || allowedOrigins.includes(origin)) {
+// //       callback(null, true);
+// //     } else {
+// //       callback(new Error('Not allowed by CORS'));
+// //     }
+// //   },
+// //   credentials: true
+// // }));
+
+
+// const allowedOrigins = [
+//   'https://nuvora.onrender.com', // Your frontend
+//   'http://localhost:3000'         // Local dev (optional)
+// ];
+
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     // Allow requests with no origin (like mobile apps, curl)
+//     if (!origin) return callback(null, true);
+//     if (allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true,
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization']
+// }));
+
+// // Ensure the server handles preflight requests
+// app.options('*', cors());
+
+
+// app.use(express.json());
+
+// // Serve static files from "public/uploads"
+// app.use("/uploads", express.static(path.join(process.cwd(), "public", "uploads")));
+
+
+
+// // REST API Routes
+// app.use('/api/auth', authRoutes);
+// app.use('/api/skills', skillRoutes);
+// app.use('/api/bookings', bookingRoutes);
+// app.use('/api/skillExchange', skillExchangeRoutes);
+// app.use('/api/bookmark', bookmarkRoutes);
+// app.use('/api/review', reviewRoutes);
+// app.use('/api/messages', messageRoutes);
+// app.use('/api/chatrooms', chatRoomRoutes);
+// app.use('/api/users', userRoutes);
+// app.use('/api/notifications', notificationRoutes);
+
+// // ---------------------------
+// // ✅ Socket.IO Logic (Merged)
+// // ---------------------------
+
+// const onlineUsers = new Map();
+
+// io.on("connection", (socket) => {
+//   console.log("✅ User connected:", socket.id);
+
+//   // Track user online
+//   socket.on("userOnline", (userId) => {
+//     const stringUserId = String(userId);
+//     onlineUsers.set(stringUserId, socket.id);
+//     console.log(`🟢 User ${userId} is online`);
+//     io.emit("updateOnlineUsers", Array.from(onlineUsers.keys()));
+//   });
+
+//   // Join chat/message room
+//   socket.on("joinRoom", (roomId) => {
+//     socket.join(String(roomId));
+//     console.log(`User joined room ${roomId}`);
+//   });
+
+//   // Handle sending messages
+//   socket.on("sendMessage", async ({ roomId, senderId, receiverId, message }) => {
+//     try {
+//       const newMessage = await prisma.message.create({
+//         data: {
+//           roomId: parseInt(roomId),
+//           senderId: parseInt(senderId),
+//           receiverId: parseInt(receiverId),
+//           message,
+//         },
+//       });
+
+//       // io.to(String(roomId)).emit("receiveMessage", {
+//       //   id: newMessage.id,
+//       //   roomId,
+//       //   senderId,
+//       //   receiverId,
+//       //   message,
+//       //   timestamp: newMessage.timestamp,
+//       // });
+
+//       const messagePayload = {
+//         id: newMessage.id,
+//         roomId,
+//         senderId,
+//         receiverId,
+//         message,
+//         timestamp: newMessage.timestamp,
+//       };
+
+//       // Emit to room (chat page)
+//       io.to(String(roomId)).emit("receiveMessage", messagePayload);
+
+//       // Emit to receiver directly if they're online (for notification)
+//       const receiverSocketId = onlineUsers.get(String(receiverId));
+//       if (receiverSocketId) {
+//         io.to(receiverSocketId).emit("chatNotification", messagePayload);
+//       }
+
+//     } catch (error) {
+//       console.error("❌ Error saving message:", error);
+//     }
+//   });
+
+//   // Handle disconnect
+//   socket.on("disconnect", () => {
+//     for (const [userId, socketId] of onlineUsers.entries()) {
+//       if (socketId === socket.id) {
+//         onlineUsers.delete(userId);
+//         console.log(`🔴 User ${userId} disconnected`);
+//         break;
+//       }
+//     }
+
+//     io.emit("updateOnlineUsers", Array.from(onlineUsers.keys()));
+//     console.log("❌ User disconnected:", socket.id);
+//   });
+// });
+
+// // Test route
+// app.get('/', (req, res) => {
+//   res.send('Welcome to LearnMate!');
+// });
+
+// // Start server
+// const PORT = process.env.PORT || 3000;
+
+// httpServer.listen(PORT, () => {
+//   console.log('🚀 Server is running on port ' + PORT);
+// });
+
+// // Export for use in controllers
+// export { io, onlineUsers };
 
 
 
