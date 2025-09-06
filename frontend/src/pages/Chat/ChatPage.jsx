@@ -455,6 +455,7 @@ import BGG_Chat from "../../assets/BGG_Chat.jpg";
 import socket from "../../socket";
 import { BiCheckDouble } from "react-icons/bi";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 
 const ChatPage = ({ receiverId, roomId, receiverName, isReceiverOnline, onBack }) => {
@@ -493,7 +494,7 @@ const ChatPage = ({ receiverId, roomId, receiverName, isReceiverOnline, onBack }
       if (!roomId || !token) return;
       try {
         const res = await axios.get(
-          `http://localhost:3000/api/messages/${roomId}`,
+          `${backendUrl}/api/messages/${roomId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setMessages(res.data);

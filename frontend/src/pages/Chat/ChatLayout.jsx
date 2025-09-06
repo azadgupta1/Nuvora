@@ -1072,6 +1072,8 @@ import { jwtDecode } from "jwt-decode";
 import socket from "../../socket";
 import { useLocation } from "react-router-dom";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 const ChatLayout = () => {
   const [rooms, setRooms] = useState([]);
   const [filteredRooms, setFilteredRooms] = useState([]);
@@ -1117,7 +1119,7 @@ const ChatLayout = () => {
 
     const fetchRooms = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/chatrooms/rooms", {
+        const res = await axios.get(`${backendUrl}/api/chatrooms/rooms`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setRooms(res.data);

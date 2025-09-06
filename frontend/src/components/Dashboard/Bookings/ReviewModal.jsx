@@ -2,6 +2,9 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
 const ReviewModal = ({ isOpen, onClose, booking }) => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
@@ -10,7 +13,7 @@ const ReviewModal = ({ isOpen, onClose, booking }) => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:3000/api/review", {
+      const res = await fetch(`${backendUrl}/api/review`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
