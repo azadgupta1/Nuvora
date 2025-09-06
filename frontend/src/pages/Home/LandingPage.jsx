@@ -7,6 +7,13 @@ import Banner2 from '../../components/Landing/Banner/Banner2'
 import ServiceSection from '../../components/ServiceSection';
 import TestimonialSection from '../../components/TestimonialSection';
 import Home from '../../components/Landing/Hero/Hero';
+import HowItWorks from '../../components/Landing/WorkingofNuvora/Working';
+import SkillSwapSpotlight from '../../components/Landing/SkillSwap/SkillSwapSpotlight';
+import SkillGalaxy from '../../components/Landing/SkillGalaxy';
+import BookingPreview from '../../components/Landing/BookingPreview';
+import CommunityMap from '../../components/Landing/CommunityMap';
+import Footer from '../../components/Landing/Footer';
+
 
 function LandingPage() {
   return (
@@ -15,6 +22,12 @@ function LandingPage() {
       {/* Hero goes full width */}
       {/* <Hero /> */}
       <Home />
+      <HowItWorks />
+      <SkillSwapSpotlight />
+      <SkillGalaxy />
+      <BookingPreview />
+      <CommunityMap />
+
       <ServiceSection />
       <TestimonialSection />
 

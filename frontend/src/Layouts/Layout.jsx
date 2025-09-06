@@ -1,8 +1,9 @@
 // src/components/Layout/Layout.jsx
 import React from 'react';
 import Navbar from '../components/Landing/Navbar/Navbar';
-import Footer from '../components/Landing/Footer/Footer';
 import { Outlet } from 'react-router-dom';
+import Footer from '../components/Landing/Footer';
+
 
 
 const Layout = () => {

@@ -169,24 +169,143 @@ export const FadeUp = (delay) => ({
 // export default Hero;
 
 
-import React from 'react';
-import { BackgroundBeams } from '../../ui/background-beams';
+// import React from 'react';
+// import { BackgroundBeams } from '../../ui/background-beams';
+
+// export default function Home() {
+//   return (
+//     <div className="relative min-h-screen overflow-y-auto bg-black text-white mt-0">
+    
+//       {/* Foreground content */}
+//       <div className="relative z-20 text-center mt-40">
+//         <h1 className="text-5xl font-bold mb-4">Welcome to My Site</h1>
+//         <h2 className="text-2xl mb-10">Hello world</h2>
+//       </div>
+
+//       {/* Background beams */}
+//       <div className="absolute inset-0 z-0">
+//         <BackgroundBeams />
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+
+// import React from "react";
+// import { BackgroundBeams } from "../../ui/background-beams";
+
+// export default function Home() {
+//   return (
+//     <div className="relative min-h-screen overflow-y-auto bg-black text-white flex items-center justify-center">
+//       {/* Foreground content */}
+//       <div className="relative z-20 text-center max-w-3xl px-6">
+//         <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+//           Unlock Skills, <span className="text-purple-400">Exchange Knowledge</span>
+//         </h1>
+//         <h2 className="text-lg md:text-xl mb-10 text-gray-300">
+//           Nuvora helps you learn and share skills with a vibrant community.  
+//           Teach what you know. Learn what you love.
+//         </h2>
+
+//         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-5">
+//           <button className="px-8 py-4 text-lg font-semibold rounded-2xl bg-purple-600 hover:bg-purple-700 shadow-lg hover:scale-105 transition">
+//             Get Started
+//           </button>
+//           <button className="px-8 py-4 text-lg font-semibold rounded-2xl border border-gray-500 text-gray-200 hover:bg-gray-800 hover:text-white transition">
+//             Learn More
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* Background beams */}
+//       <div className="absolute inset-0 z-0">
+//         <BackgroundBeams />
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+
+import React from "react";
+import { BackgroundBeams } from "../../ui/background-beams";
 
 export default function Home() {
+  const skills = [
+    {
+      title: "Web Development",
+      category: "Technology",
+      description: "Learn to build full-stack applications with modern frameworks.",
+      thumbnail: "https://via.placeholder.com/300x200?text=Web+Dev",
+    },
+    {
+      title: "Photography",
+      category: "Creative Arts",
+      description: "Master the art of capturing stunning visuals and editing.",
+      thumbnail: "https://via.placeholder.com/300x200?text=Photography",
+    },
+    {
+      title: "Spanish Language",
+      category: "Languages",
+      description: "Learn conversational Spanish from native speakers.",
+      thumbnail: "https://via.placeholder.com/300x200?text=Spanish",
+    },
+  ];
+
   return (
-    <div className="relative min-h-screen overflow-y-auto bg-black text-white mt-0">
-    
-      {/* Foreground content */}
-      <div className="relative z-20 text-center mt-24">
-        <h1 className="text-5xl font-bold mb-4">Welcome to My Site</h1>
-        <h2 className="text-2xl mb-10">Hello world</h2>
+    <div className="relative min-h-screen overflow-y-auto bg-black text-white">
+      {/* Hero Section */}
+      <div className="relative z-20 flex flex-col items-center justify-center text-center min-h-screen px-6">
+        <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+          Unlock Skills, <span className="text-purple-400">Exchange Knowledge</span>
+        </h1>
+        <h2 className="text-lg md:text-xl mb-10 text-gray-300 max-w-2xl">
+          Nuvora helps you learn and share skills with a vibrant community.  
+          Teach what you know. Learn what you love.
+        </h2>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button className="px-8 py-4 text-lg font-semibold rounded-2xl bg-purple-600 hover:bg-purple-700 shadow-lg hover:scale-105 transition">
+            Get Started
+          </button>
+          <button className="px-8 py-4 text-lg font-semibold rounded-2xl border border-gray-500 text-gray-200 hover:bg-gray-800 hover:text-white transition">
+            Learn More
+          </button>
+        </div>
       </div>
 
-      {/* Scrollable content */}
-      <div className="relative z-20 p-8">
-        {[...Array(50)].map((_, i) => (
-          <p key={i}>This is scrollable content line #{i + 1}</p>
-        ))}
+      {/* Skill Preview Section */}
+      <div className="relative z-20 max-w-6xl mx-auto px-6 py-16">
+        <h3 className="text-3xl font-bold text-center mb-10">
+          Explore Popular Skills
+        </h3>
+        <div className="grid md:grid-cols-3 gap-8">
+          {skills.map((skill, index) => (
+            <div
+              key={index}
+              className="bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition"
+            >
+              <img
+                src={skill.thumbnail}
+                alt={skill.title}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-5">
+                <span className="text-sm text-purple-400 font-semibold">
+                  {skill.category}
+                </span>
+                <h4 className="text-xl font-bold mt-2 mb-3">{skill.title}</h4>
+                <p className="text-gray-400 text-sm mb-4">{skill.description}</p>
+                <button className="px-5 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-medium text-sm transition">
+                  View
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Background beams */}
@@ -196,4 +315,3 @@ export default function Home() {
     </div>
   );
 }
-

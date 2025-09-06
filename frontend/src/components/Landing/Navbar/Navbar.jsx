@@ -347,6 +347,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Nuvora_2 from '../../../assets/Nuvora_2.png';
+// import NuvoraPNG from '../../../assets/NuvoraPNG.png';
+
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -356,8 +359,8 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <img className="h-7 w-auto" src={Nuvora_2} alt="Nuvora" />
-          <span className="font-bold text-xl">Nuvora</span>
+          <span className="font-bold text-xl text-white">Nuvora</span>
+          <img className="h-7 w-auto bg-black" src={Nuvora_2} alt="Nuvora" />
         </Link>
 
         {/* Mobile menu button */}
