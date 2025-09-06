@@ -9,7 +9,7 @@ const Layout = () => {
   return (
     <main className="overflow-x-hidden bg-white text-blue-950">
       <Navbar />
-      <div className="pt-10"> {/* Add top padding to avoid overlap under fixed navbar */}
+      <div className="pt-0"> {/* Add top padding to avoid overlap under fixed navbar */}
         <Outlet />
       </div>
       <Footer />
