@@ -151,6 +151,14 @@
 //       res.status(500).json({ message: "Something went wrong!" });
 //     }
 //   };
+
+
+
+
+
+
+
+
   
 
 
@@ -222,30 +230,6 @@ export const addOrUpdateSkill = async (req, res) => {
   }
 };
 
-// Get All Skills (excluding current user's)
-// export const getAllSkills = async (req, res) => {
-//   try {
-//     const userId = req.user.userId;
-
-//     const skills = await prisma.skill.findMany({
-//       where: {
-//         userId: {
-//           not: userId,
-//         },
-//       },
-//       include: { 
-//         user: true,
-//         reviews: true 
-//       },
-//     });
-
-//     res.status(200).json({ skills });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Something went wrong while fetching skills.' });
-//   }
-// };
-
 
 
 export const getAllSkills = async (req, res) => {
@@ -290,7 +274,6 @@ export const getAllSkills = async (req, res) => {
     res.status(500).json({ message: 'Something went wrong while fetching skills.' });
   }
 };
-
 
 
 
@@ -369,6 +352,48 @@ export const deleteSkill = async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Get All Skills (excluding current user's)
+// export const getAllSkills = async (req, res) => {
+//   try {
+//     const userId = req.user.userId;
+
+//     const skills = await prisma.skill.findMany({
+//       where: {
+//         userId: {
+//           not: userId,
+//         },
+//       },
+//       include: { 
+//         user: true,
+//         reviews: true 
+//       },
+//     });
+
+//     res.status(200).json({ skills });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Something went wrong while fetching skills.' });
+//   }
+// };
 
 
 
