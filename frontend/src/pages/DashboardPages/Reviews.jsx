@@ -81,7 +81,13 @@ const Reviews = () => {
 
   const fetchReviews = async () => {
     try {
-      const res = await fetch(`${backendUrl}/api/review/${skillId}`);
+      const res = await fetch(`${backendUrl}/api/review/${skillId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        
       const data = await res.json();
 
       if (res.ok) {
