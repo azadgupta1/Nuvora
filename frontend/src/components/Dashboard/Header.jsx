@@ -245,7 +245,7 @@ export default function Header() {
             className="flex items-center space-x-2 cursor-pointer text-gray-600 hover:text-[#0DCEDA] transition"
           >
             <FaUserCircle className="text-2xl sm:text-3xl" />
-            <span className="text-sm sm:text-base">My Profile</span>
+            <span className="hidden sm:inline text-sm sm:text-base">My Profile</span>
           </div>
 
         </div>
