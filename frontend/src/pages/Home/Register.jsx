@@ -7,27 +7,54 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 export default function Register() {
   const [user, setUser] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError("");
+  //   try {
+  //     await registerUser(user);
+  //     navigate("/dashboard"); // Redirect after successful registration
+  //   } catch (err) {
+  //     setError(err.message);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setErrors({}); // reset field-level errors
+
     try {
       await registerUser(user);
-      navigate("/dashboard"); // Redirect after successful registration
+      navigate("/dashboard");
     } catch (err) {
-      setError(err.message);
+      if (err.response?.data?.errors) {
+        // Zod validation errors
+        const fieldErrors = {};
+        err.response.data.errors.forEach(({ field, message }) => {
+          if (!fieldErrors[field]) fieldErrors[field] = [];
+          fieldErrors[field].push(message);
+        });
+        setErrors(fieldErrors);
+      } else {
+        // Generic error fallback
+        setError(err.message || "Something went wrong");
+      }
     }
   };
 
+
   return (
-    <div className="min-h-screen bg-gray-50 mt-10 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gray-50 mt-0 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
-        <h2 className="text-3xl font-bold text-center text-blue-800 mb-6">Create Your Account</h2>
+        <h2 className="text-3xl font-bold text-center text-black mb-6">Create Your Account</h2>
 
         {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
 
@@ -56,6 +83,20 @@ export default function Register() {
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-300"
             />
           </div>
+
+          {/* <div>
+            <label className="block text-sm font-medium text-gray-600">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={user.password}
+              onChange={handleChange}
+              required
+              placeholder="••••••••"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-300"
+            />
+          </div> */}
+
           <div>
             <label className="block text-sm font-medium text-gray-600">Password</label>
             <input
@@ -67,11 +108,19 @@ export default function Register() {
               placeholder="••••••••"
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-300"
             />
+            {errors.password && (
+              <ul className="mt-1 text-sm text-red-500 list-disc list-inside space-y-1">
+                {errors.password.map((msg, idx) => (
+                  <li key={idx}>{msg}</li>
+                ))}
+              </ul>
+            )}
           </div>
+
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-200"
+            className="w-full bg-black text-white py-2 rounded-lg font-semibold transition duration-200"
           >
             Sign Up
           </button>
