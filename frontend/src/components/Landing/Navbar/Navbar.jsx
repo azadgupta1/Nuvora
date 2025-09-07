@@ -347,6 +347,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Nuvora_2 from '../../../assets/Nuvora_2.png';
+import { ColourfulText } from '../../ui/colourful-text';
+import { HoverBorderGradient } from '../../ui/hover-border-gradient';
 // import NuvoraPNG from '../../../assets/NuvoraPNG.png';
 
 
@@ -360,6 +362,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <span className="font-bold text-xl text-white">Nuvora</span>
+          {/* <ColourfulText text="Nuvora" /> */}
           <img className="h-7 w-auto bg-black" src={Nuvora_2} alt="Nuvora" />
         </Link>
 
@@ -393,7 +396,7 @@ const Navbar = () => {
         </button>
 
         {/* Desktop menu */}
-        <div className="hidden lg:flex gap-6">
+        <div className="hidden lg:flex items-center gap-6 ml-5">
           <NavLinks />
         </div>
       </div>
@@ -410,24 +413,84 @@ const Navbar = () => {
   );
 };
 
+// const NavLinks = () => (
+//   <>
+//     <Link to="/" className="hover:text-[#0DCEDA] transition">
+//       Home
+//     </Link>
+//     <a href="#" className="hover:text-[#0DCEDA] transition">
+//       How it Works
+//     </a>
+//     <Link to="/login" className="hover:text-[#0DCEDA] transition">
+//       Login
+//     </Link>
+
+//     <Link to="/login">
+//       <HoverBorderGradient
+//         containerClassName="rounded-full"
+//         as="button"
+//         className="dark:bg-black bg-white text-black dark:text-white flex items-center space-x-2"
+//       >
+//         {/* <AceternityLogo /> */}
+//         <span>Login</span>
+//       </HoverBorderGradient>
+//     </Link>
+
+
+//     <Link to="/register" className="hover:text-[#0DCEDA] transition">
+//       Join
+//     </Link>
+//     <a href="#" className="hover:text-[#0DCEDA] transition">
+//       Support
+//     </a>
+//   </>
+// );
+
+// export default Navbar;
+
+
+
+
+
+
+
+
+
+
 const NavLinks = () => (
   <>
-    <Link to="/" className="hover:text-[#0DCEDA] transition">
+    <Link to="/" className="hover:text-[#0DCEDA] transition flex items-center">
       Home
     </Link>
-    <a href="#" className="hover:text-[#0DCEDA] transition">
+    <a href="#" className="hover:text-[#0DCEDA] transition flex items-center">
       How it Works
     </a>
-    <Link to="/login" className="hover:text-[#0DCEDA] transition">
-      Login
+
+    <Link to="/login" className="flex items-center">
+      <HoverBorderGradient
+        containerClassName="rounded-full"
+        as="button"
+        className="dark:bg-black bg-white text-black dark:text-white flex items-center px-4 py-1"
+      >
+        <span>Login</span>
+      </HoverBorderGradient>
     </Link>
-    <Link to="/register" className="hover:text-[#0DCEDA] transition">
-      Join
+
+    <Link to="/register" className="flex items-center">
+      <HoverBorderGradient
+        containerClassName="rounded-full"
+        as="button"
+        className=" bg-white text-black hover:bg-purple-400 flex items-center px-4 py-1"
+      >
+        <span>Join</span>
+      </HoverBorderGradient>
     </Link>
-    <a href="#" className="hover:text-[#0DCEDA] transition">
+
+    <a href="#" className="hover:text-[#0DCEDA] transition flex items-center">
       Support
     </a>
   </>
 );
+
 
 export default Navbar;
