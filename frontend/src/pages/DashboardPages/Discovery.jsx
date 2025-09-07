@@ -1248,6 +1248,10 @@ return (
         onClose={() => setSelectedSkillId(null)}
       />
     )}
+
+    {/* <div>
+      <Spinner1 />
+    </div> */}
   </div>
 );
 
