@@ -6,12 +6,15 @@ import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import Nuvora_2 from '../../assets/Nuvora_2.png';
 import axios from 'axios';
 import socket from '../../socket';
+import { MdMenu } from "react-icons/md";
+
+
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 
 
-export default function Header() {
+export default function Header({ isSidebarOpen, setIsSidebarOpen }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -162,13 +165,26 @@ export default function Header() {
 // #003344
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-black text-white px-2 py-5 sm:px-6 sm:py-3 ">
+    <header className="fixed top-0 left-0 w-full z-50 bg-black text-white px-2 py-3 sm:px-6 sm:py-3 ">
       <div className="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto gap-3">
         {/* Logo */}
-        <div className="flex items-center gap-2 flex-shrink-0">
+
+
+        {/* <div className="flex items-center gap-2 flex-shrink-0">
           <h1 className="text-white font-extrabold text-2xl tracking-wide font-mono">Nuvora</h1>
           <img src={Nuvora_2} alt="Nuvora" className="w-8 h-8 object-contain invert brightness-30" />
-        </div>
+        </div> */}
+
+        <Link to="/dashboard/discovery" className="flex items-center gap-2 flex-shrink-0 no-underline">
+          <h1 className="hidden sm:block text-white font-extrabold text-2xl tracking-wide font-mono">
+            Nuvora
+          </h1>
+          <img
+            src={Nuvora_2}
+            alt="Nuvora"
+            className="w-10 h-10 sm:w-8 sm:h-8 object-contain"
+          />
+        </Link>
 
         {/* #0DCEDA */}
         {/* Right Icons */}
@@ -247,6 +263,14 @@ export default function Header() {
             <FaUserCircle className="text-2xl sm:text-3xl" />
             <span className="hidden sm:inline text-sm sm:text-base">My Profile</span>
           </div>
+
+          <button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="sm:hidden p-2 rounded-full bg-gray-200/20 text-gray-700 hover:bg-gray-300 hover:text-black focus:outline-none"
+          >
+            <MdMenu size={20} className='text-white'/>
+          </button>
+
 
         </div>
       </div>

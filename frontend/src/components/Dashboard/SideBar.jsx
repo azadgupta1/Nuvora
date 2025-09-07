@@ -9,9 +9,9 @@ import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, setIsOpen }) {
   const location = useLocation();
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
 
   const links = [
     { path: "/dashboard/discovery", icon: <FaTachometerAlt />, label: "Discovery" },
@@ -24,7 +24,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Custom vertical toggle button */}
-      <button
+      {/* <button
         onClick={() => setIsOpen(!isOpen)}
         className="
           sm:hidden fixed top-16 left-0 z-50
@@ -34,7 +34,7 @@ export default function Sidebar() {
         "
       >
         {isOpen ? <MdKeyboardArrowLeft size={24} /> : <MdKeyboardArrowRight size={24} />}
-      </button>
+      </button> */}
 
       {/* Overlay on mobile */}
       {isOpen && (

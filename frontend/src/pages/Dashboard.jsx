@@ -15,6 +15,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function DashBoard() {
   const [showSkillModal, setShowSkillModal] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // NEW STATE
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -73,13 +74,12 @@ function DashBoard() {
     <div className="h-screen flex flex-col overflow-hidden">
       {/* Fixed Header */}
       <div className="w-full fixed top-0 left-0 z-40">
-        <Header />
+        <Header isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       </div>
 
       {/* Sidebar + Content */}
       <div className="flex flex-1 pt-[57px] overflow-hidden">
-        {/* pt-[68px] gives space below fixed header */}
-        <Sidebar />
+        <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
         <main className="flex-1 overflow-auto bg-gray-100 p-0">
           <Outlet />
