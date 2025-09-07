@@ -11,7 +11,7 @@ import HowItWorks from '../../components/Landing/WorkingofNuvora/Working';
 import SkillSwapSpotlight from '../../components/Landing/SkillSwap/SkillSwapSpotlight';
 import SkillGalaxy from '../../components/Landing/SkillGalaxy';
 import BookingPreview from '../../components/Landing/BookingPreview';
-import CommunityMap from '../../components/Landing/CommunityMap';
+import { WorldMapDemo } from '../../components/Landing/World';
 import Footer from '../../components/Landing/Footer';
 
 
@@ -26,19 +26,19 @@ function LandingPage() {
       <SkillSwapSpotlight />
       <SkillGalaxy />
       <BookingPreview />
-      <CommunityMap />
+      <WorldMapDemo />
 
-      <ServiceSection />
-      <TestimonialSection />
+      {/* <ServiceSection /> */}
+      {/* <TestimonialSection /> */}
 
       {/* Rest constrained in a container */}
-      <div className="max-w-screen-lg mx-auto px-4">
-        <Services />
+      {/* <div className="max-w-screen-lg mx-auto px-4"> */}
+        {/* <Services /> */}
         {/* <Banner /> */}
-        <Subscribe />
-        <Banner2 />
+        {/* <Subscribe /> */}
+        {/* <Banner2 /> */}
         
-      </div>
+      {/* </div> */}
       
     </main>
   );

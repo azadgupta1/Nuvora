@@ -64,12 +64,7 @@ export default function Login() {
             />
           </div>
 
-          {/* <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-200"
-          >
-            Login
-          </button> */}
+        
           {loading ? (
           <div className="flex justify-center">
             <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -97,11 +92,6 @@ export default function Login() {
           <button onClick={() => window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/auth/google`} className="flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition">
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" className="w-5 h-5" />
             <span className="text-sm font-medium text-gray-700">Continue with Google</span>
-          </button>
-
-          <button className="flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/facebook/facebook-original.svg" alt="Facebook" className="w-5 h-5" />
-            <span className="text-sm font-medium text-gray-700">Continue with Facebook</span>
           </button>
         </div>
 

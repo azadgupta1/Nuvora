@@ -162,14 +162,15 @@ export default function Header() {
 // #003344
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-black text-white px-4 py-5 sm:px-6 sm:py-3 ">
+    <header className="fixed top-0 left-0 w-full z-50 bg-black text-white px-2 py-5 sm:px-6 sm:py-3 ">
       <div className="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto gap-3">
         {/* Logo */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          <h1 className="text-[#0DCEDA] font-extrabold text-2xl tracking-wide font-mono">LearnMate</h1>
-          <img src={Nuvora_2} alt="Nuvora" className="w-8 h-8 object-contain" />
+          <h1 className="text-white font-extrabold text-2xl tracking-wide font-mono">Nuvora</h1>
+          <img src={Nuvora_2} alt="Nuvora" className="w-8 h-8 object-contain invert brightness-30" />
         </div>
 
+        {/* #0DCEDA */}
         {/* Right Icons */}
         <div className="flex items-center space-x-4 sm:space-x-6 text-xl mt-2 sm:mt-0">
           {/* Chat */}

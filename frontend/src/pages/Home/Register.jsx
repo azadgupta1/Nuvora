@@ -89,11 +89,7 @@ export default function Register() {
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" className="w-5 h-5" />
             <span className="text-sm font-medium text-gray-700">Sign up with Google</span>
           </button>
-
-          <button className="flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/facebook/facebook-original.svg" alt="Facebook" className="w-5 h-5" />
-            <span className="text-sm font-medium text-gray-700">Sign up with Facebook</span>
-          </button>
+          
         </div>
 
         <p className="mt-6 text-center text-sm text-gray-600">
