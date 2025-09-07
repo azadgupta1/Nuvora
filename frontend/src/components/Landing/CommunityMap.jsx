@@ -7,7 +7,7 @@ import { useTheme } from "next-themes";
 
 export default function WorldMap({
   dots = [],
-  lineColor = "#0ea5e9"
+  lineColor = "#0ea5e9",
 }) {
   const svgRef = useRef(null);
   const map = new DottedMap({ height: 100, grid: "diagonal" });
@@ -55,6 +55,8 @@ export default function WorldMap({
           const endPoint = projectPoint(dot.end.lat, dot.end.lng);
           return (
             <g key={`path-group-${i}`}>
+
+              
               <motion.path
                 d={createCurvedPath(startPoint, endPoint)}
                 fill="none"
@@ -72,6 +74,8 @@ export default function WorldMap({
                   ease: "easeOut",
                 }}
                 key={`start-upper-${i}`}></motion.path>
+
+
             </g>
           );
         })}

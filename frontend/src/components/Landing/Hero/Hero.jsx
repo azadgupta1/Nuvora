@@ -232,26 +232,31 @@ export const FadeUp = (delay) => ({
 
 import React from "react";
 import { BackgroundBeams } from "../../ui/background-beams";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+
+  const navigate = useNavigate();
+
+
   const skills = [
     {
       title: "Web Development",
       category: "Technology",
       description: "Learn to build full-stack applications with modern frameworks.",
-      thumbnail: "https://via.placeholder.com/300x200?text=Web+Dev",
+      thumbnail: "https://www.mooc.org/hubfs/javascript-jpg.jpeg",
     },
     {
       title: "Photography",
       category: "Creative Arts",
       description: "Master the art of capturing stunning visuals and editing.",
-      thumbnail: "https://via.placeholder.com/300x200?text=Photography",
+      thumbnail: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D",
     },
     {
       title: "Spanish Language",
       category: "Languages",
       description: "Learn conversational Spanish from native speakers.",
-      thumbnail: "https://via.placeholder.com/300x200?text=Spanish",
+      thumbnail: "https://www.johnacademy.co.uk/wp-content/uploads/2023/05/How-Learning-A-Second-Language-Enriches-Your-Life.png",
     },
   ];
 
@@ -268,7 +273,7 @@ export default function Home() {
         </h2>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="px-8 py-4 text-lg font-semibold rounded-2xl bg-purple-600 hover:bg-purple-700 shadow-lg hover:scale-105 transition">
+          <button onClick={() => navigate('/register')} className="px-8 py-4 text-lg font-semibold rounded-2xl bg-purple-600 hover:bg-purple-700 shadow-lg hover:scale-105 transition">
             Get Started
           </button>
           <button className="px-8 py-4 text-lg font-semibold rounded-2xl border border-gray-500 text-gray-200 hover:bg-gray-800 hover:text-white transition">

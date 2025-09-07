@@ -1,99 +1,30 @@
-// "use client";
-// import WorldMap from "./CommunityMap";
-// import { motion } from "motion/react";
-
-// export function WorldMapDemo() {
-//   return (
-//     <div className=" py-40 bg-black w-full">
-//       <div className="max-w-7xl mx-auto text-center">
-//         <p className="font-bold text-xl md:text-4xl dark:text-white text-black">
-//           Remote{" "}
-//           <span className="text-neutral-400">
-//             {"Connectivity".split("").map((word, idx) => (
-//               <motion.span
-//                 key={idx}
-//                 className="inline-block"
-//                 initial={{ x: -10, opacity: 0 }}
-//                 animate={{ x: 0, opacity: 1 }}
-//                 transition={{ duration: 0.5, delay: idx * 0.04 }}>
-//                 {word}
-//               </motion.span>
-//             ))}
-//           </span>
-//         </p>
-//         <p className="text-sm md:text-lg text-neutral-500 max-w-2xl mx-auto py-4">
-//           Break free from traditional boundaries. Work from anywhere, at the
-//           comfort of your own studio apartment. Perfect for Nomads and
-//           Travellers.
-//         </p>
-//       </div>
-    //   <WorldMap
-    //     dots={[
-    //       {
-    //         start: {
-    //           lat: 64.2008,
-    //           lng: -149.4937,
-    //         }, // Alaska (Fairbanks)
-    //         end: {
-    //           lat: 34.0522,
-    //           lng: -118.2437,
-    //         }, // Los Angeles
-    //       },
-    //       {
-    //         start: { lat: 64.2008, lng: -149.4937 }, // Alaska (Fairbanks)
-    //         end: { lat: -15.7975, lng: -47.8919 }, // Brazil (Brasília)
-    //       },
-    //       {
-    //         start: { lat: -15.7975, lng: -47.8919 }, // Brazil (Brasília)
-    //         end: { lat: 38.7223, lng: -9.1393 }, // Lisbon
-    //       },
-    //       {
-    //         start: { lat: 51.5074, lng: -0.1278 }, // London
-    //         end: { lat: 28.6139, lng: 77.209 }, // New Delhi
-    //       },
-    //       {
-    //         start: { lat: 28.6139, lng: 77.209 }, // New Delhi
-    //         end: { lat: 43.1332, lng: 131.9113 }, // Vladivostok
-    //       },
-    //       {
-    //         start: { lat: 28.6139, lng: 77.209 }, // New Delhi
-    //         end: { lat: -1.2921, lng: 36.8219 }, // Nairobi
-    //       },
-    //     ]} />
-//     </div>
-//   );
-// }
-
-
-
-
 "use client";
 import WorldMap from "./CommunityMap";
 import { motion } from "motion/react";
 
 export function WorldMapDemo() {
   return (
-    <div className="py-40 bg-black w-full">
+    <div className=" py-40 bg-black w-full">
       <div className="max-w-7xl mx-auto text-center">
-        <p className="font-bold text-xl md:text-4xl text-white">
-          Global{" "}
-          <span className="text-indigo-400">
-            {"Skill Network".split("").map((letter, idx) => (
+        <p className="font-bold text-xl md:text-4xl dark:text-white text-black">
+          Remote{" "}
+          <span className="text-neutral-400">
+            {"Connectivity".split("").map((word, idx) => (
               <motion.span
                 key={idx}
                 className="inline-block"
-                initial={{ y: -10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
-              >
-                {letter}
+                initial={{ x: -10, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: idx * 0.04 }}>
+                {word}
               </motion.span>
             ))}
           </span>
         </p>
-        <p className="text-sm md:text-lg text-neutral-400 max-w-2xl mx-auto py-4">
-          Learn, teach, and grow across borders. Nuvora connects learners and
-          mentors worldwide — exchanging skills, stories, and experiences.
+        <p className="text-sm md:text-lg text-neutral-500 max-w-2xl mx-auto py-4">
+          Break free from traditional boundaries. Work from anywhere, at the
+          comfort of your own studio apartment. Perfect for Nomads and
+          Travellers.
         </p>
       </div>
       <WorldMap
@@ -128,12 +59,177 @@ export function WorldMapDemo() {
             start: { lat: 28.6139, lng: 77.209 }, // New Delhi
             end: { lat: -1.2921, lng: 36.8219 }, // Nairobi
           },
-          {
-            start: { lat: -33.8688, lng: 151.2093 }, // Sydney
-            end: { lat: 19.076, lng: 72.8777 },      // Mumbai
-          },
-
         ]} />
     </div>
   );
 }
+
+
+
+
+// // "use client";
+// // import { useInView } from "react-intersection-observer";
+// // import WorldMap from "./CommunityMap";
+// // import { motion } from "motion/react";
+
+// // export function WorldMapDemo() {
+
+
+// //   const { ref, inView } = useInView({
+// //     triggerOnce: true, // only trigger once
+// //     threshold: 0.3,     // percentage of the element visible to trigger (30%)
+// //   });
+
+
+
+// //   return (
+// //     <div className="py-40 bg-black w-full">
+// //       <div className="max-w-7xl mx-auto text-center">
+// //         <p className="font-bold text-xl md:text-4xl text-white">
+// //           Global{" "}
+// //           <span className="text-indigo-400">
+// //             {"Skill Network".split("").map((letter, idx) => (
+// //               <motion.span
+// //                 key={idx}
+// //                 className="inline-block"
+// //                 initial={{ y: -10, opacity: 0 }}
+// //                 animate={{ y: 0, opacity: 1 }}
+// //                 transition={{ duration: 0.4, delay: idx * 0.05 }}
+// //               >
+// //                 {letter}
+// //               </motion.span>
+// //             ))}
+// //           </span>
+// //         </p>
+// //         <p className="text-sm md:text-lg text-neutral-400 max-w-2xl mx-auto py-4">
+// //           Learn, teach, and grow across borders. Nuvora connects learners and
+// //           mentors worldwide — exchanging skills, stories, and experiences.
+// //         </p>
+// //       </div>
+// //       <WorldMap
+// //         dots={[
+// //           {
+// //             start: {
+// //               lat: 64.2008,
+// //               lng: -149.4937,
+// //             }, // Alaska (Fairbanks)
+// //             end: {
+// //               lat: 34.0522,
+// //               lng: -118.2437,
+// //             }, // Los Angeles
+// //           },
+// //           {
+// //             start: { lat: 64.2008, lng: -149.4937 }, // Alaska (Fairbanks)
+// //             end: { lat: -15.7975, lng: -47.8919 }, // Brazil (Brasília)
+// //           },
+// //           {
+// //             start: { lat: -15.7975, lng: -47.8919 }, // Brazil (Brasília)
+// //             end: { lat: 38.7223, lng: -9.1393 }, // Lisbon
+// //           },
+// //           {
+// //             start: { lat: 51.5074, lng: -0.1278 }, // London
+// //             end: { lat: 28.6139, lng: 77.209 }, // New Delhi
+// //           },
+// //           {
+// //             start: { lat: 28.6139, lng: 77.209 }, // New Delhi
+// //             end: { lat: 43.1332, lng: 131.9113 }, // Vladivostok
+// //           },
+// //           {
+// //             start: { lat: 28.6139, lng: 77.209 }, // New Delhi
+// //             end: { lat: -1.2921, lng: 36.8219 }, // Nairobi
+// //           },
+// //           {
+// //             start: { lat: -33.8688, lng: 151.2093 }, // Sydney
+// //             end: { lat: 19.076, lng: 72.8777 },      // Mumbai
+// //           },
+
+// //         ]} />
+// //     </div>
+// //   );
+// // }
+
+
+
+
+
+
+
+
+
+
+// "use client";
+// import { useInView } from "react-intersection-observer";
+// import { motion } from "motion/react";
+// import WorldMap from "./CommunityMap";
+
+// export function WorldMapDemo() {
+//   const { ref, inView } = useInView({
+//     triggerOnce: true, // only trigger once
+//     threshold: 0.3,     // percentage of the element visible to trigger (30%)
+//   });
+
+//   return (
+//     <div ref={ref} className="py-40 bg-black w-full">
+//       <div className="max-w-7xl mx-auto text-center">
+//         <p className="font-bold text-xl md:text-4xl text-white">
+//           Global{" "}
+//           <span className="text-indigo-400">
+//             {"Skill Network".split("").map((letter, idx) => (
+//               <motion.span
+//                 key={idx}
+//                 className="inline-block"
+//                 initial={{ y: -10, opacity: 0 }}
+//                 animate={{ y: 0, opacity: 1 }}
+//                 transition={{ duration: 0.4, delay: idx * 0.05 }}
+//               >
+//                 {letter}
+//               </motion.span>
+//             ))}
+//           </span>
+//         </p>
+//         <p className="text-sm md:text-lg text-neutral-400 max-w-2xl mx-auto py-4">
+//           Learn, teach, and grow across borders. Nuvora connects learners and
+//           mentors worldwide — exchanging skills, stories, and experiences.
+//         </p>
+//       </div>
+
+//       {/* Render WorldMap only when inView */}
+//       {inView && (
+//         <WorldMap
+//           dots={[
+//             {
+//               start: { lat: 64.2008, lng: -149.4937 }, // Alaska
+//               end: { lat: 34.0522, lng: -118.2437 },   // LA
+//             },
+//             {
+//               start: { lat: 64.2008, lng: -149.4937 },
+//               end: { lat: -15.7975, lng: -47.8919 },   // Brazilc
+//             },
+//             {
+//               start: { lat: -15.7975, lng: -47.8919 },
+//               end: { lat: 38.7223, lng: -9.1393 },     // Lisbon
+//             },
+//             {
+//               start: { lat: 51.5074, lng: -0.1278 },   // London
+//               end: { lat: 28.6139, lng: 77.209 },      // New Delhi
+//             },
+//             {
+//               start: { lat: 28.6139, lng: 77.209 },
+//               end: { lat: 43.1332, lng: 131.9113 },    // Vladivostok
+//             },
+//             {
+//               start: { lat: 28.6139, lng: 77.209 },
+//               end: { lat: -1.2921, lng: 36.8219 },     // Nairobi
+//             },
+//             {
+//               start: { lat: -33.8688, lng: 151.2093 }, // Sydney
+//               end: { lat: 19.076, lng: 72.8777 },      // Mumbai
+//             },
+//           ]}
+
+//           animate={inView}
+//         />
+//       )}
+//     </div>
+//   );
+// }

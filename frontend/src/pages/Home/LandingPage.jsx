@@ -13,6 +13,7 @@ import SkillGalaxy from '../../components/Landing/SkillGalaxy';
 import BookingPreview from '../../components/Landing/BookingPreview';
 import { WorldMapDemo } from '../../components/Landing/World';
 import Footer from '../../components/Landing/Footer';
+import TestimonialSlider from '../../components/Landing/Testimonial';
 
 
 function LandingPage() {
@@ -23,9 +24,10 @@ function LandingPage() {
       {/* <Hero /> */}
       <Home />
       <HowItWorks />
-      <SkillSwapSpotlight />
-      <SkillGalaxy />
-      <BookingPreview />
+      <TestimonialSlider />
+      {/* <SkillSwapSpotlight /> */}
+      {/* <SkillGalaxy /> */}
+      {/* <BookingPreview /> */}
       <WorldMapDemo />
 
       {/* <ServiceSection /> */}
