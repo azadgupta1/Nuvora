@@ -1053,6 +1053,7 @@ import SkillRequestModal from "../../components/Dashboard/Discovery/SkillRequest
 import SkillsFilterPanel from "../../components/Dashboard/Discovery/SkillsFilterPanel";
 import SkillCard from "../../components/Dashboard/Discovery/SkillCard";
 import SearchAndFilterBar from "../../components/Dashboard/Discovery/SearchAndFilterBar";
+import Spinner1 from "../../components/ui/Spinner1";
 
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -1220,7 +1221,9 @@ return (
         {/* Skills Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {loading ? (
-            <p>Loading skills...</p>
+            <div className="w-full flex justify-center items-center py-10">
+              <Spinner1 />
+            </div>
           ) : filteredSkills.length === 0 ? (
             <p>No skills found.</p>
           ) : (
