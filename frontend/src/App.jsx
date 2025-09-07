@@ -5,7 +5,6 @@ import Register from './pages/Home/Register';
 import Login from './pages/Home/Login';
 import DashBoard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
-// import SkillDetails from './pages/SkillDetails';
 import Discovery from './pages/DashboardPages/Discovery';
 import Bookings from './pages/DashboardPages/Bookings';
 import Bookmarks from "./pages/DashboardPages/Bookmarks";
@@ -17,11 +16,7 @@ import Layout from './Layouts/Layout';
 import UserSkillProfile from './pages/Profile/UserSkillProfile';
 import Profile from './pages/Profile/Profile';
 
-// import SkillCreate from './pages/Header/SkillCreate';
-// import MySkills from './pages/Header/MySkills';
-// import { FiSkipForward } from 'react-icons/fi';
-// import ChatRoom from './pages/ChatRoom';
-// import Chat from "./pages/Z_TEST/Chat";
+
 
 
 function App() {
@@ -42,7 +37,6 @@ function App() {
           {/* render inside the Outlet in DashBoard.jsx */}
           <Route index element={<Discovery />} />
           <Route path="discovery" element={<Discovery />} />
-          {/* <Route path="skill/:id" element={<SkillDetails />} /> */}
           <Route path="bookings" element={<Bookings />} />
           <Route path="bookmarks" element={<Bookmarks />} />
           <Route path="reviews" element={<Reviews />} />
@@ -62,3 +56,17 @@ function App() {
 export default App;
 
 
+
+
+
+
+
+
+
+
+// import SkillDetails from './pages/SkillDetails';
+// import SkillCreate from './pages/Header/SkillCreate';
+// import MySkills from './pages/Header/MySkills';
+// import { FiSkipForward } from 'react-icons/fi';
+// import ChatRoom from './pages/ChatRoom';
+// import Chat from "./pages/Z_TEST/Chat";
