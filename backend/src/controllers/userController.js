@@ -14,7 +14,8 @@ export const getUserById = async (req, res) => {
         profilePicture: true, // Optional: if you want to show their profile picture
         bio: true, 
         skill: true,
-        email: true
+        email: true,
+        location: true,
       }
     });
 

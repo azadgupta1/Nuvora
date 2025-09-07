@@ -23,6 +23,8 @@ function Profile() {
         });
         if (!res.ok) throw new Error(`Error: ${await res.text()}`);
         const userData = await res.json();
+
+        console.log("User data is : ", userData);
         setData(userData);
         setFormData({ name: userData.name || "", bio: userData.bio || "", location: userData.location || "", profilePicture: null });
       } catch (err) {
@@ -157,7 +159,7 @@ function Profile() {
                 <hr className="border-gray-200" />
 
                 {/* Profile Picture Upload */}
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-indigo-400 transition cursor-pointer">
+                {/* <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-indigo-400 transition cursor-pointer">
                   <svg
                     className="w-12 h-12 text-gray-400 mb-2"
                     fill="none"
@@ -180,7 +182,37 @@ function Profile() {
                     className="hidden"
                     id="profileUpload"
                   />
-                </div>
+                </div> */}
+
+
+                <label
+  htmlFor="profileUpload"
+  className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-indigo-400 transition cursor-pointer"
+>
+  <svg
+    className="w-12 h-12 text-gray-400 mb-2"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 15a4 4 0 004 4h10a4 4 0 004-4M7 10l5-5m0 0l5 5m-5-5v12" />
+  </svg>
+  <p className="text-sm text-gray-600">
+    Click to upload or drag and drop
+  </p>
+  <p className="text-xs text-gray-400">PNG, JPG, JPEG up to 2MB</p>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) =>
+      setFormData({ ...formData, profilePicture: e.target.files[0] })
+    }
+    className="hidden"
+    id="profileUpload"
+  />
+</label>
+
 
                 {/* Buttons */}
                 <div className="flex justify-end gap-3 pt-2">

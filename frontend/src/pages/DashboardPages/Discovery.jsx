@@ -1188,11 +1188,11 @@ const Discovery = () => {
   }, [skills, searchTerm, selectedCategories, selectedRatings]);
 
 return (
-  <div className="min-h-screen bg-[#F7FAFC] px-4 py-6">
+  <div className="min-h-screen bg-[#F7FAFC] px-4 pt-6">
     <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8">
       
       {/* Sidebar */}
-      <SkillsFilterPanel
+      {/* <SkillsFilterPanel
         categoryColors={defaultCategoryColors}
         selectedCategories={selectedCategories}
         selectedRatings={selectedRatings}
@@ -1205,7 +1205,43 @@ return (
         }}
         isFilterOpen={isFilterOpen}
         setIsFilterOpen={setIsFilterOpen}
-      />
+      /> */}
+
+      {/* <div className="sticky top-6 self-start">
+        <SkillsFilterPanel
+          categoryColors={defaultCategoryColors}
+          selectedCategories={selectedCategories}
+          selectedRatings={selectedRatings}
+          toggleCategory={toggleCategory}
+          toggleRating={toggleRating}
+          resetFilters={() => {
+            setSearchTerm("");
+            setSelectedRatings([]);
+            setSelectedCategories([]);
+          }}
+          isFilterOpen={isFilterOpen}
+          setIsFilterOpen={setIsFilterOpen}
+        />
+      </div> */}
+
+      <div className="sticky top-6 max-h-[calc(100vh-3rem)] self-start">
+        <SkillsFilterPanel
+          categoryColors={defaultCategoryColors}
+          selectedCategories={selectedCategories}
+          selectedRatings={selectedRatings}
+          toggleCategory={toggleCategory}
+          toggleRating={toggleRating}
+          resetFilters={() => {
+            setSearchTerm("");
+            setSelectedRatings([]);
+            setSelectedCategories([]);
+          }}
+          isFilterOpen={isFilterOpen}
+          setIsFilterOpen={setIsFilterOpen}
+        />
+      </div>
+
+
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
@@ -1221,9 +1257,10 @@ return (
         {/* Skills Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {loading ? (
-            <div className="w-full flex justify-center items-center py-10">
+            <div className="col-span-full flex justify-center items-center min-h-[300px]">
               <Spinner1 />
             </div>
+
           ) : filteredSkills.length === 0 ? (
             <p>No skills found.</p>
           ) : (
