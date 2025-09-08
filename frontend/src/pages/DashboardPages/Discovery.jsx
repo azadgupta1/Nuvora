@@ -92,6 +92,8 @@ const Discovery = () => {
         const res = await axios.get(`${backendUrl}/api/skills`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+
+        console.log("Skills are : ", res.data.skills);
         setSkills(res.data.skills || []);
       } catch (e) {
         console.error("Skill fetch failed:", e);

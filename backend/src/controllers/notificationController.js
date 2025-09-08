@@ -61,3 +61,31 @@ export const markNotificationAsRead = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+
+
+
+// Mark all notifications as read for the logged-in user
+export const markAllNotificationsAsRead = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
+
+    await prisma.notification.updateMany({
+      where: {
+        userId,
+        isRead: false, // only update unread ones
+      },
+      data: {
+        isRead: true,
+      },
+    });
+
+    res.status(200).json({ success: true, message: 'All notifications marked as read' });
+  } catch (error) {
+    console.error('❌ Error marking all notifications as read:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};

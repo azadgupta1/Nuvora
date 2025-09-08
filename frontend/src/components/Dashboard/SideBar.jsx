@@ -575,34 +575,23 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         </nav>
 
         {/* ✅ Settings link always at bottom */}
-        {/* ✅ Settings link always at bottom */}
-<div className="px-2 pb-4 mt-auto">
-  <Link
-    to={settingsLink.path}
-    className={`flex items-center gap-3 px-4 py-3 rounded-md transition-all duration-300
-      ${
-        location.pathname === settingsLink.path
-          ? "bg-black text-white font-semibold"
-          : "hover:bg-black hover:text-white"
-      }
-    `}
-    onClick={() => setIsOpen(false)} // close on mobile
-  >
-    {/* ✅ Always show icon */}
-    <span className="text-lg">{settingsLink.icon}</span>
-
-    {/* ✅ Show label on hover (desktop) or always (mobile) */}
-    <span
-      className={`text-base transition-opacity duration-200 ${
-        isHovered || isMobile ? "opacity-100 ml-2" : "opacity-0 w-0"
-      }`}
-    >
-      {settingsLink.label}
-    </span>
-  </Link>
-</div>
-
-
+        <div className="px-2 pb-4 mt-auto">
+          <Link
+            to={settingsLink.path}
+            className={`flex items-center gap-3 px-4 py-3 rounded-md transition-all duration-300
+              ${
+                location.pathname === settingsLink.path
+                  ? "bg-black text-white font-semibold"
+                  : "hover:bg-black hover:text-white"
+              }
+            `}
+            onClick={() => setIsOpen(false)} // close on mobile
+          >
+            <span className="text-lg">{settingsLink.icon}</span>
+            {(isHovered || isMobile) && <span className="text-base">{settingsLink.label}</span>}
+          </Link>
+        </div>
+        
       </aside>
     </>
   );

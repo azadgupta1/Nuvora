@@ -61,6 +61,7 @@ export default function Header({ isSidebarOpen, setIsSidebarOpen }) {
 
 
 
+
   const fetchNotifications = async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/notifications`, {
@@ -80,6 +81,14 @@ export default function Header({ isSidebarOpen, setIsSidebarOpen }) {
       setUnreadCount(0);
     }
   };
+
+  useEffect(() => {
+    if (!token) return;
+
+    fetchNotifications(); // 🔥 Fetch notifications right away
+  }, [token]);
+
+
 
   const markAsRead = async (id) => {
     try {
@@ -162,6 +171,24 @@ export default function Header({ isSidebarOpen, setIsSidebarOpen }) {
 };
 
 
+const markAllAsRead = async () => {
+  try {
+    await axios.patch(`${backendUrl}/api/notifications/read-all`, {}, {
+      headers: { Authorization: `Bearer ${token}` },
+      withCredentials: true,
+    });
+
+    setNotifications((prev) =>
+      prev.map((n) => ({ ...n, isRead: true }))
+    );
+    setUnreadCount(0);
+  } catch (err) {
+    console.error("Error marking all notifications as read", err);
+  }
+};
+
+
+
 // #003344
 
   return (
@@ -220,36 +247,80 @@ export default function Header({ isSidebarOpen, setIsSidebarOpen }) {
            
 
           {notifOpen && (
+            // <div className="
+            //   absolute top-full mt-2 
+            //   w-[95vw] sm:w-80 
+            //   left-1/2 sm:left-auto 
+            //   transform -translate-x-1/2 sm:transform-none 
+            //   bg-white border border-gray-200 rounded-lg shadow-lg 
+            //   z-50 text-gray-800 max-h-96 overflow-y-auto
+            // ">
+            //   <div className="p-3 border-b font-semibold text-gray-700">
+            //     Notifications
+            //   </div>
+            //   {notifications.length === 0 ? (
+            //     <div className="p-4 text-gray-500 text-sm">No notifications</div>
+            //   ) : (
+            //     notifications.map((notif) => (
+            //       <div
+            //         key={notif.id}
+            //         className={`p-3 text-sm border-b hover:bg-gray-100 cursor-pointer ${
+            //           notif.isRead ? 'text-gray-500' : 'text-gray-800 font-medium'
+            //         }`}
+            //         onClick={() => markAsRead(notif.id)}
+            //       >
+            //         {notif.content}
+            //         <div className="text-xs text-gray-400 mt-1">
+            //           {getRelativeTime(notif.createdAt)}
+            //         </div>
+            //       </div>
+            //     ))
+            //   )}
+            // </div>
+
+
             <div className="
-              absolute top-full mt-2 
-              w-[95vw] sm:w-80 
-              left-1/2 sm:left-auto 
-              transform -translate-x-1/2 sm:transform-none 
-              bg-white border border-gray-200 rounded-lg shadow-lg 
-              z-50 text-gray-800 max-h-96 overflow-y-auto
-            ">
-              <div className="p-3 border-b font-semibold text-gray-700">
-                Notifications
-              </div>
-              {notifications.length === 0 ? (
-                <div className="p-4 text-gray-500 text-sm">No notifications</div>
-              ) : (
-                notifications.map((notif) => (
-                  <div
-                    key={notif.id}
-                    className={`p-3 text-sm border-b hover:bg-gray-100 cursor-pointer ${
-                      notif.isRead ? 'text-gray-500' : 'text-gray-800 font-medium'
-                    }`}
-                    onClick={() => markAsRead(notif.id)}
-                  >
-                    {notif.content}
-                    <div className="text-xs text-gray-400 mt-1">
-                      {getRelativeTime(notif.createdAt)}
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
+  absolute top-full mt-2 
+  w-[95vw] sm:w-80 
+  left-1/2 sm:left-auto 
+  transform -translate-x-1/2 sm:transform-none 
+  bg-white border border-gray-200 rounded-lg shadow-lg 
+  z-50 text-gray-800 max-h-96 overflow-y-auto
+">
+  {/* Header + Button */}
+  <div className="p-3 border-b flex justify-between items-center">
+    <span className="font-semibold text-gray-700">Notifications</span>
+    {unreadCount > 0 && (
+      <button
+        onClick={markAllAsRead}
+        className="text-xs text-blue-600 hover:underline"
+      >
+        Mark all as read
+      </button>
+    )}
+  </div>
+
+  {/* Notification List */}
+  {notifications.length === 0 ? (
+    <div className="p-4 text-gray-500 text-sm">No notifications</div>
+  ) : (
+    notifications.map((notif) => (
+      <div
+        key={notif.id}
+        className={`p-3 text-sm border-b hover:bg-gray-100 cursor-pointer ${
+          notif.isRead ? 'text-gray-500' : 'text-gray-800 font-medium'
+        }`}
+        onClick={() => markAsRead(notif.id)}
+      >
+        {notif.content}
+        <div className="text-xs text-gray-400 mt-1">
+          {getRelativeTime(notif.createdAt)}
+        </div>
+      </div>
+    ))
+  )}
+</div>
+
           )}
 
 

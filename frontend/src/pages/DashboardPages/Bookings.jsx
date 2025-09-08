@@ -529,132 +529,286 @@
 
 
 
-import React, { useEffect, useState } from "react";
-import {
-  FaCalendarAlt,
-  FaClock,
-  FaTimesCircle,
-  FaStar,
-  FaEllipsisV,
-} from "react-icons/fa";
+// import React, { useEffect, useState } from "react";
+// import {
+//   FaCalendarAlt,
+//   FaClock,
+//   FaTimesCircle,
+//   FaStar,
+//   FaEllipsisV,
+// } from "react-icons/fa";
+// import { toast } from "react-toastify";
+// import socket from "../../socket";
+// import ReviewModal from "../../components/Dashboard/Bookings/ReviewModal";
+
+// const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
+// // Professional, minimal and accessible Bookings page
+// // - Uses a neutral palette and subtle accents for a corporate look
+// // - Card-based layout with compact metadata rows
+// // - Action buttons moved to an unobtrusive menu style
+// // - Keep all existing behaviour (fetch, cancel, realtime updates)
+
+// const BookingCard = ({ booking, onCancel, onOpenReview }) => {
+//   const formattedDate = booking.date
+//     ? new Date(booking.date).toLocaleDateString(undefined, {
+//         year: "numeric",
+//         month: "short",
+//         day: "numeric",
+//       })
+//     : "-";
+
+//   const formattedTime = booking.time
+//     ? new Date(booking.time).toLocaleTimeString(undefined, {
+//         hour: "2-digit",
+//         minute: "2-digit",
+//       })
+//     : "-";
+
+//   const statusStyles = {
+//     Cancelled: "bg-red-50 text-red-700 ring-1 ring-red-100",
+//     Pending: "bg-amber-50 text-amber-700 ring-1 ring-amber-100",
+//     Confirmed: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100",
+//   };
+
+//   const pillClass = statusStyles[booking.status] ||
+//     "bg-slate-50 text-slate-700 ring-1 ring-slate-100";
+
+//   return (
+//     <article
+//       aria-labelledby={`booking-${booking.id}-title`}
+//       className="bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-lg transition p-6 flex flex-col justify-between"
+//     >
+//       <div>
+//         <div className="flex items-start justify-between gap-4">
+//           <div>
+//             <h3 id={`booking-${booking.id}-title`} className="text-lg font-semibold text-slate-800">
+//               {booking.skillOfferedName} <span className="text-slate-400 font-normal">→</span> {booking.skillWantedName}
+//             </h3>
+//             <p className="mt-1 text-sm text-slate-500">{booking.skill?.category || "Uncategorized"}</p>
+//           </div>
+
+//           <div className="flex items-center gap-3">
+//             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${pillClass}`}>
+//               {booking.status}
+//             </span>
+
+//             <div className="relative">
+//               <button
+//                 aria-haspopup="menu"
+//                 aria-label="actions"
+//                 className="p-2 rounded-full hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+//                 title="Actions"
+//                 onClick={() => onOpenReview(booking)}
+//               >
+//                 <FaEllipsisV className="text-slate-500" />
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+
+//         <p className="mt-4 text-sm text-slate-700 leading-relaxed">{booking.message || "No message provided."}</p>
+
+//         <dl className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-600">
+//           <div className="flex items-center gap-2">
+//             <FaCalendarAlt className="text-indigo-600" />
+//             <dt className="sr-only">Date</dt>
+//             <dd>{formattedDate}</dd>
+//           </div>
+
+//           <div className="flex items-center gap-2">
+//             <FaClock className="text-orange-500" />
+//             <dt className="sr-only">Time</dt>
+//             <dd>{formattedTime}</dd>
+//           </div>
+//         </dl>
+//       </div>
+
+//       <div className="mt-6 flex items-center justify-between gap-3">
+//         <div className="text-xs text-slate-500 flex items-center gap-2">
+//           <FaStar className="text-yellow-500" />
+//           <span>{booking.providerName || booking.provider || "Provider"}</span>
+//         </div>
+
+//         <div className="flex items-center gap-2">
+//           <button
+//             onClick={() => onOpenReview(booking)}
+//             className="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-indigo-200"
+//           >
+//             Give Review
+//           </button>
+
+//           <button
+//             onClick={() => onCancel(booking.id)}
+//             className="inline-flex items-center gap-2 px-3 py-2 rounded-md border border-slate-200 text-sm text-slate-700 hover:bg-slate-50 transition focus:outline-none focus:ring-2 focus:ring-slate-200"
+//           >
+//             <FaTimesCircle />
+//             Cancel
+//           </button>
+//         </div>
+//       </div>
+//     </article>
+//   );
+// };
+
+// const Bookings = () => {
+//   const [bookings, setBookings] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [showReviewModal, setShowReviewModal] = useState(false);
+//   const [selectedBooking, setSelectedBooking] = useState(null);
+
+//   useEffect(() => {
+//     let mounted = true;
+
+//     const fetchBookings = async () => {
+//       setLoading(true);
+//       try {
+//         const response = await fetch(`${backendUrl}/api/bookings`, {
+//           headers: {
+//             Authorization: `Bearer ${localStorage.getItem("token")}`,
+//           },
+//         });
+
+//         const data = await response.json();
+//         if (!mounted) return;
+
+//         if (response.ok) {
+//           setBookings(data.bookings || []);
+//         } else {
+//           toast.error(data.message || "Failed to fetch bookings");
+//         }
+//       } catch (err) {
+//         console.error("Error fetching bookings:", err);
+//         toast.error("Network error while fetching bookings");
+//       } finally {
+//         if (mounted) setLoading(false);
+//       }
+//     };
+
+//     fetchBookings();
+
+//     const handleBookingStatusUpdated = (updatedBooking) => {
+//       setBookings((prev) =>
+//         prev.map((b) => (b.id === updatedBooking.id ? { ...b, status: updatedBooking.status } : b))
+//       );
+//     };
+
+//     socket.on("bookingStatusUpdated", handleBookingStatusUpdated);
+
+//     return () => {
+//       mounted = false;
+//       socket.off("bookingStatusUpdated", handleBookingStatusUpdated);
+//     };
+//   }, []);
+
+//   const openReviewModal = (booking) => {
+//     setSelectedBooking(booking);
+//     setShowReviewModal(true);
+//   };
+
+//   const closeReviewModal = () => {
+//     setSelectedBooking(null);
+//     setShowReviewModal(false);
+//   };
+
+//   const cancelBooking = async (bookingId) => {
+//     const confirmed = window.confirm("Are you sure you want to cancel this booking?");
+//     if (!confirmed) return;
+
+//     try {
+//       const response = await fetch(`${backendUrl}/api/bookings/${bookingId}`, {
+//         method: "DELETE",
+//         headers: {
+//           Authorization: `Bearer ${localStorage.getItem("token")}`,
+//         },
+//       });
+
+//       const data = await response.json();
+//       if (response.ok) {
+//         setBookings((prev) => prev.filter((b) => b.id !== bookingId));
+//         toast.success("Booking cancelled successfully!");
+//       } else {
+//         toast.error(data.message || "Failed to cancel booking");
+//       }
+//     } catch (err) {
+//       console.error("Error cancelling booking:", err);
+//       toast.error("Network error while cancelling booking");
+//     }
+//   };
+
+//   return (
+//     <main className="min-h-screen bg-slate-50 py-10 px-6">
+//       <div className="max-w-6xl mx-auto">
+//         <header className="flex items-center justify-between mb-8">
+//           <div>
+//             <h1 className="text-2xl font-semibold text-slate-800">My Bookings</h1>
+//             <p className="mt-1 text-sm text-slate-500">Manage your upcoming sessions and reviews</p>
+//           </div>
+
+//           <div className="flex items-center gap-3">
+//             <button
+//               className="px-4 py-2 rounded-md bg-white border border-slate-200 text-sm text-slate-700 shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-indigo-100"
+//               onClick={() => window.location.reload()}
+//               title="Refresh"
+//             >
+//               Refresh
+//             </button>
+
+//             <button
+//               className="px-4 py-2 rounded-md bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+//               onClick={() => toast.info('Use the "Give Review" button on a booking to leave feedback.')}
+//             >
+//               How to review
+//             </button>
+//           </div>
+//         </header>
+
+//         {loading ? (
+//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+//             {Array.from({ length: 6 }).map((_, i) => (
+//               <div key={i} className="h-40 rounded-2xl bg-gradient-to-r from-white to-slate-50 animate-pulse" />
+//             ))}
+//           </div>
+//         ) : bookings.length === 0 ? (
+//           <section className="bg-white border border-slate-100 rounded-2xl p-10 text-center shadow-sm">
+//             <h2 className="text-lg font-semibold text-slate-800">No bookings found</h2>
+//             <p className="mt-2 text-sm text-slate-500">You have no active bookings. Explore skills and request a session.</p>
+//           </section>
+//         ) : (
+//           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+//             {bookings.map((booking) => (
+//               <BookingCard
+//                 key={booking.id}
+//                 booking={booking}
+//                 onCancel={cancelBooking}
+//                 onOpenReview={openReviewModal}
+//               />
+//             ))}
+//           </section>
+//         )}
+
+//         <ReviewModal isOpen={showReviewModal} onClose={closeReviewModal} booking={selectedBooking} />
+//       </div>
+//     </main>
+//   );
+// };
+
+// export default Bookings;
+
+
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import socket from "../../socket";
+import BookingCard from "../../components/Dashboard/Bookings/BookingCard";
 import ReviewModal from "../../components/Dashboard/Bookings/ReviewModal";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-
-// Professional, minimal and accessible Bookings page
-// - Uses a neutral palette and subtle accents for a corporate look
-// - Card-based layout with compact metadata rows
-// - Action buttons moved to an unobtrusive menu style
-// - Keep all existing behaviour (fetch, cancel, realtime updates)
-
-const BookingCard = ({ booking, onCancel, onOpenReview }) => {
-  const formattedDate = booking.date
-    ? new Date(booking.date).toLocaleDateString(undefined, {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      })
-    : "-";
-
-  const formattedTime = booking.time
-    ? new Date(booking.time).toLocaleTimeString(undefined, {
-        hour: "2-digit",
-        minute: "2-digit",
-      })
-    : "-";
-
-  const statusStyles = {
-    Cancelled: "bg-red-50 text-red-700 ring-1 ring-red-100",
-    Pending: "bg-amber-50 text-amber-700 ring-1 ring-amber-100",
-    Confirmed: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100",
-  };
-
-  const pillClass = statusStyles[booking.status] ||
-    "bg-slate-50 text-slate-700 ring-1 ring-slate-100";
-
-  return (
-    <article
-      aria-labelledby={`booking-${booking.id}-title`}
-      className="bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-lg transition p-6 flex flex-col justify-between"
-    >
-      <div>
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h3 id={`booking-${booking.id}-title`} className="text-lg font-semibold text-slate-800">
-              {booking.skillOfferedName} <span className="text-slate-400 font-normal">→</span> {booking.skillWantedName}
-            </h3>
-            <p className="mt-1 text-sm text-slate-500">{booking.skill?.category || "Uncategorized"}</p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${pillClass}`}>
-              {booking.status}
-            </span>
-
-            <div className="relative">
-              <button
-                aria-haspopup="menu"
-                aria-label="actions"
-                className="p-2 rounded-full hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-200"
-                title="Actions"
-                onClick={() => onOpenReview(booking)}
-              >
-                <FaEllipsisV className="text-slate-500" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <p className="mt-4 text-sm text-slate-700 leading-relaxed">{booking.message || "No message provided."}</p>
-
-        <dl className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-600">
-          <div className="flex items-center gap-2">
-            <FaCalendarAlt className="text-indigo-600" />
-            <dt className="sr-only">Date</dt>
-            <dd>{formattedDate}</dd>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <FaClock className="text-orange-500" />
-            <dt className="sr-only">Time</dt>
-            <dd>{formattedTime}</dd>
-          </div>
-        </dl>
-      </div>
-
-      <div className="mt-6 flex items-center justify-between gap-3">
-        <div className="text-xs text-slate-500 flex items-center gap-2">
-          <FaStar className="text-yellow-500" />
-          <span>{booking.providerName || booking.provider || "Provider"}</span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => onOpenReview(booking)}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-indigo-200"
-          >
-            Give Review
-          </button>
-
-          <button
-            onClick={() => onCancel(booking.id)}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-md border border-slate-200 text-sm text-slate-700 hover:bg-slate-50 transition focus:outline-none focus:ring-2 focus:ring-slate-200"
-          >
-            <FaTimesCircle />
-            Cancel
-          </button>
-        </div>
-      </div>
-    </article>
-  );
-};
-
 const Bookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedTab, setSelectedTab] = useState("Pending");
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
 
@@ -664,22 +818,15 @@ const Bookings = () => {
     const fetchBookings = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${backendUrl}/api/bookings`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+        const res = await fetch(`${backendUrl}/api/bookings`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-
-        const data = await response.json();
+        const data = await res.json();
         if (!mounted) return;
-
-        if (response.ok) {
-          setBookings(data.bookings || []);
-        } else {
-          toast.error(data.message || "Failed to fetch bookings");
-        }
+        if (res.ok) setBookings(data.bookings || []);
+        else toast.error(data.message || "Failed to fetch bookings");
       } catch (err) {
-        console.error("Error fetching bookings:", err);
+        console.error(err);
         toast.error("Network error while fetching bookings");
       } finally {
         if (mounted) setLoading(false);
@@ -689,8 +836,8 @@ const Bookings = () => {
     fetchBookings();
 
     const handleBookingStatusUpdated = (updatedBooking) => {
-      setBookings((prev) =>
-        prev.map((b) => (b.id === updatedBooking.id ? { ...b, status: updatedBooking.status } : b))
+      setBookings(prev =>
+        prev.map(b => (b.id === updatedBooking.id ? { ...b, status: updatedBooking.status } : b))
       );
     };
 
@@ -701,6 +848,10 @@ const Bookings = () => {
       socket.off("bookingStatusUpdated", handleBookingStatusUpdated);
     };
   }, []);
+
+  const filteredBookings = bookings.filter(b =>
+    selectedTab === "Pending" ? b.status === "Pending" : b.status === "Confirmed"
+  );
 
   const openReviewModal = (booking) => {
     setSelectedBooking(booking);
@@ -713,53 +864,41 @@ const Bookings = () => {
   };
 
   const cancelBooking = async (bookingId) => {
-    const confirmed = window.confirm("Are you sure you want to cancel this booking?");
-    if (!confirmed) return;
+    if (!window.confirm("Are you sure you want to cancel this booking?")) return;
 
     try {
-      const response = await fetch(`${backendUrl}/api/bookings/${bookingId}`, {
+      const res = await fetch(`${backendUrl}/api/bookings/${bookingId}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-
-      const data = await response.json();
-      if (response.ok) {
-        setBookings((prev) => prev.filter((b) => b.id !== bookingId));
+      const data = await res.json();
+      if (res.ok) {
+        setBookings(prev => prev.filter(b => b.id !== bookingId));
         toast.success("Booking cancelled successfully!");
-      } else {
-        toast.error(data.message || "Failed to cancel booking");
-      }
+      } else toast.error(data.message || "Failed to cancel booking");
     } catch (err) {
-      console.error("Error cancelling booking:", err);
+      console.error(err);
       toast.error("Network error while cancelling booking");
     }
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 py-10 px-6">
+    <main className="min-h-screen bg-gray-50 py-10 px-6">
       <div className="max-w-6xl mx-auto">
-        <header className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-2xl font-semibold text-slate-800">My Bookings</h1>
-            <p className="mt-1 text-sm text-slate-500">Manage your upcoming sessions and reviews</p>
-          </div>
-
-          <div className="flex items-center gap-3">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+          <h1 className="text-2xl font-bold text-gray-800">My Bookings</h1>
+          <div className="flex gap-2">
             <button
-              className="px-4 py-2 rounded-md bg-white border border-slate-200 text-sm text-slate-700 shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-indigo-100"
-              onClick={() => window.location.reload()}
-              title="Refresh"
+              className={`px-4 py-2 rounded-md text-sm font-medium ${selectedTab === "Pending" ? "bg-indigo-600 text-white" : "bg-white border border-gray-200 text-gray-700"}`}
+              onClick={() => setSelectedTab("Pending")}
             >
-              Refresh
+              Pending
             </button>
-
             <button
-              className="px-4 py-2 rounded-md bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-200"
-              onClick={() => toast.info('Use the "Give Review" button on a booking to leave feedback.')}
+              className={`px-4 py-2 rounded-md text-sm font-medium ${selectedTab === "Confirmed" ? "bg-indigo-600 text-white" : "bg-white border border-gray-200 text-gray-700"}`}
+              onClick={() => setSelectedTab("Confirmed")}
             >
-              How to review
+              Confirmed
             </button>
           </div>
         </header>
@@ -767,17 +906,17 @@ const Bookings = () => {
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-40 rounded-2xl bg-gradient-to-r from-white to-slate-50 animate-pulse" />
+              <div key={i} className="h-48 rounded-2xl bg-gradient-to-r from-white to-gray-100 animate-pulse" />
             ))}
           </div>
-        ) : bookings.length === 0 ? (
-          <section className="bg-white border border-slate-100 rounded-2xl p-10 text-center shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-800">No bookings found</h2>
-            <p className="mt-2 text-sm text-slate-500">You have no active bookings. Explore skills and request a session.</p>
+        ) : filteredBookings.length === 0 ? (
+          <section className="bg-white border border-gray-100 rounded-2xl p-10 text-center shadow-sm">
+            <h2 className="text-lg font-semibold text-gray-800">No {selectedTab.toLowerCase()} bookings</h2>
+            <p className="mt-2 text-sm text-gray-500">You have no {selectedTab.toLowerCase()} bookings.</p>
           </section>
         ) : (
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {bookings.map((booking) => (
+            {filteredBookings.map(booking => (
               <BookingCard
                 key={booking.id}
                 booking={booking}
@@ -795,4 +934,3 @@ const Bookings = () => {
 };
 
 export default Bookings;
-
