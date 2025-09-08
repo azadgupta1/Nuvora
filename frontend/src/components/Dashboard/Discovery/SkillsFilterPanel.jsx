@@ -156,17 +156,115 @@
 
 
 
+// import { FaStar } from "react-icons/fa";
+
+// const SkillsFilterPanel = ({
+//   categoryColors = {},
+//   selectedCategories = [],
+//   selectedRatings = [],
+//   toggleCategory,
+//   toggleRating,
+//   resetFilters,
+//   isFilterOpen,
+//   setIsFilterOpen,
+// }) => {
+//   const ratingOptions = [5, 4, 3, 2, 1];
+
+//   const renderStarLabel = (count) => (
+//     <div className="flex items-center gap-1">
+//       {Array.from({ length: count }).map((_, i) => (
+//         <FaStar key={i} className="text-yellow-500 text-sm" />
+//       ))}
+//       <span className="text-sm text-gray-600 ml-1">{count} & up</span>
+//     </div>
+//   );
+
+//   return (
+//   <>
+//     {/* Sidebar - Desktop */}
+//     <aside className="hidden md:block w-full md:w-64">
+//       <div className="sticky top-0 bg-white p-6 rounded-md shadow-md border border-gray-200">
+//         <h3 className="text-lg font-bold text-gray-800 mb-6">Filters</h3>
+
+//         {/* Category Filter */}
+//         <div className="mb-8">
+//           <h4 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
+//             Category
+//           </h4>
+//           <div className="flex flex-wrap gap-2">
+//             {Object.keys(categoryColors).map((category) => (
+//               <button
+//                 key={category}
+//                 onClick={() => toggleCategory(category)}
+//                 className={`text-xs px-3 py-1.5 rounded-full border ${
+//                   selectedCategories.includes(category)
+//                     ? "bg-blue-600 text-white border-blue-600"
+//                     : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
+//                 } transition`}
+//               >
+//                 {category}
+//               </button>
+//             ))}
+//           </div>
+//         </div>
+
+//         {/* Ratings Filter */}
+//         <div className="mb-8">
+//           <h4 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
+//             Minimum Rating
+//           </h4>
+//           <div className="space-y-2">
+//             {ratingOptions.map((rating) => (
+//               <label key={rating} className="flex items-center space-x-2">
+//                 <input
+//                   type="checkbox"
+//                   className="accent-yellow-500"
+//                   checked={selectedRatings.includes(rating)}
+//                   onChange={() => toggleRating(rating)}
+//                 />
+//                 {renderStarLabel(rating)}
+//               </label>
+//             ))}
+//           </div>
+//         </div>
+
+//         <hr className="my-6 border-gray-300" />
+
+//         <button
+//           onClick={resetFilters}
+//           className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium py-2 rounded-md transition"
+//         >
+//           Reset Filters
+//         </button>
+//       </div>
+//     </aside>
+//   </>
+// );
+
+// };
+
+// export default SkillsFilterPanel;
+
+
+
+
+
+
+
+
+
+
 import { FaStar } from "react-icons/fa";
 
 const SkillsFilterPanel = ({
-  categoryColors = {},
+  categoryColors = { Tech: "blue", Sports: "green", Languages: "red" }, // ✅ default categories
   selectedCategories = [],
   selectedRatings = [],
-  toggleCategory,
-  toggleRating,
-  resetFilters,
-  isFilterOpen,
-  setIsFilterOpen,
+  toggleCategory = (c) => console.log("Toggled category:", c), // ✅ dummy function
+  toggleRating = (r) => console.log("Toggled rating:", r), // ✅ dummy function
+  resetFilters = () => console.log("Reset filters"), // ✅ dummy function
+  isFilterOpen = true, // ✅ always open by default
+  setIsFilterOpen = () => {}, // ✅ no-op
 }) => {
   const ratingOptions = [5, 4, 3, 2, 1];
 
@@ -181,34 +279,42 @@ const SkillsFilterPanel = ({
 
   return (
     <>
-      {/* Sidebar - Desktop */}
-      <aside className="hidden md:block w-full md:w-64">
-        <div className="sticky top-0 bg-white p-6 rounded-md shadow-md border border-gray-200">
+      {/* Sidebar */}
+      <aside className="block w-full md:w-64">
+        <div className="sticky top-0 bg-white p-6 rounded-md shadow-2xl border border-gray-200">
           <h3 className="text-lg font-bold text-gray-800 mb-6">Filters</h3>
 
           {/* Category Filter */}
           <div className="mb-8">
-            <h4 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">Category</h4>
+            <h4 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
+              Category
+            </h4>
             <div className="flex flex-wrap gap-2">
-              {Object.keys(categoryColors).map((category) => (
-                <button
-                  key={category}
-                  onClick={() => toggleCategory(category)}
-                  className={`text-xs px-3 py-1.5 rounded-full border ${
-                    selectedCategories.includes(category)
-                      ? "bg-blue-600 text-white border-blue-600"
-                      : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
-                  } transition`}
-                >
-                  {category}
-                </button>
-              ))}
+              {Object.keys(categoryColors).length === 0 ? (
+                <p className="text-sm text-gray-500">No categories available</p>
+              ) : (
+                Object.keys(categoryColors).map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => toggleCategory(category)}
+                    className={`text-xs px-3 py-1.5 rounded-full border ${
+                      selectedCategories.includes(category)
+                        ? "bg-blue-600 text-white border-blue-600"
+                        : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
+                    } transition`}
+                  >
+                    {category}
+                  </button>
+                ))
+              )}
             </div>
           </div>
 
           {/* Ratings Filter */}
           <div className="mb-8">
-            <h4 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">Minimum Rating</h4>
+            <h4 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
+              Minimum Rating
+            </h4>
             <div className="space-y-2">
               {ratingOptions.map((rating) => (
                 <label key={rating} className="flex items-center space-x-2">
@@ -234,22 +340,6 @@ const SkillsFilterPanel = ({
           </button>
         </div>
       </aside>
-
-      {/* Mobile Filter (optional) */}
-      {isFilterOpen && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-30 flex justify-end md:hidden">
-          <div className="w-4/5 max-w-xs h-full bg-white p-6 shadow-xl overflow-y-auto relative">
-            <button
-              onClick={() => setIsFilterOpen(false)}
-              className="absolute top-3 right-4 text-gray-700 text-2xl"
-            >
-              &times;
-            </button>
-
-            {/* Repeat same structure here for mobile, or extract into reusable components */}
-          </div>
-        </div>
-      )}
     </>
   );
 };

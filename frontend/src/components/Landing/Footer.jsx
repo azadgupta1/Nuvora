@@ -72,7 +72,7 @@ function Footer() {
         <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-10 px-6">
           {/* Brand */}
           <div>
-            <h4 className="text-cyan-400 font-bold text-2xl mb-4">Nuvora</h4>
+            <h4 className="text-white font-bold text-2xl mb-4">Nuvora</h4>
             <p className="text-gray-500 text-sm leading-6">
               Exchange skills, not money. A global knowledge-sharing platform 
               where learning has no boundaries.

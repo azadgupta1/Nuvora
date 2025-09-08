@@ -165,7 +165,7 @@ export default function Header({ isSidebarOpen, setIsSidebarOpen }) {
 // #003344
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-black text-white px-2 py-3 sm:px-6 sm:py-3 ">
+    <header className="fixed top-0 left-0 w-full z-40 bg-black text-white px-2 py-3 sm:px-6 sm:py-3 ">
       <div className="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto gap-3">
         {/* Logo */}
 
