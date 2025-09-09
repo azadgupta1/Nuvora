@@ -280,46 +280,46 @@ const markAllAsRead = async () => {
 
 
             <div className="
-  absolute top-full mt-2 
-  w-[95vw] sm:w-80 
-  left-1/2 sm:left-auto 
-  transform -translate-x-1/2 sm:transform-none 
-  bg-white border border-gray-200 rounded-lg shadow-lg 
-  z-50 text-gray-800 max-h-96 overflow-y-auto
-">
-  {/* Header + Button */}
-  <div className="p-3 border-b flex justify-between items-center">
-    <span className="font-semibold text-gray-700">Notifications</span>
-    {unreadCount > 0 && (
-      <button
-        onClick={markAllAsRead}
-        className="text-xs text-blue-600 hover:underline"
-      >
-        Mark all as read
-      </button>
-    )}
-  </div>
+              absolute top-full mt-2
+              w-[85vw] sm:w-80 
+              left-1/5 sm:left-auto 
+              transform -translate-x-1/2 sm:transform-none 
+              bg-white border border-gray-200 rounded-lg shadow-lg 
+              z-50 text-gray-800 max-h-96 overflow-y-auto
+            ">
+              {/* Header + Button */}
+              <div className="p-3 border-b flex justify-between items-center">
+                <span className="font-semibold text-gray-700">Notifications</span>
+                {unreadCount > 0 && (
+                  <button
+                    onClick={markAllAsRead}
+                    className="text-xs text-blue-600 hover:underline pr-2"
+                  >
+                    Mark all as read
+                  </button>
+                )}
+              </div>
 
-  {/* Notification List */}
-  {notifications.length === 0 ? (
-    <div className="p-4 text-gray-500 text-sm">No notifications</div>
-  ) : (
-    notifications.map((notif) => (
-      <div
-        key={notif.id}
-        className={`p-3 text-sm border-b hover:bg-gray-100 cursor-pointer ${
-          notif.isRead ? 'text-gray-500' : 'text-gray-800 font-medium'
-        }`}
-        onClick={() => markAsRead(notif.id)}
-      >
-        {notif.content}
-        <div className="text-xs text-gray-400 mt-1">
-          {getRelativeTime(notif.createdAt)}
-        </div>
-      </div>
-    ))
-  )}
-</div>
+              {/* Notification List */}
+              {notifications.length === 0 ? (
+                <div className="p-4 text-gray-500 text-sm">No notifications</div>
+              ) : (
+                notifications.map((notif) => (
+                  <div
+                    key={notif.id}
+                    className={`p-3 text-sm border-b hover:bg-gray-100 cursor-pointer ${
+                      notif.isRead ? 'text-gray-500' : 'text-gray-800 font-medium'
+                    }`}
+                    onClick={() => markAsRead(notif.id)}
+                  >
+                    {notif.content}
+                    <div className="text-xs text-gray-400 mt-1">
+                      {getRelativeTime(notif.createdAt)}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
 
           )}
 
