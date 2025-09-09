@@ -281,7 +281,7 @@ const SkillsFilterPanel = ({
     <>
       {/* Sidebar */}
       <aside className="block w-full md:w-64">
-        <div className="sticky top-0 bg-white p-6 rounded-md shadow-2xl border border-gray-200">
+        <div className="sticky top-0 bg-[#eeecf5] p-6 rounded-xl border max-h-[calc(90vh-2rem)] border-gray-300">
           <h3 className="text-lg font-bold text-gray-800 mb-6">Filters</h3>
 
           {/* Category Filter */}

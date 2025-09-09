@@ -926,6 +926,9 @@ const IncomingBookings = () => {
 
         const data = await response.json();
 
+
+        console.log("Bookings Received: ", data);
+
         if (!response.ok) throw new Error(data.message || "Failed to fetch");
 
         setBookings(data.bookings);

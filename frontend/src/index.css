@@ -51,3 +51,13 @@
 .swiper-pagination-bullet-active {
   background: #4F46E5 !important; /* Indigo-600 */
 }
+
+
+/* Hide scrollbar for all scrollable elements with this class */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;    /* Firefox */
+}

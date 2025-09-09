@@ -15,6 +15,7 @@ import ChatLayout from './pages/Chat/ChatLayout';
 import Layout from './Layouts/Layout';
 import UserSkillProfile from './pages/Profile/UserSkillProfile';
 import Profile from './pages/Profile/Profile';
+import Settings from './pages/DashboardPages/Settings';
 
 
 
@@ -41,6 +42,7 @@ function App() {
           <Route path="bookmarks" element={<Bookmarks />} />
           <Route path="reviews" element={<Reviews />} />
           <Route path="incoming-request" element={<IncomingBookings />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="chat" element={<ChatPage />} />
           <Route path="chatlayout" element={<ChatLayout />} />
           <Route path="profile/:id" element={<Profile/>} />

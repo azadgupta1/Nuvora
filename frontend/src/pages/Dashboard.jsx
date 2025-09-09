@@ -145,7 +145,7 @@ function DashBoard() {
       </div>
 
       {/* Sidebar + Content */}
-      <div className="flex flex-1 pt-[57px] overflow-hidden">
+      <div className="flex flex-1 pt-[56px] overflow-hidden">
         <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
         <main className="flex-1 overflow-auto bg-gray-100 p-0">

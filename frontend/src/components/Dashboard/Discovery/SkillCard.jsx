@@ -291,8 +291,18 @@ const SkillCard = ({ skill, isBookmarked, onBookmarkToggle, onSendRequest }) => 
 
   console.log("SkillCard is : ", skill);
 
+  // #1F2333
+
+  // #22263A
+
+  // #242A3B
+
+  // #2A2F45
+
+  // #eeecf5
+
   return (
-    <div className="relative bg-white rounded-xl shadow-sm hover:shadow-md transition duration-200 border border-gray-100 p-3 flex flex-col space-y-2">
+    <div className="relative bg-white rounded-sm hover:shadow-md transition duration-200 border border-gray-300 p-3 flex flex-col space-y-2">
 
       {/* Bookmark Icon */}
       <button

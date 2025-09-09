@@ -5,6 +5,7 @@ import SkillsFilterPanel from "../../components/Dashboard/Discovery/SkillsFilter
 import SkillCard from "../../components/Dashboard/Discovery/SkillCard";
 import SearchAndFilterBar from "../../components/Dashboard/Discovery/SearchAndFilterBar";
 import Spinner1 from "../../components/ui/Spinner1";
+import CategoryFilterBar from "../../components/Dashboard/Discovery/CategoryFilterBar";
 
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -20,6 +21,9 @@ const defaultCategoryColors = {
   Music: "bg-indigo-100 text-indigo-800",
   Others: "bg-gray-100 text-gray-800",
 };
+
+
+
 
 
 
@@ -320,10 +324,16 @@ const Discovery = () => {
 
 
 
+// #F7FAFC
+
+// #F9F7F1   main
+
+
+// #191C28
 
 
 return (
-  <div className="min-h-screen bg-[#F7FAFC] px-4 pt-6">
+  <div className="min-h-screen bg-[#F9F7F1] px-4 pt-6">
     <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8">
       
       {/* Sidebar Filter - Desktop */}
@@ -345,7 +355,7 @@ return (
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Search Bar */}
-        <div className="mb-4">
+        <div className="mb-2">
           <SearchAndFilterBar
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
@@ -353,7 +363,18 @@ return (
           />
         </div>
         
+        {/* Separator line */}
+        {/* <div className="w-full max-w-[570px] border-t border-gray-300 mb-4 ml-2" /> */}
 
+        <CategoryFilterBar
+          categories={Object.keys(defaultCategoryColors)}
+          selectedCategories={selectedCategories}
+          toggleCategory={toggleCategory}
+          resetCategories={() => setSelectedCategories([])}
+        />
+
+
+          
         {/* Skills Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {loading ? (
@@ -375,6 +396,8 @@ return (
           )}
         </div>
       </div>
+
+
     </div>
 
     {/* ✅ Mobile Filter Drawer */}

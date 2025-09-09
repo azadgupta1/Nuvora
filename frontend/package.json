@@ -32,6 +32,7 @@
     "socket.io-client": "^4.8.1",
     "swiper": "^11.2.10",
     "tailwind-merge": "^3.3.1",
+    "tailwind-scrollbar-hide": "^4.0.0",
     "tailwindcss": "^4.0.12"
   },
   "devDependencies": {

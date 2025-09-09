@@ -26,8 +26,6 @@ router.get('/google/callback',
 );
 
 
-
-
 router.post('/signup', registerUser);
 
 router.post('/login', loginUser);
