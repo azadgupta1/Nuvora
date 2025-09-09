@@ -1,8 +1,14 @@
 import express from 'express';
 import { registerUser, loginUser } from '../controllers/authController.js';
 import passport from 'passport';
+import dotenv from 'dotenv';
+dotenv.config();
 
+
+const frontendUrl = process.env.FRONTEND_URL;
 const router = express.Router();
+
+
 
 // add one more route here
 
@@ -13,7 +19,7 @@ router.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
     const token = req.user.token;
-    res.redirect(`http://localhost:5173/dashboard?token=${token}`);
+    res.redirect(`${frontendUrl}/dashboard?token=${token}`);
   }
 );
 

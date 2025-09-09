@@ -321,51 +321,81 @@ export default function Register() {
     if (e.target.checked) setAgreeError(""); // clear error when checked
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setErrors({});
-    setAgreeError("");
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError("");
+  //   setErrors({});
+  //   setAgreeError("");
 
-    if (!agree) {
-      setAgreeError("You must agree to the terms and conditions.");
-      return; // stop submission if not checked
+  //   if (!agree) {
+  //     setAgreeError("You must agree to the terms and conditions.");
+  //     return; // stop submission if not checked
+  //   }
+
+  //   try {
+  //     await registerUser(user);
+  //     console.log("User : ", )
+  //     navigate("/dashboard");
+    
+  //     } catch (err) {
+  //       const backendErrors = err.response?.data;
+
+  //       if (backendErrors?.errors) {
+  //         const fieldErrors = {};
+  //         backendErrors.errors.forEach(({ field, message }) => {
+  //           if (!fieldErrors[field]) fieldErrors[field] = [];
+  //           fieldErrors[field].push(message);
+  //         });
+  //         setErrors(fieldErrors);
+  //       } else if (backendErrors?.message) {
+  //         setError(backendErrors.message);
+  //       } else {
+  //         setError("Something went wrong. Please try again.");
+  //       }
+  //     }
+
+  // };
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+  setErrors({});
+  setAgreeError("");
+
+  if (!agree) {
+    setAgreeError("You must agree to the terms and conditions.");
+    return;
+  }
+
+  try {
+    const response = await registerUser(user);
+    console.log("User is : ", response);
+
+    if (response.token) {
+      localStorage.setItem("token", response.token);
     }
 
-    try {
-      await registerUser(user);
-      navigate("/dashboard");
-    // } catch (err) {
-    //   if (err.response?.data?.errors) {
-    //     const fieldErrors = {};
-    //     err.response.data.errors.forEach(({ field, message }) => {
-    //       if (!fieldErrors[field]) fieldErrors[field] = [];
-    //       fieldErrors[field].push(message);
-    //     });
-    //     setErrors(fieldErrors);
-    //   } else {
-    //     setError(err.message || "Something went wrong");
-    //   }
-    // }
+    navigate("/dashboard");
+  } catch (err) {
+    const backendErrors = err.response?.data;
 
-} catch (err) {
-  const backendErrors = err.response?.data;
-
-  if (backendErrors?.errors) {
-    const fieldErrors = {};
-    backendErrors.errors.forEach(({ field, message }) => {
-      if (!fieldErrors[field]) fieldErrors[field] = [];
-      fieldErrors[field].push(message);
-    });
-    setErrors(fieldErrors);
-  } else if (backendErrors?.message) {
-    setError(backendErrors.message);
-  } else {
-    setError("Something went wrong. Please try again.");
+    if (backendErrors?.errors) {
+      const fieldErrors = {};
+      backendErrors.errors.forEach(({ field, message }) => {
+        if (!fieldErrors[field]) fieldErrors[field] = [];
+        fieldErrors[field].push(message);
+      });
+      setErrors(fieldErrors);
+    } else if (backendErrors?.message) {
+      setError(backendErrors.message);
+    } else {
+      setError("Something went wrong. Please try again.");
+    }
   }
-}
+};
 
-  };
+
+
 
   return (
     <div className="min-h-screen bg-gray-50 mt-0 flex items-center justify-center px-0">
@@ -447,11 +477,12 @@ export default function Register() {
           </button>
         </form>
 
-        <div className="my-6 flex items-center justify-between">
-          <hr className="w-1/3 border-gray-300" />
-          <span className="text-sm text-gray-500">or continue with</span>
-          <hr className="w-1/3 border-gray-300" />
+        <div className="my-6 flex flex-wrap items-center justify-center gap-2 text-center">
+          <hr className="flex-grow border-gray-300 max-w-[120px] w-full sm:w-1/3" />
+          <span className="text-sm text-gray-500 whitespace-nowrap">or continue with</span>
+          <hr className="flex-grow border-gray-300 max-w-[120px] w-full sm:w-1/3" />
         </div>
+
 
         {/* Social Sign-Up Buttons - Visual Only */}
         <div className="flex flex-col space-y-3">

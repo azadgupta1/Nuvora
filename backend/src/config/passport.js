@@ -3,12 +3,17 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import prisma from './prismaClient.js'; // Adjust path as needed
 import jwt from 'jsonwebtoken';
 
+
+
+console.log("Redirect URI being sent to Google:", `${process.env.BACKEND_URL}/api/auth/google/callback`);
+
+
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: '/api/auth/google/callback', // adjust to match your backend route
+      callbackURL: `${process.env.BACKEND_URL}/api/auth/google/callback`, // adjust to match your backend route
     },
     async (accessToken, refreshToken, profile, done) => {
       try {

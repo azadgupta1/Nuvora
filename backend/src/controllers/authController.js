@@ -4,53 +4,112 @@ import prisma from '../config/prismaClient.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-export const registerUser = async (req, res) => {
+// export const registerUser = async (req, res) => {
 
     
-    try {
-        // Validate request body using Zod schema
-        const validatedData = registerSchema.parse(req.body);
-        const { name, email, password } = validatedData;
+//     try {
+//         // Validate request body using Zod schema
+//         const validatedData = registerSchema.parse(req.body);
+//         const { name, email, password } = validatedData;
 
-        const userExist = await prisma.user.findUnique({
-            where: { email },
-        });
+//         const userExist = await prisma.user.findUnique({
+//             where: { email },
+//         });
 
-        if (userExist) {
-            return res.status(400).json({ message: "User already exists!" });
-        }
+//         if (userExist) {
+//             return res.status(400).json({ message: "User already exists!" });
+//         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+//         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const createUser = await prisma.user.create({
-            data: {
-                name,
-                email,
-                password: hashedPassword,
-            }
-        });
+//         const createUser = await prisma.user.create({
+//             data: {
+//                 name,
+//                 email,
+//                 password: hashedPassword,
+//             }
+//         });
 
-        res.status(200).json({ message: "User registered successfully!", user: createUser });
+//         res.status(200).json({ message: "User registered successfully!", user: createUser });
 
-    } catch (error) {
-        // Handle Zod validation errors
-        if (error instanceof z.ZodError) {
-            const formattedErrors = error.errors.map(err => ({
-                field: err.path[0],
-                message: err.message
-            }));
+//     } catch (error) {
+//         // Handle Zod validation errors
+//         if (error instanceof z.ZodError) {
+//             const formattedErrors = error.errors.map(err => ({
+//                 field: err.path[0],
+//                 message: err.message
+//             }));
 
-            return res.status(400).json({
-                message: "Validation failed",
-                errors: formattedErrors
-            });
-        }
+//             return res.status(400).json({
+//                 message: "Validation failed",
+//                 errors: formattedErrors
+//             });
+//         }
 
-        console.error(error);
-        res.status(500).json({ message: "Something went wrong!" });
+//         console.error(error);
+//         res.status(500).json({ message: "Something went wrong!" });
+//     }
+// };
+
+
+
+export const registerUser = async (req, res) => {
+  try {
+    // Validate request body using Zod schema
+    const validatedData = registerSchema.parse(req.body);
+    const { name, email, password } = validatedData;
+
+    const userExist = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (userExist) {
+      return res.status(400).json({ message: "User already exists!" });
     }
-};
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const createUser = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+      },
+    });
+
+    // 🔐 Generate JWT token
+    const token = jwt.sign(
+      { userId: createUser.id },
+      process.env.JWT_SECRET,
+      { expiresIn: "6h" }
+    );
+
+    // Remove password from user object before sending
+    const { password: _, ...userWithoutPassword } = createUser;
+
+    res.status(200).json({
+      message: "User registered successfully!",
+      user: userWithoutPassword,
+      token, // 🔑 Send token
+    });
+
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const formattedErrors = error.errors.map(err => ({
+        field: err.path[0],
+        message: err.message,
+      }));
+
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: formattedErrors,
+      });
+    }
+
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong!" });
+  }
+};
 
 
 
