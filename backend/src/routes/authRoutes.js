@@ -19,7 +19,9 @@ router.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
     const token = req.user.token;
-    res.redirect(`${frontendUrl}/dashboard?token=${token}`);
+    // res.redirect(`${frontendUrl}dashboard?token=${token}`);
+    // ✅ Best: Use a URL-safe join to avoid double slashes
+    res.redirect(`${frontendUrl.replace(/\/$/, '')}/dashboard?token=${token}`);
   }
 );
 

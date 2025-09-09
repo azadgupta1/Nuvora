@@ -290,37 +290,6 @@
 
 
 
-
-
-
-
-
-
-
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { registerUser } from "../../services/authServices";
-
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-export default function Register() {
-  const [user, setUser] = useState({ name: "", email: "", password: "" });
-  const [agree, setAgree] = useState(false);  // <-- new state for checkbox
-  const [error, setError] = useState("");
-  const [errors, setErrors] = useState({});
-  const [agreeError, setAgreeError] = useState("");  // <-- error state for checkbox
-
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
-  };
-
-  const handleAgreeChange = (e) => {
-    setAgree(e.target.checked);
-    if (e.target.checked) setAgreeError(""); // clear error when checked
-  };
-
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
   //   setError("");
@@ -355,6 +324,40 @@ export default function Register() {
   //     }
 
   // };
+
+
+
+
+
+
+
+
+
+
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../../services/authServices";
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+export default function Register() {
+  const [user, setUser] = useState({ name: "", email: "", password: "" });
+  const [agree, setAgree] = useState(false);  // <-- new state for checkbox
+  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
+  const [agreeError, setAgreeError] = useState("");  // <-- error state for checkbox
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const handleAgreeChange = (e) => {
+    setAgree(e.target.checked);
+    if (e.target.checked) setAgreeError(""); // clear error when checked
+  };
+
 
   const handleSubmit = async (e) => {
   e.preventDefault();
