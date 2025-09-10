@@ -627,7 +627,7 @@ function Profile() {
   if (error) return <div className="p-6 text-center text-red-500">Error: {error}</div>;
 
   return (
-    <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-10">
+    <div className="bg-[#F9F7F1] min-h-screen py-8 px-4 sm:px-6 lg:px-10">
       <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8">
 
         {/* Left Sidebar: Profile Card */}

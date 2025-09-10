@@ -787,10 +787,12 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
       {/* #C5C3CC */}
       {/* Sidebar */}
+
+      {/* #dedce4 */}
       <aside
         className={`
           fixed sm:static top-0 left-0
-          bg-[#dedce4] text-black border-r border-gray-300 shadow-lg
+          bg-white text-black border-r border-gray-300 shadow-lg
           transform transition-transform duration-700 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0
           flex flex-col z-50
