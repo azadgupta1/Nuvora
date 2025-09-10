@@ -120,32 +120,6 @@ const Reviews = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 px-6 py-10">
-      {/* <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-center text-blue-700 mb-8">⭐ Skill Reviews</h1>
-
-        {!skillId ? (
-          <p className="text-center text-red-500 text-lg">No skill selected. Please provide a skill ID.</p>
-        ) : loading ? (
-          <p className="text-center text-gray-600 text-lg">Loading reviews...</p>
-        ) : reviews.length === 0 ? (
-          <p className="text-center text-gray-500 text-lg">No reviews found for this skill.</p>
-        ) : (
-          <div className="space-y-6">
-            {reviews.map((review) => (
-              <div
-                key={review.id}
-                className="bg-white rounded-xl shadow-md border border-gray-200 p-6 hover:shadow-lg transition duration-300"
-              >
-                <div className="flex justify-between items-center mb-2">
-                  <p className="text-lg font-semibold text-blue-600">{review.user.name}</p>
-                  <div className="flex space-x-1">{renderStars(review.rating)}</div>
-                </div>
-                <p className="text-gray-700 text-sm">{review.review}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div> */}
 
       <ReceivedReviews />
     </div>
