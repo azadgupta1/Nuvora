@@ -68,6 +68,7 @@ import { Pencil } from "lucide-react";
 import { FaEdit } from "react-icons/fa";
 import { CiTimer } from "react-icons/ci";
 import { IoLocationOutline } from "react-icons/io5";
+import { MdEditSquare } from "react-icons/md";
 
 
 
@@ -89,7 +90,7 @@ const SkillCardUser = ({ skill, backendUrl, onEditClick }) => {
         className="absolute top-3 right-3 p-2 rounded-full bg-black/70  transition"
         title="Edit Skill"
       >
-        <FaEdit className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+        <MdEditSquare className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
       </button>
 
       {/* Thumbnail */}
