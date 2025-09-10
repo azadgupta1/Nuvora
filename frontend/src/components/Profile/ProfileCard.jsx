@@ -57,7 +57,7 @@ import { IoLocationOutline } from "react-icons/io5";
 
 const ProfileCard = ({ data, backendUrl, onEditClick }) => {
   return (
-    <div className="w-full max-w-xs sm:max-w-xs md:max-w-xs lg:max-w-xs bg-white shadow rounded-sm p-6 mx-auto">
+    <div className="w-full max-w-xs sm:max-w-xs md:max-w-xs lg:max-w-xs bg-white rounded-xl border-2 border-gray-200 p-6 mx-auto">
       {data?.profilePicture ? (
         <img
           src={`${backendUrl}${data.profilePicture}`}

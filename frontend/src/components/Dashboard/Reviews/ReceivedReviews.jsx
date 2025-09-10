@@ -42,7 +42,7 @@ const ReceivedReviews = () => {
   const visibleReviews = showAll ? reviews : reviews.slice(0, 2);
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mt-8">
+    <div className="bg-white rounded-xl border-2 border-gray-200 p-6 mt-8">
       <h2 className="text-2xl font-semibold mb-4 text-gray-800">Received Reviews</h2>
 
       {loading ? (

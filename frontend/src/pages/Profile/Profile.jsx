@@ -643,14 +643,12 @@ function Profile() {
         <main className="flex-1 flex flex-col gap-6">
 
           {/* User Skills */}
-          <section className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Skills & Expertise</h2>
+          <section className="">
             <UserSkillProfile />
           </section>
 
           {/* Reviews Section */}
-          <section className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Received Reviews</h2>
+          <section className="">
             <ReceivedReviews />
           </section>
         </main>
