@@ -95,7 +95,7 @@ const SkillCardUser = ({ skill, backendUrl, onEditClick }) => {
 
       {/* Thumbnail */}
       <img
-        src={skill.image ? `${backendUrl}${skill.image}` : "https://via.placeholder.com/600x200"}
+        src={skill.image ? `${skill.image}` : "https://via.placeholder.com/600x200"}
         alt="Skill Thumbnail"
         className="w-full h-48 object-cover"
       />

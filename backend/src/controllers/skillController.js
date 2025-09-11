@@ -232,95 +232,197 @@ import prisma from '../config/prismaClient.js';
 
 
 
-const safeParseJSON = (value, fallback = undefined) => {
-  try {
-    if (!value) return fallback;
-    if (typeof value === "object") return value; // already parsed
-    return JSON.parse(value);
-  } catch {
-    return fallback;
-  }
-};
+// const safeParseJSON = (value, fallback = undefined) => {
+//   try {
+//     if (!value) return fallback;
+//     if (typeof value === "object") return value; // already parsed
+//     return JSON.parse(value);
+//   } catch {
+//     return fallback;
+//   }
+// };
 
-// ✅ Controller
-export const addOrUpdateSkill = async (req, res) => {
-  const {
-    skillsOffered,
-    skillsWanted,
-    category,
-    description,
-    duration,
-    location,
-    availability
-  } = req.body;
+// // ✅ Controller
+// export const addOrUpdateSkill = async (req, res) => {
+//   const {
+//     skillsOffered,
+//     skillsWanted,
+//     category,
+//     description,
+//     duration,
+//     location,
+//     availability
+//   } = req.body;
 
-  const userId = req.user.userId;
+//   const userId = req.user.userId;
 
-  try {
-    // Arrays
-    const offered = safeParseArray(skillsOffered);
-    const wanted = safeParseArray(skillsWanted);
+//   try {
+//     // Arrays
+//     const offered = safeParseArray(skillsOffered);
+//     const wanted = safeParseArray(skillsWanted);
 
-    // Availability
-    const parsedAvailability = safeParseJSON(availability);
+//     // Availability
+//     const parsedAvailability = safeParseJSON(availability);
 
-    // Image
-    let imageUrl;
-    if (req.file) {
-      imageUrl = `/uploads/skills/${req.file.filename}`;
-    }
+//     // Image
+//     let imageUrl;
+//     if (req.file) {
+//       imageUrl = `/uploads/skills/${req.file.filename}`;
+//     }
 
-    // Check if user already has a skill profile
-    const existingSkill = await prisma.skill.findFirst({
-      where: { userId }
-    });
+//     // Check if user already has a skill profile
+//     const existingSkill = await prisma.skill.findFirst({
+//       where: { userId }
+//     });
 
-    let skill;
-    if (existingSkill) {
-      skill = await prisma.skill.update({
-        where: { id: existingSkill.id }, // ✅ safer than userId
-        data: {
-          skillsOffered: offered,
-          skillsWanted: wanted,
-          category,
-          description,
-          duration,
-          location,
-          availability: parsedAvailability,
-          ...(imageUrl && { image: imageUrl })
-        }
-      });
-      return res.status(200).json({
-        message: "Skill profile updated successfully!",
-        skill
-      });
-    } else {
-      skill = await prisma.skill.create({
-        data: {
-          userId,
-          skillsOffered: offered,
-          skillsWanted: wanted,
-          category,
-          description,
-          duration,
-          location,
-          availability: parsedAvailability,
-          ...(imageUrl && { image: imageUrl })
-        }
-      });
-      return res.status(201).json({
-        message: "Skill profile created successfully!",
-        skill
-      });
-    }
-  } catch (error) {
-    console.error("❌ Error saving skill:", error);
-    res.status(500).json({
-      message: "Something went wrong while saving the skill profile.",
-      error: error.message
-    });
-  }
-};
+//     let skill;
+//     if (existingSkill) {
+//       skill = await prisma.skill.update({
+//         where: { id: existingSkill.id }, // ✅ safer than userId
+//         data: {
+//           skillsOffered: offered,
+//           skillsWanted: wanted,
+//           category,
+//           description,
+//           duration,
+//           location,
+//           availability: parsedAvailability,
+//           ...(imageUrl && { image: imageUrl })
+//         }
+//       });
+//       return res.status(200).json({
+//         message: "Skill profile updated successfully!",
+//         skill
+//       });
+//     } else {
+//       skill = await prisma.skill.create({
+//         data: {
+//           userId,
+//           skillsOffered: offered,
+//           skillsWanted: wanted,
+//           category,
+//           description,
+//           duration,
+//           location,
+//           availability: parsedAvailability,
+//           ...(imageUrl && { image: imageUrl })
+//         }
+//       });
+//       return res.status(201).json({
+//         message: "Skill profile created successfully!",
+//         skill
+//       });
+//     }
+//   } catch (error) {
+//     console.error("❌ Error saving skill:", error);
+//     res.status(500).json({
+//       message: "Something went wrong while saving the skill profile.",
+//       error: error.message
+//     });
+//   }
+// };
+
+
+
+
+// // ✅ Safe array parser
+// const safeParseArray = (value, fallback = []) => {
+//   try {
+//     if (!value) return fallback;
+//     if (Array.isArray(value)) return value;
+//     const parsed = JSON.parse(value);
+//     return Array.isArray(parsed) ? parsed : fallback;
+//   } catch {
+//     return fallback;
+//   }
+// };
+
+// export const updateSkill = async (req, res) => {
+//   const { id } = req.params;
+//   const {
+//     skillsOffered,
+//     skillsWanted,
+//     category,
+//     description,
+//     duration,
+//     location,
+//     availability,
+//   } = req.body;
+
+//   const userId = req.user.userId;
+
+//   try {
+//     const existingSkill = await prisma.skill.findUnique({
+//       where: { id: parseInt(id) },
+//     });
+
+//     if (!existingSkill) {
+//       return res.status(404).json({ message: "Skill not found" });
+//     }
+
+//     // ✅ Ensure only owner can update
+//     if (existingSkill.userId !== userId) {
+//       return res.status(403).json({ message: "Not authorized" });
+//     }
+
+//     // ✅ Handle image update
+//     let imagePath = existingSkill.image;
+//     if (req.file) {
+//       // Delete old image if exists
+//       if (existingSkill.image) {
+//         const oldPath = path.join("public", existingSkill.image); // no leading slash now
+//         if (fs.existsSync(oldPath)) {
+//           fs.unlinkSync(oldPath);
+//         }
+//       }
+//       // Save without leading slash
+//       imagePath = `uploads/skills/${req.file.filename}`;
+//     }
+
+//     // ✅ Parse availability safely
+//     let parsedAvailability = undefined;
+//     try {
+//       if (availability) {
+//         parsedAvailability =
+//           typeof availability === "string"
+//             ? JSON.parse(availability)
+//             : availability;
+//       }
+//     } catch {
+//       parsedAvailability = undefined;
+//     }
+
+//     // ✅ Update skill
+//     const updatedSkill = await prisma.skill.update({
+//       where: { id: parseInt(id) },
+//       data: {
+//         skillsOffered: safeParseArray(skillsOffered),
+//         skillsWanted: safeParseArray(skillsWanted),
+//         category,
+//         description,
+//         duration,
+//         location,
+//         availability: parsedAvailability,
+//         image: imagePath,
+//       },
+//     });
+
+//     return res
+//       .status(200)
+//       .json({ message: "Skill updated successfully!", skill: updatedSkill });
+//   } catch (error) {
+//     console.error("Error updating skill:", error);
+//     res.status(500).json({ message: "Something went wrong while updating skill" });
+//   }
+// };
+
+
+
+
+
+
+
+
 
 
 
@@ -337,6 +439,92 @@ const safeParseArray = (value, fallback = []) => {
   }
 };
 
+const safeParseJSON = (value, fallback = undefined) => {
+  try {
+    if (!value) return fallback;
+    if (typeof value === "object") return value;
+    return JSON.parse(value);
+  } catch {
+    return fallback;
+  }
+};
+
+// ✅ Add or update skill
+export const addOrUpdateSkill = async (req, res) => {
+  const {
+    skillsOffered,
+    skillsWanted,
+    category,
+    description,
+    duration,
+    location,
+    availability,
+  } = req.body;
+
+  const userId = req.user.userId;
+
+  try {
+    const offered = safeParseArray(skillsOffered);
+    const wanted = safeParseArray(skillsWanted);
+    const parsedAvailability = safeParseJSON(availability);
+
+    // ✅ Image from Cloudinary
+    let imageUrl;
+    if (req.file) {
+      imageUrl = req.file.path; // Cloudinary URL
+    }
+
+    // Check if user already has a skill profile
+    const existingSkill = await prisma.skill.findFirst({
+      where: { userId },
+    });
+
+    let skill;
+    if (existingSkill) {
+      skill = await prisma.skill.update({
+        where: { id: existingSkill.id },
+        data: {
+          skillsOffered: offered,
+          skillsWanted: wanted,
+          category,
+          description,
+          duration,
+          location,
+          availability: parsedAvailability,
+          ...(imageUrl && { image: imageUrl }),
+        },
+      });
+      return res
+        .status(200)
+        .json({ message: "Skill profile updated successfully!", skill });
+    } else {
+      skill = await prisma.skill.create({
+        data: {
+          userId,
+          skillsOffered: offered,
+          skillsWanted: wanted,
+          category,
+          description,
+          duration,
+          location,
+          availability: parsedAvailability,
+          ...(imageUrl && { image: imageUrl }),
+        },
+      });
+      return res
+        .status(201)
+        .json({ message: "Skill profile created successfully!", skill });
+    }
+  } catch (error) {
+    console.error("❌ Error saving skill:", error);
+    res.status(500).json({
+      message: "Something went wrong while saving the skill profile.",
+      error: error.message,
+    });
+  }
+};
+
+// ✅ Update skill
 export const updateSkill = async (req, res) => {
   const { id } = req.params;
   const {
@@ -360,23 +548,14 @@ export const updateSkill = async (req, res) => {
       return res.status(404).json({ message: "Skill not found" });
     }
 
-    // ✅ Ensure only owner can update
     if (existingSkill.userId !== userId) {
       return res.status(403).json({ message: "Not authorized" });
     }
 
-    // ✅ Handle image update
+    // ✅ Cloudinary handles new image
     let imagePath = existingSkill.image;
     if (req.file) {
-      // Delete old image if exists
-      if (existingSkill.image) {
-        const oldPath = path.join("public", existingSkill.image); // no leading slash now
-        if (fs.existsSync(oldPath)) {
-          fs.unlinkSync(oldPath);
-        }
-      }
-      // Save without leading slash
-      imagePath = `uploads/skills/${req.file.filename}`;
+      imagePath = req.file.path; // Cloudinary URL
     }
 
     // ✅ Parse availability safely
@@ -392,7 +571,6 @@ export const updateSkill = async (req, res) => {
       parsedAvailability = undefined;
     }
 
-    // ✅ Update skill
     const updatedSkill = await prisma.skill.update({
       where: { id: parseInt(id) },
       data: {
@@ -412,9 +590,25 @@ export const updateSkill = async (req, res) => {
       .json({ message: "Skill updated successfully!", skill: updatedSkill });
   } catch (error) {
     console.error("Error updating skill:", error);
-    res.status(500).json({ message: "Something went wrong while updating skill" });
+    res
+      .status(500)
+      .json({ message: "Something went wrong while updating skill" });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
