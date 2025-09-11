@@ -291,7 +291,7 @@ model Skill {
   location         String?
   availability     Json?
   userId           Int      @unique // One-to-one with User
-  user             User     @relation(fields: [userId], references: [id])
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   bookings         Booking[]
   reviews          Review[]
   bookmarks        Bookmark[]
@@ -310,8 +310,8 @@ model Booking {
   skillOfferedName String
   skillWantedName  String
   message          String?
-  user             User     @relation("BookingUser", fields: [userId], references: [id])
-  receiver         User    @relation("BookingReceiver", fields: [receiverId], references: [id])
+  user             User     @relation("BookingUser", fields: [userId], references: [id], onDelete: Cascade)
+  receiver         User    @relation("BookingReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
   skill            Skill    @relation(fields: [skillId], references: [id])
 }
 
@@ -323,15 +323,15 @@ model Message {
   message    String
   timestamp  DateTime @default(now())
   room       ChatRoom @relation(fields: [roomId], references: [id])
-  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
-  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
 }
 
 model ChatRoom {
   id       Int       @id @default(autoincrement())
-  user1    User      @relation("User1ChatRooms", fields: [user1Id], references: [id])
+  user1    User      @relation("User1ChatRooms", fields: [user1Id], references: [id], onDelete: Cascade)
   user1Id  Int
-  user2    User      @relation("User2ChatRooms", fields: [user2Id], references: [id])
+  user2    User      @relation("User2ChatRooms", fields: [user2Id], references: [id], onDelete: Cascade)
   user2Id  Int
   messages Message[]
 
@@ -349,8 +349,8 @@ model Review {
   review      String
   createdAt   DateTime @default(now()) // ✅ New field
 
-  user        User   @relation("ReviewsGiven", fields: [userId], references: [id])
-  receiver    User   @relation("ReviewsReceived", fields: [receiverId], references: [id])
+  user        User   @relation("ReviewsGiven", fields: [userId], references: [id], onDelete: Cascade)
+  receiver    User   @relation("ReviewsReceived", fields: [receiverId], references: [id], onDelete: Cascade)
   skill       Skill  @relation(fields: [skillId], references: [id])
 }
 
@@ -360,7 +360,7 @@ model Bookmark {
   id      Int   @id @default(autoincrement())
   userId  Int
   skillId Int
-  user    User  @relation(fields: [userId], references: [id])
+  user    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   skill   Skill @relation(fields: [skillId], references: [id])
 }
 
@@ -370,7 +370,7 @@ model SkillExchange {
   skillOfferedId Int
   skillWantedId  Int
   status         String
-  user           User   @relation(fields: [userId], references: [id])
+  user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   skillOffered   Skill  @relation("OfferedSkills", fields: [skillOfferedId], references: [id])
   skillWanted    Skill  @relation("WantedSkills", fields: [skillWantedId], references: [id])
 }
@@ -384,7 +384,7 @@ model Notification {
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 

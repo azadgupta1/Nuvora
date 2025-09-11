@@ -822,6 +822,8 @@ const Bookings = () => {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         const data = await res.json();
+
+        console.log("Booking data is : ", data);
         if (!mounted) return;
         if (res.ok) setBookings(data.bookings || []);
         else toast.error(data.message || "Failed to fetch bookings");
@@ -885,7 +887,9 @@ const Bookings = () => {
   return (
     <main className="min-h-screen bg-gray-50 py-10 px-6">
       <div className="max-w-6xl mx-auto">
-        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+
+
+        {/* <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <h1 className="text-2xl font-bold text-gray-800">My Bookings</h1>
           <div className="flex gap-2">
             <button
@@ -901,7 +905,36 @@ const Bookings = () => {
               Confirmed
             </button>
           </div>
+        </header> */}
+
+        <header className="flex flex-col items-center mb-8">
+          <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">My Sent Requests</h1>
+
+          {/* ✅ Classic Tab Switcher */}
+          <div className="relative flex border-b border-gray-200 w-full max-w-xs justify-center">
+            {["Pending", "Confirmed"].map((tab) => {
+              const isActive = selectedTab === tab;
+
+              return (
+                <button
+                  key={tab}
+                  onClick={() => setSelectedTab(tab)}
+                  className={`relative flex-1 text-center px-4 py-2 text-sm font-medium transition-colors duration-300 ${
+                    isActive ? "text-black" : "text-gray-400 hover:text-black"
+                  }`}
+                >
+                  {tab}
+                  {isActive && (
+                    <span className="absolute left-0 bottom-0 w-full h-0.5 bg-black transition-all duration-300" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
         </header>
+
+
 
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -934,3 +967,4 @@ const Bookings = () => {
 };
 
 export default Bookings;
+

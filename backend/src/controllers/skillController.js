@@ -422,16 +422,137 @@ export const updateSkill = async (req, res) => {
 
 
 
+// export const getAllSkills = async (req, res) => {
+//   try {
+//     const userId = req.user.userId;
+
+//     // Step 1: Fetch all skills (excluding current user)
+//     const skills = await prisma.skill.findMany({
+//       where: {
+//         userId: {
+//           not: userId,
+//         },
+//       },
+//       include: {
+//         user: true,
+//         reviews: {
+//           include: {
+//             user: true,
+//           },
+//         },
+//       },
+//     });
+
+//     // Step 2: Add average rating & count to each skill
+//     const skillsWithRatings = skills.map((skill) => {
+//       const totalReviews = skill.reviews.length;
+//       const avgRating =
+//         totalReviews > 0
+//           ? skill.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+//           : 0;
+
+//       return {
+//         ...skill,
+//         averageRating: Number(avgRating.toFixed(1)),
+//         reviewCount: totalReviews,
+//       };
+//     });
+
+//     res.status(200).json({ skills: skillsWithRatings });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Something went wrong while fetching skills.' });
+//   }
+// };
+
+
+
+// export const getAllSkills = async (req, res) => {
+//   try {
+//     const userId = req.user.userId;
+
+//     // 1. Get current user's 'skillsWanted'
+//     const currentUser = await prisma.user.findUnique({
+//       where: { id: userId },
+//       include: {
+//         skill: true,
+//       },
+//     });
+
+//     if (!currentUser || !currentUser.skill || currentUser.skill.skillsWanted.length === 0) {
+//       return res.status(200).json({ skills: [] }); // No preferences, return empty
+//     }
+
+//     const userSkillsWanted = currentUser.skill.skillsWanted;
+
+//     // 2. Fetch skills from other users where skillsOffered overlaps with current user's skillsWanted
+//     const recommendedSkills = await prisma.skill.findMany({
+//       where: {
+//         userId: { not: userId },
+//         skillsOffered: {
+//           hasSome: userSkillsWanted, // Prisma will match any overlapping skill
+//         },
+//       },
+//       include: {
+//         user: true,
+//         reviews: {
+//           include: {
+//             user: true,
+//           },
+//         },
+//       },
+//     });
+
+//     // 3. Add average rating and review count
+//     const skillsWithRatings = recommendedSkills.map((skill) => {
+//       const totalReviews = skill.reviews.length;
+//       const avgRating =
+//         totalReviews > 0
+//           ? skill.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+//           : 0;
+
+//       return {
+//         ...skill,
+//         averageRating: Number(avgRating.toFixed(1)),
+//         reviewCount: totalReviews,
+//       };
+//     });
+
+//     // Optional: Sort by rating (descending)
+//     const sortedSkills = skillsWithRatings.sort((a, b) => b.averageRating - a.averageRating);
+
+//     res.status(200).json({ skills: sortedSkills });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Something went wrong while fetching recommended skills.' });
+//   }
+// };
+
+
+
+
+
+
+
+
 export const getAllSkills = async (req, res) => {
   try {
     const userId = req.user.userId;
 
-    // Step 1: Fetch all skills (excluding current user)
-    const skills = await prisma.skill.findMany({
+    // 1. Get current user's skillsWanted
+    const currentUser = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        skill: true,
+      },
+    });
+
+    const userSkillsWanted = currentUser?.skill?.skillsWanted || [];
+
+    // 2. Fetch all other users' skills
+    const allOtherSkills = await prisma.skill.findMany({
       where: {
-        userId: {
-          not: userId,
-        },
+        userId: { not: userId },
       },
       include: {
         user: true,
@@ -443,27 +564,71 @@ export const getAllSkills = async (req, res) => {
       },
     });
 
-    // Step 2: Add average rating & count to each skill
-    const skillsWithRatings = skills.map((skill) => {
+    // 3. Separate matching and non-matching skills
+    const matchingSkills = [];
+    const nonMatchingSkills = [];
+
+    for (const skill of allOtherSkills) {
+      const isMatch = skill.skillsOffered.some(offered =>
+        userSkillsWanted.includes(offered)
+      );
+
       const totalReviews = skill.reviews.length;
       const avgRating =
         totalReviews > 0
           ? skill.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
           : 0;
 
-      return {
+      const skillWithRatings = {
         ...skill,
         averageRating: Number(avgRating.toFixed(1)),
         reviewCount: totalReviews,
       };
-    });
 
-    res.status(200).json({ skills: skillsWithRatings });
+      if (isMatch) {
+        matchingSkills.push(skillWithRatings);
+      } else {
+        nonMatchingSkills.push(skillWithRatings);
+      }
+    }
+
+    // 4. Optional: sort both lists by rating (desc)
+    matchingSkills.sort((a, b) => b.averageRating - a.averageRating);
+    nonMatchingSkills.sort((a, b) => b.averageRating - a.averageRating);
+
+    // 5. Combine both lists: matching first
+    const finalSkills = [...matchingSkills, ...nonMatchingSkills];
+
+    res.status(200).json({ skills: finalSkills });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Something went wrong while fetching skills.' });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
