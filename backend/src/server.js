@@ -16,6 +16,8 @@ import messageRoutes from './routes/messageRoutes.js';
 import chatRoomRoutes from './routes/chatRoomRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import emailRoutes from './routes/emailRoutes.js';
+
 
 import './config/passport.js';
 import passport from 'passport';
@@ -98,6 +100,8 @@ app.use('/api/messages', messageRoutes);
 app.use('/api/chatrooms', chatRoomRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/email', emailRoutes);
+
 
 // ✅ Socket.IO Logic
 const onlineUsers = new Map();

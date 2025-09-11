@@ -321,6 +321,8 @@ import prisma from '../config/prismaClient.js';
 
 
 import { io, onlineUsers } from '../server.js';
+import sendEmail from '../services/emailService.js';
+
 
 export const createBooking = async (req, res) => {
   if (!req.user || !req.user.userId) {
@@ -390,6 +392,33 @@ export const createBooking = async (req, res) => {
         skill: true,
       },
     });
+
+    const receiver = await prisma.user.findUnique({
+      where: { id: parsedReceiverId },
+    });
+
+    if (receiver?.email) {
+      const subject = "📬 New Booking Request on Nuvora";
+      const htmlContent = `
+        <h3>Hello ${receiver.name || 'there'},</h3>
+        <p><strong>${booking.user.name}</strong> has requested a skill exchange session with you.</p>
+        <p><strong>Offered:</strong> ${booking.skillOfferedName}</p>
+        <p><strong>Wanted:</strong> ${booking.skillWantedName}</p>
+        <p><strong>Date:</strong> ${booking.date.toDateString()}</p>
+        <p><strong>Time:</strong> ${booking.time.toLocaleTimeString()}</p>
+        ${booking.message ? `<p><strong>Message:</strong> ${booking.message}</p>` : ''}
+        <br>
+        <p>Please log in to your Nuvora account to view and respond to the request.</p>
+        <p>— Nuvora Team</p>
+      `;
+
+      try {
+        await sendEmail(receiver.email, subject, htmlContent);
+      } catch (err) {
+        console.error("❌ Failed to send email:", err);
+      }
+    }
+
 
     // ✅ Create notification in DB
     await prisma.notification.create({
@@ -627,6 +656,33 @@ export const updateBookingStatus = async (req, res) => {
             : `Booking status for ${booking.skill.name} updated to ${status}.`,
       },
     });
+
+    // ✅ Send email to the requester (booking.user)
+      if (booking?.user?.email) {
+        const subject =
+          status === "Confirmed"
+            ? "🎉 Your Booking Has Been Confirmed!"
+            : status === "Cancelled"
+            ? "❌ Your Booking Was Cancelled"
+            : "📋 Booking Status Updated";
+
+        const htmlContent = `
+          <h3>Hello ${booking.user.name || 'there'},</h3>
+          <p>Your booking for the skill <strong>${booking.skill.name}</strong> has been <strong>${status}</strong>.</p>
+          <p><strong>Date:</strong> ${booking.date.toDateString()}</p>
+          <p><strong>Time:</strong> ${booking.time.toLocaleTimeString()}</p>
+          <br>
+          <p>Please log in to your Nuvora account for more details.</p>
+          <p>— Nuvora Team</p>
+        `;
+
+        try {
+          await sendEmail(booking.user.email, subject, htmlContent);
+        } catch (err) {
+          console.error("❌ Failed to send status update email:", err);
+        }
+      }
+
 
     // Emit real-time update to the requester
     const requesterSocketId = onlineUsers.get(String(booking.userId));
