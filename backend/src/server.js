@@ -17,6 +17,7 @@ import chatRoomRoutes from './routes/chatRoomRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import emailRoutes from './routes/emailRoutes.js';
+import deleteRoutes from './routes/deleteAccountRoutes.js';
 
 
 import './config/passport.js';
@@ -101,6 +102,8 @@ app.use('/api/chatrooms', chatRoomRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/email', emailRoutes);
+app.use('/api/delete', deleteRoutes);
+
 
 
 // ✅ Socket.IO Logic
