@@ -88,7 +88,7 @@ app.options('*', cors());
 app.use(express.json());
 
 // ✅ Serve static files (e.g., profile pictures, etc.)
-app.use("/uploads", express.static(path.join(process.cwd(), "public", "uploads")));
+// app.use("/uploads", express.static(path.join(process.cwd(), "public", "uploads")));
 
 // ✅ API Routes
 app.use('/api/auth', authRoutes);

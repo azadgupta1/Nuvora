@@ -60,7 +60,7 @@ const ProfileCard = ({ data, backendUrl, onEditClick }) => {
     <div className="w-full max-w-xs sm:max-w-xs md:max-w-xs lg:max-w-xs bg-white rounded-xl border-2 border-gray-200 p-6 mx-auto">
       {data?.profilePicture ? (
         <img
-          src={`${backendUrl}${data.profilePicture}`}
+          src={`${data.profilePicture}`}
           alt="Profile"
           className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full mx-auto border object-cover"
         />

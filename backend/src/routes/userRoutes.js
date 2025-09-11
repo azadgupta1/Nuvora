@@ -1,30 +1,75 @@
-import express from 'express';
-import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
-import { getUserById, updateUser } from '../controllers/userController.js';
-import { authenticate } from '../middlewares/authMiddleware.js';
+// import express from 'express';
+// import multer from 'multer';
+// import path from 'path';
+// import fs from 'fs';
+// import { getUserById, updateUser } from '../controllers/userController.js';
+// import { authenticate } from '../middlewares/authMiddleware.js';
 
+
+// const router = express.Router();
+
+// // Multer config for file uploads
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'public/uploads');
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + path.extname(file.originalname));
+//   }
+// });
+// const upload = multer({ storage });
+
+
+
+
+// router.get('/:receiverId', authenticate, getUserById);
+
+// router.put('/:id', upload.single('profilePicture'), updateUser);
+
+
+// export default router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import express from "express";
+import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../config/cloudinary.js";
+
+import { getUserById, updateUser } from "../controllers/userController.js";
+import { authenticate } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-// Multer config for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'public/uploads');
+// ✅ Configure Cloudinary storage
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "learnmate/users", // your folder name in Cloudinary
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    public_id: (req, file) => `${Date.now()}-${file.originalname.split(".")[0]}`,
   },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
 });
+
 const upload = multer({ storage });
 
-
-
-
-router.get('/:receiverId', authenticate, getUserById);
-
-router.put('/:id', upload.single('profilePicture'), updateUser);
-
+router.get("/:receiverId", authenticate, getUserById);
+router.put("/:id", upload.single("profilePicture"), updateUser);
 
 export default router;
