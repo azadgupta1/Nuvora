@@ -58,11 +58,6 @@
 
 
 
-
-
-
-
-// components/Profile/SkillCardUser.jsx
 import React from "react";
 import { Pencil } from "lucide-react";
 import { FaEdit } from "react-icons/fa";
