@@ -909,25 +909,6 @@ const Bookings = () => {
     <main className="min-h-screen bg-gray-50 py-10 px-6">
       <div className="max-w-6xl mx-auto">
 
-
-        {/* <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-          <h1 className="text-2xl font-bold text-gray-800">My Bookings</h1>
-          <div className="flex gap-2">
-            <button
-              className={`px-4 py-2 rounded-md text-sm font-medium ${selectedTab === "Pending" ? "bg-indigo-600 text-white" : "bg-white border border-gray-200 text-gray-700"}`}
-              onClick={() => setSelectedTab("Pending")}
-            >
-              Pending
-            </button>
-            <button
-              className={`px-4 py-2 rounded-md text-sm font-medium ${selectedTab === "Confirmed" ? "bg-indigo-600 text-white" : "bg-white border border-gray-200 text-gray-700"}`}
-              onClick={() => setSelectedTab("Confirmed")}
-            >
-              Confirmed
-            </button>
-          </div>
-        </header> */}
-
         <header className="flex flex-col items-center mb-8">
           <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">My Sent Requests</h1>
 

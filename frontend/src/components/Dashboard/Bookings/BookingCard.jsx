@@ -1,6 +1,11 @@
 import React from "react";
 import { FaCalendarAlt, FaClock, FaTimesCircle, FaStar } from "react-icons/fa";
 import { FaExchangeAlt } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 
 const statusStyles = {
@@ -10,6 +15,35 @@ const statusStyles = {
 };
 
 const BookingCard = ({ booking, onCancel, onOpenReview }) => {
+
+  console.log("Booking data is : ", booking);
+  const receiverId = booking.receiverId;
+
+
+  const [receiver, setReceiver] = useState(null);
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const fetchReceiverData = async () => {
+      if (!receiverId || !token) return;
+
+      try {
+        const res = await axios.get(
+          `${backendUrl}/api/users/${receiverId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        console.log("Reciever data is : ", res);
+        setReceiver(res.data);
+      } catch (err) {
+        console.error("Failed to fetch Receiver Data: ", err);
+      }
+    };
+
+    fetchReceiverData();
+  }, [receiverId, token]);
+
+
   const formattedDate = booking.date
     ? new Date(booking.date).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })
     : "-";
@@ -43,9 +77,6 @@ const BookingCard = ({ booking, onCancel, onOpenReview }) => {
       </div>
 
       <div className="mt-6 flex justify-between items-center">
-        <div className="flex items-center gap-2 text-gray-500 text-xs">
-          <FaStar className="text-yellow-500" /> {booking.providerName || booking.provider || "Provider"}
-        </div>
         <div className="flex gap-2">
           {booking.status === "Pending" && (
             <button
@@ -63,6 +94,33 @@ const BookingCard = ({ booking, onCancel, onOpenReview }) => {
           </button>
         </div>
       </div>
+
+      <hr className="my-2" />
+
+      {receiver ? (
+      <div>
+        <h1 className="text-lg font-bold">Request Recipient</h1>
+        <div className="flex flex-row items-center">
+          <div className="">
+            <img
+              src={receiver.profilePicture || "/default-avatar.png"}
+              alt="User Avatar"
+              className="w-16 h-16 rounded-full border-4 border-white object-cover shadow-md"
+            />
+          </div>
+
+          <div className="mt-10 px-4 pb-4 text-left">
+            <h2 className="text-lg font-semibold text-black">{receiver.name}</h2>
+            <p className="text-sm text-gray-500">{receiver.location || "Unknown location"}</p>
+            <p className="text-sm text-gray-800 mt-2">{receiver.bio || "No bio provided."}</p>
+          </div>
+        </div>
+
+      </div>
+    ) : (
+      <p className="text-sm text-gray-500 mt-4">Loading recipient info...</p>
+    )}
+
     </div>
   );
 };

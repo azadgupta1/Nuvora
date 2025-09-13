@@ -346,6 +346,8 @@ function Settings() {
             </button>
           </div>
 
+          <hr className='my-4 text-gray-300' />
+
           {/* Danger Zone Section */}
           <div className="bg-red-50 rounded-lg shadow-sm border border-red-200 p-6">
             <h3 className="text-red-600 font-semibold mb-2">Danger Zone</h3>

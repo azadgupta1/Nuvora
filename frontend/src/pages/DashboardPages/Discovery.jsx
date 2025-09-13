@@ -750,7 +750,7 @@ const Discovery = () => {
   }, [skills, searchTerm, selectedCategories, selectedRatings]);
 
   return (
-    <div className="min-h-screen bg-[#F9F7F1] dark:bg-gray-600 px-4 pt-6">
+    <div className="min-h-screen bg-[#F9F7F1] px-4 pt-6">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8">
 
         {/* Sidebar Filter - Desktop */}

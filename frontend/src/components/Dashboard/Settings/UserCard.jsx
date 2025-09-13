@@ -108,7 +108,7 @@ function UserCard() {
 
         setReceiver(res.data);
       } catch (err) {
-        console.error("Failed to fetch Receiver Data: ", err);
+        console.error("Failed to fetch Receiverd Data: ", err);
       }
     };
 

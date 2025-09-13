@@ -434,25 +434,66 @@ export const createBooking = async (req, res) => {
 
 
     // ✅ Send socket notification
+    // const receiverSocketId = onlineUsers.get(String(receiverId));
+    // if (receiverSocketId) {
+    //   io.to(receiverSocketId).emit("newBookingRequest", {
+    //     bookingId: booking.id,
+    //     fromUser: booking.user.name,
+    //     skillName: booking.skillOfferedName,
+    //     date: booking.date,
+    //     time: booking.time,
+    //     message: booking.message,
+    //     status: booking.status,
+    //   });
+
+    //   // Optional: emit real-time notification event
+    //   io.to(receiverSocketId).emit("newNotification", {
+    //     type: "booking",
+    //     content: `${booking.user.name} requested a booking for ${booking.skill.name}`,
+    //     timestamp: new Date().toISOString(),
+    //   });
+    // }
+
+
+
+    // ✅ Send socket notification
     const receiverSocketId = onlineUsers.get(String(receiverId));
     if (receiverSocketId) {
+      // io.to(receiverSocketId).emit("newBookingRequest", {
+      //   bookingId: booking.id,
+      //   fromUser: booking.user.name,
+      //   skillOfferedName: booking.skillOfferedName,
+      //   skillWantedName: booking.skillWantedName,
+      //   date: booking.date.toISOString(),
+      //   time: booking.time.toISOString(),
+      //   message: booking.message,
+      //   status: booking.status,
+      // });
       io.to(receiverSocketId).emit("newBookingRequest", {
         bookingId: booking.id,
-        fromUser: booking.user.name,
-        skillName: booking.skillOfferedName,
-        date: booking.date,
-        time: booking.time,
+        fromUser: {
+          id: booking.user.id,
+          name: booking.user.name,
+          email: booking.user.email,
+          profilePicture: booking.user.profilePicture,
+        },
+        skillOfferedName: booking.skillOfferedName,
+        skillWantedName: booking.skillWantedName,
+        date: booking.date.toISOString(),
+        time: booking.time.toISOString(),
         message: booking.message,
         status: booking.status,
       });
 
-      // Optional: emit real-time notification event
+
       io.to(receiverSocketId).emit("newNotification", {
         type: "booking",
-        content: `${booking.user.name} requested a booking for ${booking.skill.name}`,
+        content: `${booking.user.name} requested a booking: Offers ${booking.skillOfferedName} in exchange for ${booking.skillWantedName}`,
         timestamp: new Date().toISOString(),
       });
     }
+
+
 
     res.status(201).json({ message: "Booking created successfully!", booking });
   } catch (error) {
@@ -478,7 +519,14 @@ export const getBookings = async (req, res) => {
     try {
         const bookings = await prisma.booking.findMany({
             where: { userId },
-            include: { skill: true }, // Optionally include skill details
+            include: {
+              user: true,
+              skill: {
+                include: {
+                  reviews: true,
+                },
+              },
+            }, // Optionally include skill details
         });
 
         res.status(200).json({ message: "Bookings retrieved successfully!", bookings });
@@ -540,14 +588,24 @@ export const getRequestsOnMySkills = async (req, res) => {
 
         // Step 2: Find all bookings made on these skills
         const bookings = await prisma.booking.findMany({
-            where: {
-                skillId: { in: mySkillIds },
+          where: {
+            skillId: { in: mySkillIds },
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                bio: true,
+                profilePicture: true,
+                location: true,
+              },
             },
-            include: {
-                user: true,   // Includes who made the booking
-                skill: true,  // Includes skill info
-            },
+            skill: true, // keep as-is or use "select" if needed
+          },
         });
+
 
         res.status(200).json({ message: "Bookings on your skills retrieved successfully!", bookings });
     } catch (error) {

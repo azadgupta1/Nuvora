@@ -181,6 +181,7 @@ const SearchAndFilterBar = ({ searchTerm, setSearchTerm, onFilterClick }) => {
             />
           </div>
         </div>
+        
       </div>
 
       {/* Mobile: no container, no image */}
