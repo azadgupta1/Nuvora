@@ -1252,7 +1252,7 @@ const ChatLayout = () => {
                 <div
                   key={room.roomId}
                   onClick={() => setActiveRoom(room)}
-                  className={`cursor-pointer px-4 py-3 flex items-center border-b border-gray-200 justify-between transition ${
+                  className={`cursor-pointer px-4 py-4 flex items-center border-b border-gray-200 justify-between transition ${
                     activeRoom?.roomId === room.roomId
                       ? "bg-blue-50"
                       : "hover:bg-gray-50"
@@ -1263,7 +1263,7 @@ const ChatLayout = () => {
                       <img
                         src={room.user.profilePicture}
                         alt={room.user.name}
-                        className="w-10 h-10 rounded-full object-cover"
+                        className="w-12 h-12 rounded-full object-cover"
                       />
                       {isUserOnline(room.user.id) && (
                         <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
@@ -1278,14 +1278,14 @@ const ChatLayout = () => {
                         {room.lastSenderId === userId && (
                           <BiCheckDouble size={14} className="text-gray-500" />
                         )}
-                        <span className="truncate">
+                        <span className="truncate text-sm">
                           {room.lastMessageText ||
                             (isUserOnline(room.user.id) ? "Online" : "Offline")}
                         </span>
                       </div>
                     </div>
                   </div>
-                  <div className="text-[10px] text-gray-400 ml-2 whitespace-nowrap">
+                  <div className="text-[12px] text-gray-600 ml-2 whitespace-nowrap">
                     {formatLastMessageTime(room.lastMessageTime)}
                   </div>
                 </div>
@@ -1298,7 +1298,7 @@ const ChatLayout = () => {
 
         {/* Chat Area */}
         <div
-          className={`flex-1 bg-gray-50 flex flex-col overflow-hidden transition-all duration-300 ${
+          className={`flex-1 bg-white flex flex-col overflow-hidden transition-all duration-300 ${
             activeRoom ? "flex" : "hidden sm:flex"
           }`}
         >

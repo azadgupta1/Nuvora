@@ -120,8 +120,43 @@
 import React from "react";
 import { PiSlidersHorizontalBold } from "react-icons/pi";
 import { FiSearch } from "react-icons/fi";
+import { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 
 const SearchAndFilterBar = ({ searchTerm, setSearchTerm, onFilterClick }) => {
+
+  const [receiver, setReceiver] = useState("");
+
+  const token = localStorage.getItem("token");
+  const user = token ? jwtDecode(token) : null;
+  const senderId = user?.userId;
+
+  useEffect(() => {
+      const fetchReceiverData = async () =>{
+        if(!senderId || !token) return;
+
+        try{
+          const res = await axios.get(
+            `${backendUrl}/api/users/${senderId}`,
+              { headers: { Authorization: `Bearer ${token}` } }
+          );
+
+          console.log("Data is ", res);
+          setReceiver(res.data);
+
+        } catch (err){
+          console.error("Failed to fetch Receiver Data: ", err);
+        }
+      }
+
+      fetchReceiverData();
+    },  [senderId, token]);
+
+
   return (
     <>
       {/* Desktop container */}
@@ -129,14 +164,14 @@ const SearchAndFilterBar = ({ searchTerm, setSearchTerm, onFilterClick }) => {
         <div className="flex items-center gap-3 w-full">
           {/* User Image */}
           <img
-            src="https://via.placeholder.com/36"
+            src={receiver.profilePicture}
             alt="User Avatar"
-            className="w-9 h-9 rounded-full object-cover"
+            className="w-10 h-10 aspect-square rounded-full object-cover"
           />
 
           {/* Search Input */}
-          <div className="flex items-center w-full bg-white border border-gray-500 rounded-full px-3 py-3 focus-within:ring-2 focus-within:ring-blue-500 transition">
-            <FiSearch size={18} className="text-gray-500 mr-2" />
+          <div className="flex items-center w-full bg-white border border-gray-400 rounded-full px-3 py-3 focus-within:ring-2 focus-within:ring-blue-500 transition">
+            <FiSearch size={18} className="text-gray-600 mr-2" />
             <input
               type="text"
               placeholder="Search skills..."
