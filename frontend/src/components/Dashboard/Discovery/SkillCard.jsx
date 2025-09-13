@@ -836,6 +836,9 @@ const renderStars = (rating) => {
 const SkillCard = ({ skill, isBookmarked, onBookmarkToggle, onSendRequest }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
+
+  console.log("Skill data is : ",skill);
+
   const handleBookmark = () => {
     onBookmarkToggle(skill.id);
     toast.success("Bookmarked this skill 🤝", {
@@ -854,7 +857,7 @@ const SkillCard = ({ skill, isBookmarked, onBookmarkToggle, onSendRequest }) => 
       {/* Skill Image */}
       <div className="relative w-full h-32">
         <img
-          src={skill.image}
+          src={skill.image || DefaultIMG}
           alt="Skill"
           className="w-full h-full object-cover"
         />
@@ -897,7 +900,7 @@ const SkillCard = ({ skill, isBookmarked, onBookmarkToggle, onSendRequest }) => 
         {/* Profile & Rating */}
         <div className="flex items-center gap-3">
           <img
-            src={getImageUrl(skill.user?.profilePicture)}
+            src={skill.user.profilePicture}
             alt={skill.user?.name || "User"}
             className="w-10 h-10 rounded-full object-cover border"
           />
