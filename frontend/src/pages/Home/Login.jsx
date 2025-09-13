@@ -31,7 +31,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-gray-50 mt-0 mb-0 flex items-center justify-center px-0">
-      <div className="w-full max-w-md bg-white p-8 rounded-sm shadow-lg">
+      <div className="w-full max-w-md bg-white p-8 sm:rounded-sm sm:shadow-lg">
         <h2 className="text-3xl font-bold text-center text-black mb-6">Welcome Back</h2>
 
         {error && <p className="text-red-500 text-sm font-semibold text-center mb-4">{error}</p>}

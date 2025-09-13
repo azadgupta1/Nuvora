@@ -643,6 +643,8 @@ export const updateBookingStatus = async (req, res) => {
       },
     });
 
+    console.log("Booking detail is : ", booking);
+
     // Create notification for requester
     await prisma.notification.create({
       data: {
@@ -650,10 +652,10 @@ export const updateBookingStatus = async (req, res) => {
         type: "booking",
         content:
           status === "Confirmed"
-            ? `Your booking for ${booking.skill.name} has been confirmed!`
+            ? `Your booking for ${booking.skillOfferedName} has been confirmed!`
             : status === "Cancelled"
-            ? `Your booking for ${booking.skill.name} has been cancelled.`
-            : `Booking status for ${booking.skill.name} updated to ${status}.`,
+            ? `Your booking for ${booking.skillOfferedName} has been cancelled.`
+            : `Booking status for ${booking.skillOfferedName} updated to ${status}.`,
       },
     });
 
@@ -693,19 +695,20 @@ export const updateBookingStatus = async (req, res) => {
         date: booking.date,
         time: booking.time,
         skill: {
-          name: booking.skill.name,
+          name: booking.skillOfferedName,
           category: booking.skill.category,
         },
       });
+
 
       // Emit new notification event
       io.to(requesterSocketId).emit('newNotification', {
         type: "booking",
         content:
           status === "Confirmed"
-            ? `Your booking for ${booking.skill.name} has been confirmed!`
+            ? `Your booking for ${booking.skillOfferedName} has been confirmed!`
             : status === "Cancelled"
-            ? `Your booking for ${booking.skill.name} has been cancelled.`
+            ? `Your booking for ${booking.skillOfferedName} has been cancelled.`
             : `Booking status for ${booking.skill.name} updated to ${status}.`,
         timestamp: new Date().toISOString(),
       });

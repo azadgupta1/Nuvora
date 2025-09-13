@@ -1,5 +1,7 @@
 import React from "react";
 import { FaCalendarAlt, FaClock, FaTimesCircle, FaStar } from "react-icons/fa";
+import { FaExchangeAlt } from "react-icons/fa";
+
 
 const statusStyles = {
   Cancelled: "bg-red-50 text-red-700 ring-1 ring-red-100",
