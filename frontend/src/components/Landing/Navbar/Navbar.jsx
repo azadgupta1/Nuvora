@@ -648,7 +648,7 @@ const Navbar = () => {
       )}
 
       <nav className="bg-black text-white relative z-40">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-1 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
             <span className="font-bold text-xl text-white">Nuvora</span>
