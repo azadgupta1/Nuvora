@@ -564,7 +564,10 @@ import ReceivedReviews from "../../components/Dashboard/Reviews/ReceivedReviews"
 import ProfileCard from "../../components/Profile/ProfileCard";
 import EditProfileModal from "../../components/Profile/EditProfileModal";
 
+
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+
 
 function Profile() {
   const { id } = useParams();

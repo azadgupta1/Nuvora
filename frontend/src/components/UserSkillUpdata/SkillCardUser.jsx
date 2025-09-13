@@ -82,7 +82,7 @@ const SkillCardUser = ({ skill, backendUrl, onEditClick }) => {
       {/* Edit Button */}
       <button
         onClick={onEditClick}
-        className="absolute top-3 right-3 p-2 rounded-full bg-black/70  transition"
+        className="absolute top-3 right-3 p-2 rounded-full bg-black/70 border-1 border-white  transition"
         title="Edit Skill"
       >
         <MdEditSquare className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
@@ -141,13 +141,13 @@ const SkillCardUser = ({ skill, backendUrl, onEditClick }) => {
         <div className="space-y-1 text-md text-gray-700">
           {skill.duration && (
             <p className="flex flex-row gap-1 items-center">
-                <span className="text-red-300"><CiTimer /></span>
+                <span className="text-blue-600 text-xl"><CiTimer /></span>
                <span className="font-medium"> Duration:</span> {skill.duration}
             </p>
           )}
           {skill.location && (
             <p className="flex flex-row gap-1 items-center">
-              <span className="text-blue-400"><IoLocationOutline /></span>
+              <span className="text-orange-300 text-xl"><IoLocationOutline /></span>
               <span className="font-medium">Location:</span> {skill.location}
             </p>
           )}

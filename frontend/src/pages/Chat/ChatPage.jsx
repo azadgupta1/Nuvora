@@ -464,6 +464,8 @@ const ChatPage = ({ receiverId, roomId, receiverName, isReceiverOnline, onBack }
   const [messages, setMessages] = useState([]);
   const bottomRef = useRef(null);
 
+  const [receiver, setReceiver] = useState("");
+
   const token = localStorage.getItem("token");
   const user = token ? jwtDecode(token) : null;
   const senderId = user?.userId;
@@ -497,6 +499,8 @@ const ChatPage = ({ receiverId, roomId, receiverName, isReceiverOnline, onBack }
           `${backendUrl}/api/messages/${roomId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
+
+        console.log("Fetched messages: ", res);
         setMessages(res.data);
       } catch (err) {
         console.error("Failed to fetch messages:", err);
@@ -504,6 +508,27 @@ const ChatPage = ({ receiverId, roomId, receiverName, isReceiverOnline, onBack }
     };
     fetchMessages();
   }, [roomId, token]);
+
+  useEffect(() => {
+    const fetchReceiverData = async () =>{
+      if(!receiverId || !token) return;
+
+      try{
+        const res = await axios.get(
+           `${backendUrl}/api/users/${receiverId}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        console.log(res);
+        setReceiver(res.data);
+
+      } catch (err){
+        console.error("Failed to fetch Receiver Data: ", err);
+      }
+    }
+
+    fetchReceiverData();
+  },  [receiverId, token]);
 
   useEffect(() => {
     if (!senderId || !receiverId || !roomId) return;
@@ -572,7 +597,8 @@ const ChatPage = ({ receiverId, roomId, receiverName, isReceiverOnline, onBack }
         </button>
 
         <img
-          src={`https://ui-avatars.com/api/?name=${receiverName}&background=random`}
+          // src={`https://ui-avatars.com/api/?name=${receiverName}&background=random`}
+          src={receiver.profilePicture}
           alt={receiverName}
           className="w-10 h-10 rounded-full object-cover"
         />

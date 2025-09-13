@@ -1200,13 +1200,23 @@ const ChatLayout = () => {
     setActiveRoom(null);
   };
 
+  // const profileSrc = `${backendUrl}${rooms.user.profilePicture}`;
+  // console.log('Profile image src:', profileSrc);
+
+  // console.log("Rooms are : ", rooms);
+
+  
+
+
+
+
   return (
     // <div className="min-h-screen bg-gray-100 pt-5 sm:px-10 pb-6">
     // [calc(100vh-5rem)]
     // New (fixed height layout)
-    <div className="h-full bg-gray-100 pt-0 sm:pt-5 sm:px-10 pb-0 overflow-hidden">
+    <div className="h-full bg-[#F9F7F1] pt-0 sm:pt-5 sm:px-10 pb-0 overflow-hidden">
 
-      <div className="h-full bg-gray-white rounded-sm shadow-lg overflow-hidden flex flex-col sm:flex-row">
+      <div className="h-full bg-white rounded-sm shadow-lg overflow-hidden flex flex-col sm:flex-row">
         {/* Sidebar */}
         <div
           className={`w-full sm:w-[300px] border-r border-gray-200 flex flex-col transition-all duration-300 ${
@@ -1236,6 +1246,9 @@ const ChatLayout = () => {
           <div className="flex-1 overflow-y-auto">
             {filteredRooms.length > 0 ? (
               filteredRooms.map((room) => (
+                
+
+
                 <div
                   key={room.roomId}
                   onClick={() => setActiveRoom(room)}
@@ -1248,7 +1261,7 @@ const ChatLayout = () => {
                   <div className="flex items-center gap-3 overflow-hidden">
                     <div className="relative">
                       <img
-                        src={room.user.profilePicture || "/default.png"}
+                        src={room.user.profilePicture}
                         alt={room.user.name}
                         className="w-10 h-10 rounded-full object-cover"
                       />

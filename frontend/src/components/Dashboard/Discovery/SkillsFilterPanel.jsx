@@ -254,73 +254,197 @@
 
 
 
+// import { FaStar } from "react-icons/fa";
+
+// const SkillsFilterPanel = ({
+//   categoryColors = { Tech: "blue", Sports: "green", Languages: "red" }, // ✅ default categories
+//   selectedCategories = [],
+//   selectedRatings = [],
+//   toggleCategory = (c) => console.log("Toggled category:", c), // ✅ dummy function
+//   toggleRating = (r) => console.log("Toggled rating:", r), // ✅ dummy function
+//   resetFilters = () => console.log("Reset filters"), // ✅ dummy function
+//   isFilterOpen = true, // ✅ always open by default
+//   setIsFilterOpen = () => {}, // ✅ no-op
+// }) => {
+//   const ratingOptions = [5, 4, 3, 2, 1];
+
+//   const renderStarLabel = (count) => (
+//     <div className="flex items-center gap-1">
+//       {Array.from({ length: count }).map((_, i) => (
+//         <FaStar key={i} className="text-yellow-500 text-sm" />
+//       ))}
+//       <span className="text-sm text-gray-600 ml-1">{count} & up</span>
+//     </div>
+//   );
+
+//   return (
+//     <>
+//       <div className="h-full overflow-auto">
+//       {/* Sidebar */}
+//       <aside className="block w-full md:w-54">
+//         {/* <div className="sticky top-0 bg-white p-6 rounded-xl border max-h-[calc(90vh-2rem)] border-gray-300"> */}
+
+
+//         <div className="bg-white p-6 rounded-xl border h-full overflow-auto border-gray-300">
+
+//           <h3 className="text-lg font-bold text-gray-800 mb-6">Filters</h3>
+
+//           {/* Category Filter */}
+//           <div className="mb-8">
+//             <h4 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
+//               Category
+//             </h4>
+//             <div className="flex flex-wrap gap-2">
+//               {Object.keys(categoryColors).length === 0 ? (
+//                 <p className="text-sm text-gray-500">No categories available</p>
+//               ) : (
+//                 Object.keys(categoryColors).map((category) => (
+//                   <button
+//                     key={category}
+//                     onClick={() => toggleCategory(category)}
+//                     className={`text-xs px-3 py-1.5 rounded-full border ${
+//                       selectedCategories.includes(category)
+//                         ? "bg-blue-600 text-white border-blue-600"
+//                         : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
+//                     } transition`}
+//                   >
+//                     {category}
+//                   </button>
+//                 ))
+//               )}
+//             </div>
+//           </div>
+
+//           {/* Ratings Filter */}
+//           <div className="mb-8">
+//             <h4 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
+//               Minimum Rating
+//             </h4>
+//             <div className="space-y-2">
+//               {ratingOptions.map((rating) => (
+//                 <label key={rating} className="flex items-center space-x-2">
+//                   <input
+//                     type="checkbox"
+//                     className="accent-yellow-500"
+//                     checked={selectedRatings.includes(rating)}
+//                     onChange={() => toggleRating(rating)}
+//                   />
+//                   {renderStarLabel(rating)}
+//                 </label>
+//               ))}
+//             </div>
+//           </div>
+
+//           <hr className="my-6 border-gray-300" />
+
+//           <button
+//             onClick={resetFilters}
+//             className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium py-2 rounded-md transition"
+//           >
+//             Reset Filters
+//           </button>
+//         </div>
+//       </aside>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default SkillsFilterPanel;
+
+
+
+
 import { FaStar } from "react-icons/fa";
+import { useState } from "react";
 
 const SkillsFilterPanel = ({
-  categoryColors = { Tech: "blue", Sports: "green", Languages: "red" }, // ✅ default categories
+  categoryColors = { Tech: "blue", Sports: "green", Languages: "red" },
   selectedCategories = [],
   selectedRatings = [],
-  toggleCategory = (c) => console.log("Toggled category:", c), // ✅ dummy function
-  toggleRating = (r) => console.log("Toggled rating:", r), // ✅ dummy function
-  resetFilters = () => console.log("Reset filters"), // ✅ dummy function
-  isFilterOpen = true, // ✅ always open by default
-  setIsFilterOpen = () => {}, // ✅ no-op
+  toggleCategory = (c) => console.log("Toggled category:", c),
+  toggleRating = (r) => console.log("Toggled rating:", r),
+  resetFilters = () => console.log("Reset filters"),
 }) => {
   const ratingOptions = [5, 4, 3, 2, 1];
+
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
+
+  const handleCategoryChange = (e) => {
+    const category = e.target.value;
+    setSelectedCategory(category);
+    toggleCategory(category);
+  };
+
+  const handleLocationChange = (e) => {
+    setSelectedLocation(e.target.value);
+    console.log("Selected location:", e.target.value);
+  };
 
   const renderStarLabel = (count) => (
     <div className="flex items-center gap-1">
       {Array.from({ length: count }).map((_, i) => (
-        <FaStar key={i} className="text-yellow-500 text-sm" />
+        <FaStar key={i} className="text-yellow-500 text-xs" />
       ))}
-      <span className="text-sm text-gray-600 ml-1">{count} & up</span>
+      <span className="text-xs text-gray-600 ml-1">{count} & up</span>
     </div>
   );
 
   return (
-    <>
-      {/* Sidebar */}
-      <aside className="block w-full md:w-64">
-        <div className="sticky top-0 bg-[#eeecf5] p-6 rounded-xl border max-h-[calc(90vh-2rem)] border-gray-300">
-          <h3 className="text-lg font-bold text-gray-800 mb-6">Filters</h3>
+    <div className="w-54 mb-4">
+      <aside className="block w-full">
+        <div className="bg-white p-3 rounded-xl border border-gray-300 text-sm">
+          <h3 className="text-base font-semibold text-gray-800 mb-4">Filters</h3>
 
-          {/* Category Filter */}
-          <div className="mb-8">
-            <h4 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
+          {/* 🔽 Category Dropdown */}
+          <div className="mb-3">
+            <label className="block text-xs font-medium text-gray-700 mb-1">
               Category
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {Object.keys(categoryColors).length === 0 ? (
-                <p className="text-sm text-gray-500">No categories available</p>
-              ) : (
-                Object.keys(categoryColors).map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => toggleCategory(category)}
-                    className={`text-xs px-3 py-1.5 rounded-full border ${
-                      selectedCategories.includes(category)
-                        ? "bg-blue-600 text-white border-blue-600"
-                        : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
-                    } transition`}
-                  >
-                    {category}
-                  </button>
-                ))
-              )}
-            </div>
+            </label>
+            <select
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+              className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+            >
+              <option value="">All Categories</option>
+              {Object.keys(categoryColors).map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* Ratings Filter */}
-          <div className="mb-8">
-            <h4 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
-              Minimum Rating
+          {/* 📍 Location Dropdown */}
+          <div className="mb-3">
+            <label className="block text-xs font-medium text-gray-700 mb-1">
+              Location
+            </label>
+            <select
+              value={selectedLocation}
+              onChange={handleLocationChange}
+              className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+            >
+              <option value="">All Locations</option>
+              <option value="New York">New York</option>
+              <option value="San Francisco">San Francisco</option>
+              <option value="London">London</option>
+              <option value="Remote">Remote</option>
+            </select>
+          </div>
+
+          {/* ⭐ Ratings Filter */}
+          <div className="mb-4">
+            <h4 className="text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
+              Rating
             </h4>
-            <div className="space-y-2">
+            <div className="space-y-1">
               {ratingOptions.map((rating) => (
-                <label key={rating} className="flex items-center space-x-2">
+                <label key={rating} className="flex items-center space-x-1">
                   <input
                     type="checkbox"
-                    className="accent-yellow-500"
+                    className="accent-yellow-500 h-3 w-3"
                     checked={selectedRatings.includes(rating)}
                     onChange={() => toggleRating(rating)}
                   />
@@ -330,17 +454,15 @@ const SkillsFilterPanel = ({
             </div>
           </div>
 
-          <hr className="my-6 border-gray-300" />
-
           <button
             onClick={resetFilters}
-            className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium py-2 rounded-md transition"
+            className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-medium py-1.5 rounded transition"
           >
             Reset Filters
           </button>
         </div>
       </aside>
-    </>
+    </div>
   );
 };
 
