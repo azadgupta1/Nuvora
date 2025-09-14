@@ -284,6 +284,8 @@ import { FiClock } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import socket from "../../socket";
+import Spinner1 from "../../components/ui/Spinner1";
+
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -461,7 +463,10 @@ const IncomingBookings = () => {
         </header>
 
         {loading ? (
-          <p className="text-gray-600 text-lg">Loading bookings...</p>
+          // <p className="text-gray-600 text-lg">Loading bookings...</p>
+          <div className="flex justify-center py-10">
+            <Spinner1 />
+          </div>
         ) : error ? (
           <p className="text-red-600 font-semibold">{error}</p>
         ) : filteredBookings.length === 0 ? (

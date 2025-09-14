@@ -823,6 +823,8 @@ import { toast } from "react-toastify";
 import socket from "../../socket";
 import BookingCard from "../../components/Dashboard/Bookings/BookingCard";
 import ReviewModal from "../../components/Dashboard/Bookings/ReviewModal";
+import Spinner1 from "../../components/ui/Spinner1";
+
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -939,10 +941,14 @@ const Bookings = () => {
 
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-48 rounded-2xl bg-gradient-to-r from-white to-gray-100 animate-pulse" />
-            ))}
+          // <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          //   {Array.from({ length: 6 }).map((_, i) => (
+          //     <div key={i} className="h-48 rounded-2xl bg-gradient-to-r from-white to-gray-100 animate-pulse" />
+          //   ))}
+          // </div>
+
+          <div className="flex justify-center py-10">
+            <Spinner1 />
           </div>
         ) : filteredBookings.length === 0 ? (
           <section className="bg-white border border-gray-100 rounded-2xl p-10 text-center shadow-sm">

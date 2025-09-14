@@ -563,6 +563,7 @@ import UserSkillProfile from "./UserSkillProfile";
 import ReceivedReviews from "../../components/Dashboard/Reviews/ReceivedReviews";
 import ProfileCard from "../../components/Profile/ProfileCard";
 import EditProfileModal from "../../components/Profile/EditProfileModal";
+import Spinner1 from "../../components/ui/Spinner1";
 
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -626,7 +627,7 @@ function Profile() {
     }
   };
 
-  if (loading) return <div className="p-6 text-center">Loading...</div>;
+  if (loading) return <div className="flex justify-center py-10"><Spinner1 /></div>
   if (error) return <div className="p-6 text-center text-red-500">Error: {error}</div>;
 
   return (

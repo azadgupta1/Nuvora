@@ -554,6 +554,8 @@ import {
   MdStarBorder,
   MdOutlineStarHalf,
 } from "react-icons/md";
+import Spinner1 from "../../ui/Spinner1";
+
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -699,7 +701,10 @@ const ReceivedReviews = () => {
 
       {/* Review List */}
       {loading ? (
-        <p className="text-gray-500">Loading reviews...</p>
+        // <p className="text-gray-500">Loading reviews...</p>
+        <div className="flex justify-center py-10">
+          <Spinner1 />
+        </div>
       ) : filteredReviews.length === 0 ? (
         <p className="text-gray-500">You haven’t received any reviews yet.</p>
       ) : (
