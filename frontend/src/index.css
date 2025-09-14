@@ -74,3 +74,37 @@
 .animate-fade-in-out {
   animation: fade-in-out 3s ease forwards;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* In your main CSS file (e.g., index.css or App.css) */
+.custom-toast .Toastify__toast {
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  color: #fff;
+  background-color: #1f2937; /* Tailwind's gray-800 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.custom-toast .Toastify__toast--success {
+  background-color: #16a34a; /* green-600 */
+}
+
+.custom-toast .Toastify__toast--info {
+  background-color: #2563eb; /* blue-600 */
+}
+
+.custom-toast .Toastify__toast--error {
+  background-color: #dc2626; /* red-600 */
+}

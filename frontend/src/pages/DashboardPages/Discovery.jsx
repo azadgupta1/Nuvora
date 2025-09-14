@@ -613,6 +613,8 @@ const Discovery = () => {
   const [selectedSkillId, setSelectedSkillId] = useState(null);
   const [bookmarkedSkillIds, setBookmarkedSkillIds] = useState([]);
   const [bookmarksMap, setBookmarksMap] = useState({});
+  const [selectedLocation, setSelectedLocation] = useState("");
+
 
   const observer = useRef();
   const lastSkillElementRef = useCallback(
@@ -692,6 +694,9 @@ const Discovery = () => {
         });
         const newSkills = res.data.skills || [];
 
+
+        console.log("New Skills are : ", newSkills);
+
         setSkills((prevSkills) => {
           if (page === 1) return newSkills; // 🔹 Reset list on new fetch
           const ids = new Set(prevSkills.map((s) => s.id));
@@ -740,11 +745,41 @@ const Discovery = () => {
       );
     }
 
+    // if (selectedRatings.length > 0) {
+    //   filtered = filtered.filter((skill) =>
+    //     selectedRatings.includes(Math.round(skill.avgRating || 0))
+    //   );
+    // }
+
+    // if (selectedRatings.length > 0) {
+    //   const minRating = Math.min(...selectedRatings); // lowest checked
+    //   filtered = filtered.filter((skill) => (skill.avgRating || 0) >= minRating);
+    // }
+
     if (selectedRatings.length > 0) {
-      filtered = filtered.filter((skill) =>
-        selectedRatings.includes(Math.round(skill.avgRating || 0))
+      const threshold = Math.min(...selectedRatings);
+      filtered = filtered.filter((skill) => {
+        const rating = skill.averageRating || 0; // ✅ use correct field
+        return rating >= threshold;
+      });
+    }
+
+
+    console.log("Skill ratings:", skills.map(s => ({
+      id: s.id,
+      rating: s.averageRating
+    })));
+
+
+
+
+    if (selectedLocation) {
+      filtered = filtered.filter(
+        (skill) =>
+          skill.location?.toLowerCase() === selectedLocation.toLowerCase()
       );
     }
+
 
     return filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }, [skills, searchTerm, selectedCategories, selectedRatings]);
@@ -757,7 +792,7 @@ const Discovery = () => {
           <div className="flex flex-col h-full gap-0"> {/* Fixed gap here */}
             {/* SkillsFilterPanel takes available space */}
             <div className="flex overflow-auto">
-              <SkillsFilterPanel
+              {/* <SkillsFilterPanel
                 categoryColors={defaultCategoryColors}
                 selectedCategories={selectedCategories}
                 selectedRatings={selectedRatings}
@@ -769,7 +804,25 @@ const Discovery = () => {
                   setSelectedCategories([]);
                   setPage(1);
                 }}
+              /> */}
+
+              <SkillsFilterPanel
+                categoryColors={defaultCategoryColors}
+                selectedCategories={selectedCategories}
+                selectedRatings={selectedRatings}
+                selectedLocation={selectedLocation}
+                toggleCategory={toggleCategory}
+                toggleRating={toggleRating}
+                setLocation={setSelectedLocation}
+                resetFilters={() => {
+                  setSearchTerm("");
+                  setSelectedRatings([]);
+                  setSelectedCategories([]);
+                  setSelectedLocation("");
+                  setPage(1);
+                }}
               />
+
             </div>
 
             {/* SavedItems takes only needed height, scrolls if overflow */}
@@ -850,7 +903,7 @@ const Discovery = () => {
       </div>
 
       {/* Mobile Filter Drawer */}
-      {isFilterOpen && (
+      {/* {isFilterOpen && (
         <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
           <button
             onClick={() => setIsFilterOpen(false)}
@@ -858,7 +911,7 @@ const Discovery = () => {
           >
             ×
           </button>
-          <div className="p-6 mt-10">
+          <div className="p-2 mt-5">
             <SkillsFilterPanel
               categoryColors={defaultCategoryColors}
               selectedCategories={selectedCategories}
@@ -874,7 +927,41 @@ const Discovery = () => {
             />
           </div>
         </div>
-      )}
+      )} */}
+
+      {/* Mobile Filter Drawer */}
+        {isFilterOpen && (
+          <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+            {/* Close Button */}
+            <button
+              onClick={() => setIsFilterOpen(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl"
+            >
+              ×
+            </button>
+
+            {/* Full-width panel */}
+            <div className="p-4 mt-10">
+              <SkillsFilterPanel
+                categoryColors={defaultCategoryColors}
+                selectedCategories={selectedCategories}
+                selectedRatings={selectedRatings}
+                toggleCategory={toggleCategory}
+                toggleRating={toggleRating}
+                resetFilters={() => {
+                  setSearchTerm("");
+                  setSelectedRatings([]);
+                  setSelectedCategories([]);
+                  setPage(1);
+                }}
+                onClose={() => setIsFilterOpen(false)} // ✅ new prop
+                isMobile={true} // you already have this check
+              />
+            </div>
+          </div>
+        )}
+
+
 
       {/* Skill Request Modal */}
       {selectedSkillId && (

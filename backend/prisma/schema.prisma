@@ -263,11 +263,17 @@ model User {
   profilePicture   String?
   bio              String?
   location         String?
+
+  dummyField String? @default("temp") // just to trigger a migration
+
+  
   skill            Skill?          // One-to-one relation
   bookingsSent     Booking[]       @relation("BookingUser")
   bookingsReceived Booking[]       @relation("BookingReceiver")
   messagesSent     Message[]       @relation("SentMessages")
   messagesReceived Message[]       @relation("ReceivedMessages")
+
+
   // reviews          Review[]
   bookmarks        Bookmark[]
   skillExchanges   SkillExchange[]

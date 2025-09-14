@@ -116,7 +116,23 @@ function DashBoard() {
 
 
 
-      <ToastContainer position="top-right" autoClose={4000} newestOnTop />
+      {/* <ToastContainer position="top-right" autoClose={4000} newestOnTop />*/}
+
+      <ToastContainer
+        position="bottom-center" // 👈 move to bottom
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="dark" // 👈 optional, for dark look to match black background
+        className="custom-toast" // 👈 optional, for extra styling
+      />
+
+
+
+
     </div>
   );
 }
