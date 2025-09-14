@@ -666,7 +666,7 @@ const ReceivedReviews = () => {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6 mt-10 shadow-md pb-0">
+    <div className="bg-white rounded-2xl p-6 mt-10 pb-10">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>

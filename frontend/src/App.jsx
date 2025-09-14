@@ -16,7 +16,7 @@ import Layout from './Layouts/Layout';
 import UserSkillProfile from './pages/Profile/UserSkillProfile';
 import Profile from './pages/Profile/Profile';
 import Settings from './pages/DashboardPages/Settings';
-
+import NotFound from './components/ui/NotFound';
 
 
 
@@ -51,7 +51,11 @@ function App() {
           <Route path="userskill" element={<UserSkillProfile />} />
         </Route>
 
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
+
+
 
     </Router>
   );
