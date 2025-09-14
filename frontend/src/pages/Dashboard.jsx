@@ -17,60 +17,6 @@ function DashBoard() {
   const [showSkillModal, setShowSkillModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // NEW STATE
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) return;
-
-  //   try {
-  //     const { userId } = jwtDecode(token);
-
-  //     if (!socket.connected) {
-  //       socket.connect();
-  //       socket.emit("userOnline", userId);
-  //     }
-
-  //     const handleNewBooking = (data) => {
-  //       toast.info(`📥 New booking from ${data.fromUser} for ${data.skillName}`, {
-  //         position: "top-right",
-  //         autoClose: 5000,
-  //         toastId: `newBooking-${data.bookingId}`,
-  //       });
-  //     };
-
-  //     const handleBookingStatus = (data) => {
-  //       toast.success(`✅ Booking for ${data.skill.name} is now ${data.status}`, {
-  //         position: "top-right",
-  //         autoClose: 5000,
-  //         toastId: `statusUpdate-${data.id}`,
-  //       });
-  //     };
-
-  //     socket.on("newBookingRequest", handleNewBooking);
-  //     socket.on("bookingStatusUpdated", handleBookingStatus);
-
-  //     axios
-  //       .get(`${backendUrl}/api/skills/user`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       })
-  //       .then((res) => {
-  //         if (!res?.data?.id) setShowSkillModal(true);
-  //       })
-  //       .catch((err) => {
-  //         if (err.response?.status === 404) setShowSkillModal(true);
-  //       });
-
-  //     return () => {
-  //       socket.off("newBookingRequest", handleNewBooking);
-  //       socket.off("bookingStatusUpdated", handleBookingStatus);
-  //     };
-  //   } catch (err) {
-  //     console.error("Invalid token:", err);
-  //   }
-  // }, []);
-
-
   useEffect(() => {
   // ✅ 1. Check if token is in URL
   const params = new URLSearchParams(window.location.search);
@@ -153,7 +99,22 @@ function DashBoard() {
         </main>
       </div>
 
-      <SkillModal isOpen={showSkillModal} onClose={() => setShowSkillModal(false)} />
+      {/* <SkillModal 
+          isOpen={showSkillModal} 
+          onClose={() => setShowSkillModal(false)} 
+      /> */}
+
+      <SkillModal 
+        isOpen={showSkillModal} 
+        onClose={() => {
+            setShowSkillModal(false);
+            setTimeout(() => {
+                window.location.reload();
+            }, 1);
+        }} 
+    />
+
+
 
       <ToastContainer position="top-right" autoClose={4000} newestOnTop />
     </div>
@@ -161,3 +122,101 @@ function DashBoard() {
 }
 
 export default DashBoard;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) return;
+
+  //   try {
+  //     const { userId } = jwtDecode(token);
+
+  //     if (!socket.connected) {
+  //       socket.connect();
+  //       socket.emit("userOnline", userId);
+  //     }
+
+  //     const handleNewBooking = (data) => {
+  //       toast.info(`📥 New booking from ${data.fromUser} for ${data.skillName}`, {
+  //         position: "top-right",
+  //         autoClose: 5000,
+  //         toastId: `newBooking-${data.bookingId}`,
+  //       });
+  //     };
+
+  //     const handleBookingStatus = (data) => {
+  //       toast.success(`✅ Booking for ${data.skill.name} is now ${data.status}`, {
+  //         position: "top-right",
+  //         autoClose: 5000,
+  //         toastId: `statusUpdate-${data.id}`,
+  //       });
+  //     };
+
+  //     socket.on("newBookingRequest", handleNewBooking);
+  //     socket.on("bookingStatusUpdated", handleBookingStatus);
+
+  //     axios
+  //       .get(`${backendUrl}/api/skills/user`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       })
+  //       .then((res) => {
+  //         if (!res?.data?.id) setShowSkillModal(true);
+  //       })
+  //       .catch((err) => {
+  //         if (err.response?.status === 404) setShowSkillModal(true);
+  //       });
+
+  //     return () => {
+  //       socket.off("newBookingRequest", handleNewBooking);
+  //       socket.off("bookingStatusUpdated", handleBookingStatus);
+  //     };
+  //   } catch (err) {
+  //     console.error("Invalid token:", err);
+  //   }
+  // }, []);

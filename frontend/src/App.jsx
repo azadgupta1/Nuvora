@@ -16,6 +16,7 @@ import Layout from './Layouts/Layout';
 import UserSkillProfile from './pages/Profile/UserSkillProfile';
 import Profile from './pages/Profile/Profile';
 import Settings from './pages/DashboardPages/Settings';
+import Saved from './components/Dashboard/Discovery/Saved';
 import NotFound from './components/ui/NotFound';
 
 
@@ -40,8 +41,9 @@ function App() {
           {/* render inside the Outlet in DashBoard.jsx */}
           <Route index element={<Discovery />} />
           <Route path="discovery" element={<Discovery />} />
+
           <Route path="bookings" element={<Bookings />} />
-          <Route path="bookmarks" element={<Bookmarks />} />
+          <Route path="bookmarks" element={<Saved />} />
           <Route path="reviews" element={<Reviews />} />
           <Route path="incoming-request" element={<IncomingBookings />} />
           <Route path="settings" element={<Settings />} />
@@ -49,6 +51,7 @@ function App() {
           <Route path="chatlayout" element={<ChatLayout />} />
           <Route path="profile/:id" element={<Profile/>} />
           <Route path="userskill" element={<UserSkillProfile />} />
+          <Route path="saved" element={<Saved />} />
         </Route>
 
 

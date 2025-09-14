@@ -1190,7 +1190,7 @@ const SkillCard = ({ skill, isBookmarked, onBookmarkToggle, onSendRequest }) => 
       <div className="p-4 flex flex-col space-y-4">
         {/* Profile & Rating */}
         <div className="flex items-center gap-3">
-          <img
+          {/* <img
             src={
               skill.user.profilePicture
                 ? skill.user.profilePicture
@@ -1200,7 +1200,20 @@ const SkillCard = ({ skill, isBookmarked, onBookmarkToggle, onSendRequest }) => 
             }
             alt={skill.user?.name || "User"}
             className="w-10 h-10 rounded-full object-cover border"
+          /> */}
+
+          <img
+            src={
+              skill.user?.profilePicture
+                ? skill.user.profilePicture
+                : `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    skill.user?.name || "User"
+                  )}&background=random`
+            }
+            alt={skill.user?.name || "User"}
+            className="w-10 h-10 rounded-full object-cover border"
           />
+
 
           <div>
             <h3 className="font-semibold text-gray-900 text-sm">

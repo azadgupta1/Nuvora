@@ -753,51 +753,6 @@ const Discovery = () => {
     <div className="min-h-screen bg-[#F9F7F1] px-4 pt-6">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8">
 
-        {/* Sidebar Filter - Desktop */}
-        {/* <div className="sticky top-6 max-h-[calc(100vh-3rem)] self-start hidden md:block">
-          <SkillsFilterPanel
-            categoryColors={defaultCategoryColors}
-            selectedCategories={selectedCategories}
-            selectedRatings={selectedRatings}
-            toggleCategory={toggleCategory}
-            toggleRating={toggleRating}
-            resetFilters={() => {
-              setSearchTerm("");
-              setSelectedRatings([]);
-              setSelectedCategories([]);
-              setPage(1); // 🔹 Reset page when filters reset
-            }}
-          />
-
-          <SavedItems />
-        </div> */}
-
-        {/* <div className="sticky top-6 h-[calc(100vh-3rem)] self-start hidden md:block w-54">
-          <div className="flex flex-col h-full">
-            
-            <div className="h-[70%] overflow-hidden">
-              <SkillsFilterPanel
-                categoryColors={defaultCategoryColors}
-                selectedCategories={selectedCategories}
-                selectedRatings={selectedRatings}
-                toggleCategory={toggleCategory}
-                toggleRating={toggleRating}
-                resetFilters={() => {
-                  setSearchTerm("");
-                  setSelectedRatings([]);
-                  setSelectedCategories([]);
-                  setPage(1);
-                }}
-              />
-            </div>
-
-            
-            <div className="h-[30%] overflow-hidden">
-              <SavedItems />
-            </div>
-          </div>
-        </div> */}
-
         <div className="sticky top-6 h-[calc(100vh-3rem)] self-start hidden md:block w-54">
           <div className="flex flex-col h-full gap-0"> {/* Fixed gap here */}
             {/* SkillsFilterPanel takes available space */}
@@ -976,7 +931,50 @@ export default Discovery;
 
 
 
+{/* Sidebar Filter - Desktop */}
+        {/* <div className="sticky top-6 max-h-[calc(100vh-3rem)] self-start hidden md:block">
+          <SkillsFilterPanel
+            categoryColors={defaultCategoryColors}
+            selectedCategories={selectedCategories}
+            selectedRatings={selectedRatings}
+            toggleCategory={toggleCategory}
+            toggleRating={toggleRating}
+            resetFilters={() => {
+              setSearchTerm("");
+              setSelectedRatings([]);
+              setSelectedCategories([]);
+              setPage(1); // 🔹 Reset page when filters reset
+            }}
+          />
 
+          <SavedItems />
+        </div> */}
+
+        {/* <div className="sticky top-6 h-[calc(100vh-3rem)] self-start hidden md:block w-54">
+          <div className="flex flex-col h-full">
+            
+            <div className="h-[70%] overflow-hidden">
+              <SkillsFilterPanel
+                categoryColors={defaultCategoryColors}
+                selectedCategories={selectedCategories}
+                selectedRatings={selectedRatings}
+                toggleCategory={toggleCategory}
+                toggleRating={toggleRating}
+                resetFilters={() => {
+                  setSearchTerm("");
+                  setSelectedRatings([]);
+                  setSelectedCategories([]);
+                  setPage(1);
+                }}
+              />
+            </div>
+
+            
+            <div className="h-[30%] overflow-hidden">
+              <SavedItems />
+            </div>
+          </div>
+        </div> */}
 
 
 

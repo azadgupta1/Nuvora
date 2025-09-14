@@ -45,28 +45,66 @@ export const addBookmark = async (req, res) => {
   }
 };
 
+// // Get all bookmarks for the logged-in user
+// export const getBookmarks = async (req, res) => {
+//   const userId = req.user.id;
+
+//   try {
+//     console.log('Fetching bookmarks for user:', userId);
+
+//     const bookmarks = await prisma.bookmark.findMany({
+//       where: { userId },
+//       include: { skill: true }, // Include the associated skill details
+//     });
+
+//     console.log('Bookmarks fetched:', bookmarks);
+//     res.status(200).json(bookmarks);
+//   } catch (error) {
+//     console.error('Error while fetching bookmarks:', {
+//       message: error.message,
+//       stack: error.stack,
+//     });
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// };
+
+
 // Get all bookmarks for the logged-in user
 export const getBookmarks = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    console.log('Fetching bookmarks for user:', userId);
+    console.log("Fetching bookmarks for user:", userId);
 
     const bookmarks = await prisma.bookmark.findMany({
       where: { userId },
-      include: { skill: true }, // Include the associated skill details
+      include: {
+        skill: {
+          include: {
+            user: true, // ✅ bring skill owner
+            reviews: true, // ✅ if you have a review table for ratings
+          },
+        },
+      },
     });
 
-    console.log('Bookmarks fetched:', bookmarks);
-    res.status(200).json(bookmarks);
+    console.log("Bookmarks fetched:", bookmarks);
+
+    // Just return skills array to frontend
+    res.status(200).json(bookmarks.map((b) => b.skill));
   } catch (error) {
-    console.error('Error while fetching bookmarks:', {
+    console.error("Error while fetching bookmarks:", {
       message: error.message,
       stack: error.stack,
     });
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
+
+
+
+
+
 
 // Remove a bookmark
 export const removeBookmark = async (req, res) => {

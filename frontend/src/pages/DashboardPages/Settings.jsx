@@ -283,7 +283,7 @@ function Settings() {
     try {
       const token = localStorage.getItem('token');
 
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/account/delete`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/delete/user`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
