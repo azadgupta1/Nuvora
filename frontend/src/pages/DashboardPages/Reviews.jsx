@@ -65,63 +65,68 @@
 // export default Reviews;
 
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { FaStar, FaRegStar } from "react-icons/fa";
+// import { useEffect, useState } from "react";
+// import ReceivedReviews from "../../components/Dashboard/Reviews/ReceivedReviews";
+// import UserCard from "../../components/Dashboard/Settings/UserCard";
+// import Spinner1 from "../../components/ui/Spinner1";
+
+
+// const Reviews = () => {
+//   const [loading, setLoading] = useState(true);
+
+//   return (
+//     <div className="min-h-screen bg-gray-50 px-6 py-10 flex justify-content items-start">
+//       <div className="flex-1 max-w-xs">
+//         <UserCard />
+//       </div>
+//       <div className="flex-1 max-w-2xl">
+//         <ReceivedReviews />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Reviews;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import ReceivedReviews from "../../components/Dashboard/Reviews/ReceivedReviews";
-
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
+import UserCard from "../../components/Dashboard/Settings/UserCard";
 
 const Reviews = () => {
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [searchParams] = useSearchParams();
-  const skillId = searchParams.get("skillId");
-
-  const fetchReviews = async () => {
-    try {
-      const res = await fetch(`${backendUrl}/api/review/${skillId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-
-        
-      const data = await res.json();
-
-      if (res.ok) {
-        setReviews(data);
-      } else {
-        console.error("Failed to fetch reviews:", data.message);
-      }
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (skillId) fetchReviews();
-  }, [skillId]);
-
-  const renderStars = (rating) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(i <= rating ? (
-        <FaStar key={i} className="text-yellow-500" />
-      ) : (
-        <FaRegStar key={i} className="text-gray-300" />
-      ));
-    }
-    return stars;
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-10">
+    <div className="min-h-screen bg-gray-50 px-4 py-8 sm:px-6 sm:py-10">
+      <div>
+          <h1 className="text-3xl text-center font-bold">My Recieved Reviews</h1>
+        </div>
+      <div className="flex flex-col sm:flex-row items-start gap-2">
+        {/* UserCard (hidden on mobile) */}
+        <div className="hidden sm:block w-full sm:w-1/3 max-w-xs">
+          <UserCard />
+        </div>
 
-      <ReceivedReviews />
+        {/* ReceivedReviews */}
+        <div className="w-full sm:w-2/3 max-w-3xl">
+          <ReceivedReviews />
+        </div>
+      </div>
     </div>
   );
 };
