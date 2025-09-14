@@ -658,7 +658,7 @@ const Navbar = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-white focus:outline-none"
+            className="lg:hidden text-white my-3 focus:outline-none"
             aria-label="Toggle menu"
           >
             {isOpen ? (
