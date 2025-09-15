@@ -29,13 +29,13 @@ It allows users to **list skills, request exchanges, book sessions, chat in real
 
 ## 🏗️ System Architecture
 
-![System Architecture](./assets/system-architecture.png)  
+![System Architecture](./frontend/src/assets/Nuvora_System_Architecture.png)  
 
 ---
 
 ## 🗂️ Database Schema (ER Diagram)
 
-![Database Schema](./assets/db-schema.png)  
+![Database Schema](./frontend/src/assets/react.svg)  
 
 ---
 
