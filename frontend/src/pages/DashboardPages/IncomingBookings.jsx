@@ -606,13 +606,13 @@ const IncomingBookings = () => {
                           onClick={() => updateStatus(booking.id, "Confirmed")}
                           className="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-xs"
                         >
-                          <FaCheckCircle /> Confirm
+                          <FaCheckCircle /> Accept
                         </button>
                         <button
                           onClick={() => updateStatus(booking.id, "Cancelled")}
                           className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs"
                         >
-                          <FaTimesCircle /> Cancel
+                          <FaTimesCircle /> Decline
                         </button>
                       </>
                     )}

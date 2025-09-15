@@ -52,7 +52,7 @@ function DashBoard() {
     const handleNewBooking = (data) => {
       console.log("DATA IS : ", data);
 
-      toast.info(`📥 New booking from ${data.fromUser.name} for ${data.skillOfferedName}`, {
+      toast.info(`New booking from ${data.fromUser.name} for ${data.skillOfferedName}`, {
         position: "top-right",
         autoClose: 5000,
         toastId: `newBooking-${data.bookingId}`,
@@ -60,13 +60,26 @@ function DashBoard() {
     };
 
 
+    // const handleBookingStatus = (data) => {
+    //   toast.success(`Booking for ${data.skill.name} is now ${data.status}`, {
+    //     position: "top-right",
+    //     autoClose: 5000,
+    //     toastId: `statusUpdate-${data.id}`,
+    //   });
+    // };
+
     const handleBookingStatus = (data) => {
-      toast.success(`✅ Booking for ${data.skill.name} is now ${data.status}`, {
+      const isNegativeStatus = ["Cancelled", "Rejected", "Failed"].includes(data.status);
+
+      const toastFn = isNegativeStatus ? toast.error : toast.success;
+
+      toastFn(`Booking for ${data.skill.name} is now ${data.status}`, {
         position: "top-right",
         autoClose: 5000,
         toastId: `statusUpdate-${data.id}`,
       });
     };
+
 
     // console.log("DATA IS : ", data);
 
