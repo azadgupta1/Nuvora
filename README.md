@@ -35,7 +35,7 @@ It allows users to **list skills, request exchanges, book sessions, chat in real
 
 ## 🗂️ Database Schema (ER Diagram)
 
-![Database Schema](./frontend/src/assets/react.svg)  
+![Database Schema](./frontend/src/assets/Nuvora_DB_Schema.png)  
 
 ---
 
@@ -62,4 +62,112 @@ It allows users to **list skills, request exchanges, book sessions, chat in real
 ---
 
 ## 📂 Project Structure
+
+```text
+Nuvora/
+│── backend/                 # Express.js + Prisma ORM backend
+│   ├── prisma/             # Prisma schema & migrations
+│   ├── src/                # Controllers, routes, middleware
+│   ├── .env                # Backend environment variables
+│   └── package.json
+
+│── frontend/                # React + Vite + Tailwind frontend
+│   ├── src/                # Components, pages, hooks
+│   ├── .env                # Frontend environment variables
+│   └── package.json
+|
+│── README.md
+```
+
+
+---
+
+## 🔑 Environment Variables
+
+### Backend (`/backend/.env`)
+```env
+PORT=3000
+JWT_SECRET=your_secret_key
+DATABASE_URL="postgresql://username:password@host:5432/dbname?schema=public"
+
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+SESSION_SECRET=your_session_secret
+
+ALLOWED_ORIGINS=http://localhost:5173,https://nuvora.onrender.com
+
+FRONTEND_URL=http://localhost:5173
+BACKEND_URL=http://localhost:3000
+
+BREVO_API_KEY=your_brevo_api_key
+
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_cloud_key
+CLOUDINARY_API_SECRET=your_cloud_secret
+```
+
+### Frontend (`/frontend/.env`)
+```env
+VITE_BACKEND_URL=http://localhost:3000
+```
+
+## 🛠️ Getting Started (Local Development)
+
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/your-username/nuvora.git
+   cd nuvora
+   ```
+2. **Setup Backend**
+   ```bash
+    cd backend
+    npm install
+    npx prisma migrate dev --name init
+    npm run dev
+    ```
+
+3. **Setup Frontend**
+   ```bash
+   cd ../frontend
+   npm install
+   npm run dev
+   ```
+
+📌 Frontend → http://localhost:5173
+📌 Backend → http://localhost:3000
+
+🤝 Contributing
+Nuvora is open source and welcomes contributions! 🎉
+
+1. **Fork the repository**
+
+2. **Create a new feature branch:**
+   ```bash
+   git checkout -b feature-name
+
+
+3. **Commit your changes:**
+   ```bash
+   git commit -m "Added new feature"
+
+
+4. **Push to your branch:**
+   ```bash
+   git push origin feature-name
+
+5. **Open a Pull Request :)**
+
+## 📦 Deployment
+
+Frontend: Render  
+Backend: Render  
+Database: NeonDB  
+Media Storage: Cloudinary  
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
+
 
