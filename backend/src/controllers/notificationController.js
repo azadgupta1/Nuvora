@@ -62,8 +62,6 @@ export const markNotificationAsRead = async (req, res) => {
   }
 };
 
-
-
 // Mark all notifications as read for the logged-in user
 export const markAllNotificationsAsRead = async (req, res) => {
   try {

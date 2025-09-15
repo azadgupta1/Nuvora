@@ -196,12 +196,6 @@ const markAllAsRead = async () => {
       <div className="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto gap-3">
         {/* Logo */}
 
-
-        {/* <div className="flex items-center gap-2 flex-shrink-0">
-          <h1 className="text-white font-extrabold text-2xl tracking-wide font-mono">Nuvora</h1>
-          <img src={Nuvora_2} alt="Nuvora" className="w-8 h-8 object-contain invert brightness-30" />
-        </div> */}
-
         <Link to="/dashboard/discovery" className="flex items-center gap-2 flex-shrink-0 no-underline">
           <h1 className="hidden sm:block text-white font-extrabold text-2xl tracking-wide font-mono">
             Nuvora
@@ -247,38 +241,6 @@ const markAllAsRead = async () => {
            
 
           {notifOpen && (
-            // <div className="
-            //   absolute top-full mt-2 
-            //   w-[95vw] sm:w-80 
-            //   left-1/2 sm:left-auto 
-            //   transform -translate-x-1/2 sm:transform-none 
-            //   bg-white border border-gray-200 rounded-lg shadow-lg 
-            //   z-50 text-gray-800 max-h-96 overflow-y-auto
-            // ">
-            //   <div className="p-3 border-b font-semibold text-gray-700">
-            //     Notifications
-            //   </div>
-            //   {notifications.length === 0 ? (
-            //     <div className="p-4 text-gray-500 text-sm">No notifications</div>
-            //   ) : (
-            //     notifications.map((notif) => (
-            //       <div
-            //         key={notif.id}
-            //         className={`p-3 text-sm border-b hover:bg-gray-100 cursor-pointer ${
-            //           notif.isRead ? 'text-gray-500' : 'text-gray-800 font-medium'
-            //         }`}
-            //         onClick={() => markAsRead(notif.id)}
-            //       >
-            //         {notif.content}
-            //         <div className="text-xs text-gray-400 mt-1">
-            //           {getRelativeTime(notif.createdAt)}
-            //         </div>
-            //       </div>
-            //     ))
-            //   )}
-            // </div>
-
-
             <div className="
               absolute top-full mt-2
               w-[85vw] sm:w-80 

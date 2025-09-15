@@ -45,30 +45,6 @@ export const addBookmark = async (req, res) => {
   }
 };
 
-// // Get all bookmarks for the logged-in user
-// export const getBookmarks = async (req, res) => {
-//   const userId = req.user.id;
-
-//   try {
-//     console.log('Fetching bookmarks for user:', userId);
-
-//     const bookmarks = await prisma.bookmark.findMany({
-//       where: { userId },
-//       include: { skill: true }, // Include the associated skill details
-//     });
-
-//     console.log('Bookmarks fetched:', bookmarks);
-//     res.status(200).json(bookmarks);
-//   } catch (error) {
-//     console.error('Error while fetching bookmarks:', {
-//       message: error.message,
-//       stack: error.stack,
-//     });
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// };
-
-
 // Get all bookmarks for the logged-in user
 export const getBookmarks = async (req, res) => {
   const userId = req.user.id;

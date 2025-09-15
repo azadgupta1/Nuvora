@@ -57,27 +57,8 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-
-
-
     </Router>
   );
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-// import SkillDetails from './pages/SkillDetails';
-// import SkillCreate from './pages/Header/SkillCreate';
-// import MySkills from './pages/Header/MySkills';
-// import { FiSkipForward } from 'react-icons/fi';
-// import ChatRoom from './pages/ChatRoom';
-// import Chat from "./pages/Z_TEST/Chat";
