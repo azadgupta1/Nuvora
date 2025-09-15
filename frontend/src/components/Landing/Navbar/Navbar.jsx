@@ -103,7 +103,7 @@ const NavLinks = ({ setIsOpen }) => {
         <HoverBorderGradient
           containerClassName="rounded-full"
           as="button"
-          className="dark:bg-black bg-white text-black dark:text-white flex items-center px-4 py-1 hover:bg-white/10 w-full justify-center"
+          className="dark:bg-black bg-white text-black dark:text-white flex items-center px-4 py-1 hover:bg-white/10 hover:cursor-pointer  w-full justify-center"
         >
           <span>Login</span>
         </HoverBorderGradient>
@@ -113,7 +113,7 @@ const NavLinks = ({ setIsOpen }) => {
         <HoverBorderGradient
           containerClassName="rounded-full"
           as="button"
-          className="bg-white text-black hover:bg-gray-200 flex items-center px-4 py-1 w-full justify-center"
+          className="bg-white text-black hover:bg-gray-200 hover:cursor-pointer flex items-center px-4 py-1 w-full justify-center"
         >
           <span>Join</span>
         </HoverBorderGradient>

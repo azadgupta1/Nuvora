@@ -41,10 +41,10 @@ export default function Home() {
         </h2>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button onClick={() => navigate('/register')} className="px-8 py-4 text-lg font-semibold rounded-2xl bg-purple-600 hover:bg-purple-700 shadow-lg hover:scale-105 transition">
+          <button onClick={() => navigate('/register')} className="px-8 py-4 text-lg font-semibold rounded-2xl bg-purple-600 hover:bg-purple-700 hover:cursor-pointer shadow-lg hover:scale-105 transition">
             Get Started
           </button>
-          <button className="px-8 py-4 text-lg font-semibold rounded-2xl border border-gray-500 text-gray-200 hover:bg-gray-800 hover:text-white transition">
+          <button className="px-8 py-4 text-lg font-semibold rounded-2xl border border-gray-500 text-gray-200 hover:bg-gray-800 hover:cursor-pointer hover:text-white transition">
             Learn More
           </button>
         </div>
