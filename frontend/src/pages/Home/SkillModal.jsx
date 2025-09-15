@@ -14,17 +14,13 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const categories = [
   "Technology",
-  "Music",
   "Sports",
+  "Coding",
   "Languages",
-  "Design",
-  "Cooking",
-  "Art",
-  "Fitness",
-  "Photography",
-  "Business",
-  "Writing",
   "Life Coach",
+  "Art",
+  "Music",
+  "Others"
 ];
 
 export default function SkillWizard({ isOpen, onClose }) {
@@ -144,7 +140,7 @@ export default function SkillWizard({ isOpen, onClose }) {
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
                   step > i + 1
-                    ? "bg-green-500 text-white"
+                    ? "bg-green-600 text-white"
                     : step === i + 1
                     ? "bg-indigo-600 text-white"
                     : "bg-gray-200 text-gray-500"
@@ -206,7 +202,7 @@ export default function SkillWizard({ isOpen, onClose }) {
                 <button
                   disabled={skillsOffered.length === 0}
                   onClick={() => setStep(2)}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg disabled:opacity-50"
+                  className="bg-black hover:bg-black/90 text-white px-6 py-2 rounded-lg disabled:opacity-50"
                 >
                   Next <ArrowRight className="inline w-4 h-4 ml-2" />
                 </button>
@@ -230,7 +226,7 @@ export default function SkillWizard({ isOpen, onClose }) {
                 <button
                   type="button"
                   onClick={() => handleAddSkill("wanted")}
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2"
                 >
                   <Plus size={18} /> Add
                 </button>
@@ -239,12 +235,12 @@ export default function SkillWizard({ isOpen, onClose }) {
                 {skillsWanted.map((s, i) => (
                   <span
                     key={i}
-                    className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm flex items-center gap-2"
+                    className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm flex items-center gap-2"
                   >
                     {s}
                     <button
                       onClick={() => handleRemoveSkill("wanted", i)}
-                      className="text-purple-500 hover:text-purple-700"
+                      className="text-indigo-500 hover:text-indigo-700"
                     >
                       ×
                     </button>
@@ -261,7 +257,7 @@ export default function SkillWizard({ isOpen, onClose }) {
                 <button
                   disabled={skillsWanted.length === 0}
                   onClick={() => setStep(3)}
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg disabled:opacity-50"
+                  className="bg-black hover:bg-black/90 text-white px-6 py-2 rounded-lg disabled:opacity-50"
                 >
                   Next <ArrowRight className="inline w-4 h-4 ml-2" />
                 </button>
@@ -297,7 +293,7 @@ export default function SkillWizard({ isOpen, onClose }) {
                 <button
                   disabled={!category}
                   onClick={() => setStep(4)}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg disabled:opacity-50"
+                  className="bg-black hover:bg-black/90 text-white px-6 py-2 rounded-lg disabled:opacity-50"
                 >
                   Next <ArrowRight className="inline w-4 h-4 ml-2" />
                 </button>
@@ -325,7 +321,7 @@ export default function SkillWizard({ isOpen, onClose }) {
                 </button>
                 <button
                   onClick={() => setStep(5)}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg"
+                  className="bg-black hover:bg-black/90 text-white px-6 py-2 rounded-lg"
                 >
                   Next <ArrowRight className="inline w-4 h-4 ml-2" />
                 </button>
@@ -368,7 +364,7 @@ export default function SkillWizard({ isOpen, onClose }) {
                       if (onComplete) onComplete();  // ✅ call parent to close modal + reload
                     }
                   }}
-                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg"
+                  className="bg-green-700 hover:bg-green-900 text-white px-6 py-2 rounded-lg"
                 >
                   Finish
                 </button>

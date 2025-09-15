@@ -15,6 +15,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const defaultCategoryColors = {
   Technology: "bg-blue-100 text-blue-800",
   Sports: "bg-green-100 text-green-800",
+  Coding: "bg-indigo-100 text-indigo-800",
   Languages: "bg-yellow-100 text-yellow-800",
   "Life Coach": "bg-purple-100 text-purple-800",
   Art: "bg-pink-100 text-pink-800",
@@ -116,9 +117,6 @@ const Discovery = () => {
         });
         const newSkills = res.data.skills || [];
 
-
-        console.log("New Skills are : ", newSkills);
-
         setSkills((prevSkills) => {
           if (page === 1) return newSkills; // 🔹 Reset list on new fetch
           const ids = new Set(prevSkills.map((s) => s.id));
@@ -174,13 +172,6 @@ const Discovery = () => {
         return rating >= threshold;
       });
     }
-
-
-    console.log("Skill ratings:", skills.map(s => ({
-      id: s.id,
-      rating: s.averageRating
-    })));
-
 
 
 

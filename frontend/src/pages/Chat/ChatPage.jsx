@@ -51,7 +51,6 @@ const ChatPage = ({ receiverId, roomId, receiverName, isReceiverOnline, onBack }
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
-        console.log("Fetched messages: ", res);
         setMessages(res.data);
       } catch (err) {
         console.error("Failed to fetch messages:", err);
@@ -70,7 +69,6 @@ const ChatPage = ({ receiverId, roomId, receiverName, isReceiverOnline, onBack }
             { headers: { Authorization: `Bearer ${token}` } }
         );
 
-        console.log(res);
         setReceiver(res.data);
 
       } catch (err){

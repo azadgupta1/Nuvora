@@ -27,7 +27,7 @@ const ReceivedReviews = () => {
         });
 
         const data = await response.json();
-        console.log("Fetched Review data is : ", data);
+        
         if (response.ok) {
           setReviews(data);
         } else {

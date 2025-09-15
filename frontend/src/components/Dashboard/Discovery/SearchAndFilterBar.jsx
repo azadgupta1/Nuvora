@@ -26,7 +26,6 @@ const SearchAndFilterBar = ({ searchTerm, setSearchTerm, onFilterClick }) => {
               { headers: { Authorization: `Bearer ${token}` } }
           );
 
-          console.log("Data is ", res);
           setReceiver(res.data);
 
         } catch (err){

@@ -67,7 +67,7 @@ const Navbar = () => {
             isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
           } lg:hidden px-6 pb-6`}
         >
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1">
             <NavLinks setIsOpen={setIsOpen} />
           </div>
         </div>

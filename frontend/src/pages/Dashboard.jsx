@@ -41,13 +41,24 @@ function DashBoard() {
       socket.emit("userOnline", userId);
     }
 
+    // const handleNewBooking = (data) => {
+    //   toast.info(`📥 New booking from ${data.fromUser} for ${data.skillName}`, {
+    //     position: "top-right",
+    //     autoClose: 5000,
+    //     toastId: `newBooking-${data.bookingId}`,
+    //   });
+    // };
+
     const handleNewBooking = (data) => {
-      toast.info(`📥 New booking from ${data.fromUser} for ${data.skillName}`, {
+      console.log("DATA IS : ", data);
+
+      toast.info(`📥 New booking from ${data.fromUser.name} for ${data.skillOfferedName}`, {
         position: "top-right",
         autoClose: 5000,
         toastId: `newBooking-${data.bookingId}`,
       });
     };
+
 
     const handleBookingStatus = (data) => {
       toast.success(`✅ Booking for ${data.skill.name} is now ${data.status}`, {
@@ -56,6 +67,8 @@ function DashBoard() {
         toastId: `statusUpdate-${data.id}`,
       });
     };
+
+    // console.log("DATA IS : ", data);
 
     socket.on("newBookingRequest", handleNewBooking);
     socket.on("bookingStatusUpdated", handleBookingStatus);
