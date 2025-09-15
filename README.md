@@ -115,7 +115,7 @@ VITE_BACKEND_URL=http://localhost:3000
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/your-username/nuvora.git
+   git clone https://github.com/azadgupta1/nuvora.git
    cd nuvora
    ```
 2. **Setup Backend**
@@ -166,7 +166,7 @@ Media Storage: Cloudinary
 
 ---
 
-## 📜 License
+## License
 
 This project is licensed under the MIT License.
 
