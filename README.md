@@ -1,71 +1,65 @@
-# Nuvora — Skill Exchange Platform
+# 🌐 Nuvora
 
-Nuvora is a full-stack web application that enables users to **exchange skills** with one another. Whether you're offering coding help in exchange for guitar lessons, or teaching yoga to learn French — Nuvora connects people looking to learn and share their skills
+[![PERN Stack](https://img.shields.io/badge/Stack-PERN-blue?style=for-the-badge&logo=postgresql&logoColor=white)]()
+[![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen?style=for-the-badge&logo=github)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)]()
+[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-orange?style=for-the-badge&logo=github)]()
 
----
+**Nuvora** is an open-source **skill exchange platform** built on the **PERN stack** (PostgreSQL, Express, React, Node.js) with **Prisma ORM**.  
+It allows users to **list skills, request exchanges, book sessions, chat in real-time, get instant notifications, and receive email updates** via Brevo.  
 
-##  Feature
-
-- 👤 User Authentication (Signup/Login)
-- 🏠 Homepage with platform highlights
-- 📂 Dashboard with Sidebar Navigation:
-  - Explore Skills (by category: Tech, Sports, Languages, etc.)
-  - My Bookings
-  - My Skills
-  - Favorites
-- 🧑‍🏫 Add Skill:
-  - Skill Name, Category, Description, Image
-  - Weekly Availability (Day, Time)
-  - Skill you want in return
-- 🔍 Search and filter available skills
-- 📅 Booking system with conflict validation
-- 💬 Messaging between users
-- 📌 Favorites system
-- 🎨 Responsive & Modern UI
+🚀 **Live Demo:** [nuvora.onrender.com](https://nuvora.onrender.com)  
 
 ---
 
-## 🛠 Tech Stack
+## ✨ Features
 
-### Frontend
-- **React.js**
-- **Tailwind CSS**
-- **React Router**
-- **Framer Motion**
-- **Lucide/React Icons**
-
-### Backend
-- **Node.js**
-- **Express.js**
-- **Prisma ORM**
-- **PostgreSQL**
-- **JWT + Bcrypt for Auth**
+- 👤 **User Authentication** – JWT & Google OAuth login  
+- 📚 **Skill Management** – Add, edit, delete skills (offered & wanted)  
+- 📅 **Bookings System** – Request skills, accept/decline with availability validation  
+- 💬 **Real-Time Chat** – Socket.io based direct messaging  
+- 🔔 **Notifications** – Real-time + email (Brevo)  
+- ⭐ **Reviews & Ratings** – Rate & review skills  
+- 📌 **Bookmarks** – Save and manage favorite skills  
+- ☁️ **Media Storage** – Profile & skill images via **Cloudinary**  
+- 🗄️ **Database** – PostgreSQL on **Neon DB**  
+- 🌍 **Hosting** – Frontend & Backend on **Render Free Tier**  
 
 ---
 
-## 🧪 Testing
+## 🏗️ System Architecture
 
-- Postman for API testing
-- Manual validation of skill bookings and conflict resolution
-
----
-
-## 💡 Future Improvements
-
-- AI-based Skill Recommendations
-- Notifications for new messages or bookings
-- Real-time chat using Socket.io
-- Admin dashboard (optional)
-- Skill verification badges
+![System Architecture](./assets/system-architecture.png)  
 
 ---
 
-## 🤝 Contributors
+## 🗂️ Database Schema (ER Diagram)
 
-- **Azad Gupta** *(Backend + Frontend + DB Design)*
+![Database Schema](./assets/db-schema.png)  
 
 ---
 
-## 📜 License
+## ⚙️ Tech Stack
 
-MIT License
+**Frontend**
+- React 19, Vite, TailwindCSS, Framer Motion  
+- React Router, Socket.io-client, Axios  
+- Toast Notifications (react-hot-toast, react-toastify)  
+
+**Backend**
+- Node.js, Express.js  
+- Prisma ORM + PostgreSQL (Neon DB)  
+- JWT, Passport (Google OAuth)  
+- Socket.io (real-time chat & notifications)  
+- Brevo (email service)  
+- Cloudinary (media storage)  
+
+**Hosting**
+- Render (Frontend + Backend)  
+- Neon (Database)  
+- Cloudinary (Assets)  
+
+---
+
+## 📂 Project Structure
+
