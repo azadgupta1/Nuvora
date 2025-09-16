@@ -50,7 +50,7 @@ export const registerUser = async (req, res) => {
     const token = jwt.sign(
       { userId: createUser.id },
       process.env.JWT_SECRET,
-      { expiresIn: "6h" }
+      { expiresIn: "2d" }
     );
 
     // Remove password from user object before sending
@@ -101,7 +101,7 @@ export const loginUser = async (req, res) =>{
             return res.status(400).json({message: "Invalid credentials"});
         }
 
-        const token = jwt.sign({userId: userExist.id}, process.env.JWT_SECRET, {expiresIn: "6h"});
+        const token = jwt.sign({userId: userExist.id}, process.env.JWT_SECRET, {expiresIn: "2d"});
 
         res.status(200).json({message: "User logged in successfully!", token});
 

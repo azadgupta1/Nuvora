@@ -53,8 +53,6 @@ function App() {
           <Route path="userskill" element={<UserSkillProfile />} />
           <Route path="saved" element={<Saved />} />
         </Route>
-
-
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
