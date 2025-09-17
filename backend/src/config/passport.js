@@ -36,7 +36,7 @@ passport.use(
 
         // You could attach a JWT here if needed
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-          expiresIn: '1h',
+          expiresIn: '2d',
         });
 
 
