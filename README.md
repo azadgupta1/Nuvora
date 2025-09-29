@@ -12,7 +12,7 @@ It allows users to **list skills, request exchanges, book sessions, chat in real
 
 ---
 
-## ✨ Features
+## ✨ Feature
 
 - 👤 **User Authentication** – JWT & Google OAuth login  
 - 📚 **Skill Management** – Add, edit, delete skills (offered & wanted)  
