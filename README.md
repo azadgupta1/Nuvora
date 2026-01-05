@@ -21,7 +21,7 @@ It allows users to **list skills, request exchanges, book sessions, chat in real
 - 🔔 **Notifications** – Real-time + email (Brevo)  
 - ⭐ **Reviews & Ratings** – Rate & review skills  
 - 📌 **Bookmarks** – Save and manage favorite skills  
-- ☁️ **Media Storage** – Profile & skill images via **Cloudinary**  
+- ☁️ **Media Storage** – Profile & skill images via **Cloudinary(Cloud Service)**  
 - 🗄️ **Database** – PostgreSQL on **Neon DB**  
 - 🌍 **Hosting** – Frontend & Backend on **Render Free Tier**  
 
