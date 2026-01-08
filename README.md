@@ -6,7 +6,7 @@
 [![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-orange?style=for-the-badge&logo=github)]()
 
 **Nuvora** is an open-source **skill exchange platform** built on the **PERN stack** (PostgreSQL, Express, React, Node.js) with **Prisma ORM**.  
-It allows users to **list skills, request exchanges, book sessions, chat in real-time, get instant notifications, and receive email updates** via Brevo.  
+It allows users to **list skills, request exchanges, book sessions, chat in real-time, get instant notifications, and receive email updates** via Brevo
 
 <table>
   <tr>
@@ -34,7 +34,7 @@ It allows users to **list skills, request exchanges, book sessions, chat in real
 - 🔔 **Notifications** – Real-time + email (Brevo)  
 - ⭐ **Reviews & Ratings** – Rate & review skills  
 - 📌 **Bookmarks** – Save and manage favorite skills  
-- ☁️ **Media Storage** – Profile & skill images via **Cloudinary**  
+- ☁️ **Media Storage** – Profile & skill images via **Cloudinary(Cloud Service)**  
 - 🗄️ **Database** – PostgreSQL on **Neon DB**  
 - 🌍 **Hosting** – Frontend & Backend on **Render Free Tier**  
 
