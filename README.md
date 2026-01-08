@@ -8,6 +8,19 @@
 **Nuvora** is an open-source **skill exchange platform** built on the **PERN stack** (PostgreSQL, Express, React, Node.js) with **Prisma ORM**.  
 It allows users to **list skills, request exchanges, book sessions, chat in real-time, get instant notifications, and receive email updates** via Brevo.  
 
+<table>
+  <tr>
+    <td width="80">
+      <img src="./frontend/src/assets/Nuvora_2.png" alt="Nuvora Logo" width="100"/>
+    </td>
+    <td>
+      <h1>Nuvora</h1>
+      <p>An open-source <strong>skill exchange platform</strong> built on the <strong>PERN stack</strong> with <strong>Prisma ORM</strong>. List skills, request exchanges, book sessions, chat in real-time, and get instant notifications & email updates via Brevo.</p>
+    </td>
+  </tr>
+</table>
+
+
 **Live Demo:** [nuvora.onrender.com](https://nuvora.onrender.com)  
 
 ---
