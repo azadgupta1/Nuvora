@@ -170,40 +170,135 @@ export const updateSkill = async (req, res) => {
 };
 
 
+// export const getAllSkills = async (req, res) => {
+//   try {
+//     const userId = req.user.userId;
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = parseInt(req.query.limit) || 10;
+
+//     // 1. Get current user's skillsWanted
+//     const currentUser = await prisma.user.findUnique({
+//       where: { id: userId },
+//       include: {
+//         skill: true,
+//       },
+//     });
+
+//     const userSkillsWanted = currentUser?.skill?.skillsWanted || [];
+
+//     // 2. Fetch all other users' skills (no skip/take yet)
+//     const allOtherSkills = await prisma.skill.findMany({
+//       where: {
+//         userId: { not: userId },
+//       },
+//       include: {
+//         user: true,
+//         reviews: {
+//           include: { user: true },
+//         },
+//       },
+//       orderBy: {
+//         id: "desc", // keep newest first before custom sort
+//       },
+//     });
+
+//     // 3. Process skills: average ratings + match logic
+//     const processedSkills = allOtherSkills.map((skill) => {
+//       const isMatch = skill.skillsOffered.some((offered) =>
+//         userSkillsWanted.includes(offered)
+//       );
+
+//       const totalReviews = skill.reviews.length;
+//       const avgRating =
+//         totalReviews > 0
+//           ? skill.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+//           : 0;
+
+//       return {
+//         ...skill,
+//         averageRating: Number(avgRating.toFixed(1)),
+//         reviewCount: totalReviews,
+//         isMatch,
+//       };
+//     });
+
+//     // 4. Sort by match first, then rating
+//     const sortedSkills = processedSkills.sort((a, b) => {
+//       if (a.isMatch === b.isMatch) {
+//         return b.averageRating - a.averageRating;
+//       }
+//       return a.isMatch ? -1 : 1;
+//     });
+
+//     // 5. Paginate AFTER sorting
+//     const startIndex = (page - 1) * limit;
+//     const paginatedSkills = sortedSkills.slice(startIndex, startIndex + limit);
+
+//     res.status(200).json({
+//       skills: paginatedSkills,
+//       total: sortedSkills.length,
+//       page,
+//       totalPages: Math.ceil(sortedSkills.length / limit),
+//     });
+//   } catch (error) {
+//     console.error("Error in getAllSkills:", error);
+//     res.status(500).json({
+//       message: "Something went wrong while fetching skills.",
+//     });
+//   }
+// };
+
+
+
+import redis from "../config/redis.js";
+
 export const getAllSkills = async (req, res) => {
   try {
     const userId = req.user.userId;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
-    // 1. Get current user's skillsWanted
+    const cacheKey = `skills:user:${userId}:page:${page}:limit:${limit}`;
+
+    // 1️⃣ CACHE CHECK
+    if (redis) {
+      const cached = await redis.get(cacheKey);
+      if (cached) {
+        return res.status(200).json(cached);
+      }
+    }
+
+    // 2️⃣ FETCH CURRENT USER
     const currentUser = await prisma.user.findUnique({
       where: { id: userId },
-      include: {
-        skill: true,
+      select: {
+        skill: {
+          select: { skillsWanted: true },
+        },
       },
     });
 
     const userSkillsWanted = currentUser?.skill?.skillsWanted || [];
 
-    // 2. Fetch all other users' skills (no skip/take yet)
-    const allOtherSkills = await prisma.skill.findMany({
+    // 3️⃣ FETCH LIMITED SKILLS
+    const rawSkills = await prisma.skill.findMany({
       where: {
         userId: { not: userId },
+      },
+      take: limit * 3,
+      orderBy: {
+        id: "desc",
       },
       include: {
         user: true,
         reviews: {
-          include: { user: true },
+          select: { rating: true },
         },
-      },
-      orderBy: {
-        id: "desc", // keep newest first before custom sort
       },
     });
 
-    // 3. Process skills: average ratings + match logic
-    const processedSkills = allOtherSkills.map((skill) => {
+    // 4️⃣ PROCESS
+    const processedSkills = rawSkills.map((skill) => {
       const isMatch = skill.skillsOffered.some((offered) =>
         userSkillsWanted.includes(offered)
       );
@@ -216,37 +311,49 @@ export const getAllSkills = async (req, res) => {
 
       return {
         ...skill,
+        reviews: undefined,
         averageRating: Number(avgRating.toFixed(1)),
         reviewCount: totalReviews,
         isMatch,
       };
     });
 
-    // 4. Sort by match first, then rating
-    const sortedSkills = processedSkills.sort((a, b) => {
+    // 5️⃣ SORT
+    processedSkills.sort((a, b) => {
       if (a.isMatch === b.isMatch) {
         return b.averageRating - a.averageRating;
       }
       return a.isMatch ? -1 : 1;
     });
 
-    // 5. Paginate AFTER sorting
+    // 6️⃣ PAGINATE
     const startIndex = (page - 1) * limit;
-    const paginatedSkills = sortedSkills.slice(startIndex, startIndex + limit);
+    const paginatedSkills = processedSkills.slice(
+      startIndex,
+      startIndex + limit
+    );
 
-    res.status(200).json({
+    const response = {
       skills: paginatedSkills,
-      total: sortedSkills.length,
       page,
-      totalPages: Math.ceil(sortedSkills.length / limit),
-    });
+      total: processedSkills.length,
+      totalPages: Math.ceil(processedSkills.length / limit),
+    };
+
+    // 7️⃣ SAVE TO CACHE (60s)
+    if (redis) {
+      await redis.set(cacheKey, response, { ex: 60 });
+    }
+
+    return res.status(200).json(response);
   } catch (error) {
     console.error("Error in getAllSkills:", error);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Something went wrong while fetching skills.",
     });
   }
 };
+
 
 
 // Get skill by Skill ID
