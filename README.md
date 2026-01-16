@@ -1,4 +1,4 @@
-# 🌐 Nuvora
+## 🌐 Nuvora
 
 [![PERN Stack](https://img.shields.io/badge/Stack-PERN-blue?style=for-the-badge&logo=postgresql&logoColor=white)]()
 [![Open Source](https://img.shields.io/badge/Open%20Source-Yes-brightgreen?style=for-the-badge&logo=github)]()
